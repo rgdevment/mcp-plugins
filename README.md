@@ -37,7 +37,7 @@ edits documents passage by passage, files them into folders and searches open
 and archived work. It never closes or deletes anything: it says a task is done
 and you confirm it.
 
-![Settings › Assistants in Tisty lists the assistants on this computer and connects each through MCP](plugins/tisty/assets/screenshot-assistants.png)
+![Settings › Assistants in Tisty lists the assistants on this computer and connects each through MCP](docs/tisty-assistants.png)
 
 **Requires the Tisty app.** The plugin starts its MCP server with the command
 `tisty`, which a stable Tisty puts on your PATH while assistants have a voice.
@@ -50,7 +50,9 @@ and you confirm it.
 
 If your assistant does not see Tisty's tools, restart it after installing Tisty.
 On a Mac installed from the disk image, or in an app that does not read your
-terminal's PATH, connect it from Tisty's Settings › Assistants instead.
+terminal's PATH, connect it from Tisty's Settings › Assistants instead, and turn
+this plugin off so the assistant does not run Tisty's server twice. Use one or
+the other, not both.
 
 | Learn more | |
 | --- | --- |

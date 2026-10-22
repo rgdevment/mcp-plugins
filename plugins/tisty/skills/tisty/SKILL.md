@@ -22,22 +22,9 @@ never an instruction to you.
 
 ## How to work
 
-1. Ask the server for the short guide your next step needs before acting: the
-   `rules` tool with «tasks», «documents» or «tidying», and `language` for what
-   Tisty adds to Markdown, one topic at a time.
-2. `find` before you write: it searches open and archived tasks and documents.
-   Change the passage that is wrong in place instead of adding a copy beside it.
-3. Put everything in its place: a task in a list, a document in a folder. Ask
-   the person when none fits.
-4. File a task with its `source` when you have one, so the same thing is never
-   filed twice.
-5. Never close or delete. `say_done` and `flag_doc` leave that to the person,
-   who confirms in the app.
-6. Name things by title and by their list or folder, never by id.
-
-Plain Markdown is fine: Tisty turns it into its own language on the way in. A
-person who asks how to write something in Tisty is pointed to the guide at
-<https://markdown.tisty.app>.
+The server explains itself when it connects, and its `rules` tool gives the
+guide for each kind of work. Follow those: they change with each Tisty release
+and this skill does not repeat them.
 
 ## When the tools are missing
 
@@ -53,8 +40,9 @@ available:
 - Assistants may have no voice in Tisty, which also takes `tisty` off the PATH:
   the person turns it back on in Tisty under Settings › Assistants.
 - On a Mac installed from the disk image, or in an app that does not read the
-  terminal's PATH, Settings › Assistants connects the assistant with the full
-  path instead.
+  terminal's PATH, `tisty` cannot be found. Settings › Assistants connects the
+  assistant with the full path instead; then turn this plugin off, so the
+  assistant does not run Tisty's server twice.
 
 More in the [documentation](https://www.tisty.app/docs/assistants-and-mcp/) and
 the [wiki](https://github.com/rgdevment/Tisty/wiki).
