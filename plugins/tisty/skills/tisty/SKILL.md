@@ -33,8 +33,8 @@ available:
 
 - Tisty may not be installed. It is free for Windows and macOS:
   [Microsoft Store](https://apps.microsoft.com/detail/9PGVWXD8X93N),
-  `brew install --cask rgdevment/tap/tisty`, or
-  [GitHub Releases](https://github.com/rgdevment/Tisty/releases/latest).
+  `brew install --cask rgdevment/tap/tisty`, or every other way in the
+  [installation guide](https://www.tisty.app/docs/installation/).
 - The assistant was open before Tisty was installed, so it does not see `tisty`
   yet: restart it.
 - Assistants may have no voice in Tisty, which also takes `tisty` off the PATH:
@@ -44,5 +44,4 @@ available:
   assistant with the full path instead; then turn this plugin off, so the
   assistant does not run Tisty's server twice.
 
-More in the [documentation](https://www.tisty.app/docs/assistants-and-mcp/) and
-the [wiki](https://github.com/rgdevment/Tisty/wiki).
+More in the [documentation](https://www.tisty.app/docs/assistants-and-mcp/).

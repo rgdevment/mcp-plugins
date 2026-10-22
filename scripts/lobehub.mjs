@@ -1,5 +1,5 @@
 // LobeHub only publishes for a signed-in person, so this refreshes the manifest and the person runs `lhm plugin update`.
-import { execFileSync } from "node:child_process";
+import { execFileSync, execSync } from "node:child_process";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -15,6 +15,11 @@ if (!/^\d+\.\d+\.\d+$/.test(version ?? "") || !tisty) {
   process.exit(2);
 }
 
+if (/\s/.test(tisty)) {
+  console.error(`the server's path cannot hold spaces, because LobeHub's CLI takes it as one command: ${tisty}`);
+  process.exit(2);
+}
+
 const said = execFileSync(tisty, ["--version"], { encoding: "utf8" }).trim();
 if (said !== `tisty ${version}`) {
   console.error(`${tisty} says «${said}», not tisty ${version}: point at the release being listed`);
@@ -26,10 +31,10 @@ const scratch = mkdtempSync(join(tmpdir(), "lobehub-"));
 try {
   // init infers the description from package.json when the server does not give one.
   writeFileSync(join(scratch, "package.json"), JSON.stringify({ description: owner.description }));
-  execFileSync(
-    "npx",
-    ["-y", MARKET_CLI, "plugin", "init", "--stdio", `"${tisty}" mcp`, "--dir", scratch, "--force"],
-    { stdio: "inherit", shell: true, env: { ...process.env, TISTY_PROFILE: PROFILE } },
+  // npx needs a shell on Windows, which splits on spaces: the whole server command goes as one quoted word.
+  execSync(
+    `npx -y ${MARKET_CLI} plugin init --stdio "${tisty} mcp" --dir "${scratch}" --force`,
+    { stdio: "inherit", env: { ...process.env, TISTY_PROFILE: PROFILE } },
   );
   const fresh = JSON.parse(readFileSync(join(scratch, "lhm.plugin.json"), "utf8"));
   const next = {

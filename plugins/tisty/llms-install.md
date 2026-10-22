@@ -13,7 +13,7 @@ one of these, then open it once:
 
 - Windows: [Microsoft Store](https://apps.microsoft.com/detail/9PGVWXD8X93N)
 - macOS: `brew install --cask rgdevment/tap/tisty`
-- Either: [GitHub Releases](https://github.com/rgdevment/Tisty/releases/latest)
+- Every other way: [installation guide](https://www.tisty.app/docs/installation/)
 
 If `tisty` is still not found after installing, use the full path for the
 command in step 2 instead of `tisty`:
