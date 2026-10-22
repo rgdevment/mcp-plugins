@@ -46,7 +46,7 @@ and you confirm it.
 | --- | --- |
 | Windows | [Microsoft Store](https://apps.microsoft.com/detail/9PGVWXD8X93N) |
 | macOS | `brew install --cask rgdevment/tap/tisty` |
-| Either | [GitHub Releases](https://github.com/rgdevment/Tisty/releases/latest) |
+| Every way | [Installation guide](https://www.tisty.app/docs/installation/) |
 
 If your assistant does not see Tisty's tools, restart it after installing Tisty.
 On a Mac installed from the disk image, or in an app that does not read your
@@ -59,11 +59,12 @@ the other, not both.
 | Website | <https://www.tisty.app/> |
 | Documentation | <https://www.tisty.app/docs/> |
 | Assistants and MCP | <https://www.tisty.app/docs/assistants-and-mcp/> |
+| What an assistant may do | <https://www.tisty.app/docs/mcp-permissions/> |
+| MCP tools | <https://www.tisty.app/docs/mcp-tools/> |
 | Writing in Tisty | <https://markdown.tisty.app> |
-| Wiki | <https://github.com/rgdevment/Tisty/wiki> |
+| Privacy | <https://www.tisty.app/privacy/> |
+| Official MCP Registry | [`io.github.rgdevment/tisty`](https://registry.modelcontextprotocol.io/v0.1/servers/io.github.rgdevment%2Ftisty/versions/latest) |
 | Source | <https://github.com/rgdevment/Tisty> |
-| Official MCP Registry | `io.github.rgdevment/tisty` |
-| Privacy | <https://github.com/rgdevment/Tisty/blob/main/PRIVACY.md> |
 | Issues | <https://github.com/rgdevment/Tisty/issues> |
 
 ## Layout
