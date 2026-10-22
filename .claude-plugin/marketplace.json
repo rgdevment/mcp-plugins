@@ -1,0 +1,15 @@
+{
+  "name": "rgdevment",
+  "description": "Plugins that connect assistants to apps by rgdevment",
+  "owner": {
+    "name": "rgdevment",
+    "url": "https://github.com/rgdevment"
+  },
+  "plugins": [
+    {
+      "name": "tisty",
+      "source": "./plugins/tisty",
+      "description": "Notes, documents and tasks as plain Markdown on your own disk. Your assistant files tasks, writes and edits documents and searches past work, locally, through Tisty's MCP server."
+    }
+  ]
+}
