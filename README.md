@@ -28,7 +28,7 @@ source in Cursor's settings.
 
 ### Tisty
 
-![Tisty](plugins/tisty/assets/logo.png)
+<img src="plugins/tisty/assets/logo.png" width="96" height="96" alt="Tisty"/>
 
 Notes, documents and tasks as plain Markdown on your own disk, for Windows and
 macOS. No account, no subscription, no telemetry, no server. With the plugin,
