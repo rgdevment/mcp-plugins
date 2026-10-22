@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          fetch-tags: true
+      # The signed tag's message is the release note, so it is written once.
+      - name: Publish the release from the tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          git cat-file -t "$TAG" | grep -qx tag || { echo "::error::$TAG is not an annotated tag; its message is the release note"; exit 1; }
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "::notice::$TAG already has a release"
+          else
+            gh release create "$TAG" --verify-tag --notes-from-tag --title "mcp-plugins ${TAG#v}"
+          fi

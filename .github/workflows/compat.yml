@@ -1,0 +1,39 @@
+name: Compatibility
+
+on:
+  pull_request:
+    paths:
+      - "plugins/**"
+      - "scripts/compat.mjs"
+      - ".github/workflows/compat.yml"
+  schedule:
+    - cron: "41 9 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  latest-tisty:
+    # The MCP bundle carries Windows and macOS servers only.
+    runs-on: windows-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+      - name: Take the server from Tisty's latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download -R rgdevment/Tisty --dir tisty --pattern 'tisty-mcp-*.mcpb' --pattern SHA256SUMS
+          (cd tisty && sha256sum --check --strict --ignore-missing SHA256SUMS)
+          unzip -q tisty/tisty-mcp-*.mcpb 'server/*' -d tisty/bundle
+      - name: The tools the plugin's docs name are there
+        run: node scripts/compat.mjs tisty/bundle/server/tisty.exe
