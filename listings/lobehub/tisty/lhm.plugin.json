@@ -1,0 +1,1281 @@
+{
+  "author": "rgdevment",
+  "authorUrl": "https://github.com/rgdevment",
+  "description": "Notes, documents and tasks as plain Markdown on your own disk, for Windows and macOS. Your assistant files tasks with steps and dates, writes and edits documents passage by passage, and searches past work over local stdio, with no account or server; it never closes or deletes anything.",
+  "homepage": "https://www.tisty.app/",
+  "identifier": "rgdevment-tisty",
+  "name": "Tisty",
+  "prompts": [],
+  "resources": [],
+  "tools": [
+    {
+      "name": "propose",
+      "title": "Propose a task",
+      "description": "Propose a task — something to do; what will be read again is a document (`write_doc`). Give it a `title`. Several read from one thread go together in `tasks`, each judged on its own, so a bad one does not sink the rest. A step is one line of a checklist; work that is several tasks with one end — a move, a release, a plan — goes in `parts`, one level deep, rather than packed into steps. A ticket's progress, its reviews, pull requests and audits are this task's page and its parts, never documents. Tisty tags it #agent by itself.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "again": {
+            "description": "Only when the person asks you in this conversation to do again what was already proposed from this source and closed since: files a new task despite the source being known. Say in the description how the last one ended. Never for a source whose task is still open",
+            "type": "boolean"
+          },
+          "date": {
+            "description": "The day it is meant to be done (2026-08-31)",
+            "type": "string"
+          },
+          "deadline": {
+            "description": "The day it actually runs out (2026-08-31)",
+            "type": "string"
+          },
+          "description": {
+            "description": "What you read, in the Tisty language",
+            "type": "string"
+          },
+          "list": {
+            "description": "The existing list it belongs in, by name; `lists` says which. Expected: left out, it lands in the inbox, and that needs a reason",
+            "type": "string"
+          },
+          "part_of": {
+            "description": "The id of a task you may work on — one an agent filed, or one the person opened to agents — that this one is a part of",
+            "type": "string"
+          },
+          "parts": {
+            "description": "The tasks the work is made of, each shaped like a single one with its own steps; the task around them is finished when they are. One level, at most 32 here — add more later with `part_of`",
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "priority": {
+            "description": "Only if someone said so. Leave it out otherwise",
+            "enum": [
+              "do",
+              "decide",
+              "delegate",
+              "minor"
+            ],
+            "type": "string"
+          },
+          "remind": {
+            "description": "When to ring, each like 2026-08-30T20:00. Only for what happens once at a set time and cannot be caught up on — an appointment, a flight — set the evening before; never for work any day will do, nor for what repeats",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "source": {
+            "description": "Where you read it — a message id, a thread link",
+            "type": "string"
+          },
+          "steps": {
+            "description": "A checklist, each step at most 100 characters; what needs more is a part",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "tags": {
+            "description": "The subjects it is about, one word each in the person's plain words; capitals and accents decide nothing. Six is already a lot, and a word that merely appears in the title is no subject. Reuse what `tags` lists when it means the same",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "tasks": {
+            "description": "Several at once, each shaped like a single one. Left out when proposing one",
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "title": {
+            "description": "What has to be done, in a line",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "remind",
+      "title": "Set a task to ring",
+      "description": "Make a task that is already here ring at a given moment. Adds to whatever it rings at already and never takes one away, so a reminder the person set themselves is safe. `read` says what it carries before you add. Use it for the appointment that was filed without one, and leave alone what repeats — a routine already comes back on its own.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "at": {
+            "description": "When to ring, each as a day and an hour like 2026-08-30T20:00",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "task": {
+            "description": "The task id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task",
+          "at"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "describe",
+      "title": "Describe a task",
+      "description": "Write the description of a task you filed, or one the person opened to agents: what it is, in the Tisty language. One already there is written over whole, so `read` it first and keep what still holds; what you learnt on the way goes in `note`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "description": "What the task is, in the Tisty language",
+            "type": "string"
+          },
+          "task": {
+            "description": "The task id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task",
+          "body"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "plan",
+      "title": "Add steps to a task",
+      "description": "Add a checklist, or more of one, to a task you filed or one the person opened to agents. Steps go after the ones already there; `read` shows them.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "steps": {
+            "description": "The steps to add, in order, one string each, at most 100 characters",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "task": {
+            "description": "The task id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task",
+          "steps"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "tick",
+      "title": "Tick the steps you did",
+      "description": "Mark steps of a task done when you did them yourself — the moment you did, not at the end. Name each by its text as `read` shows it; one unknown name and nothing is ticked, and a name two steps share ticks the next one still open. On a task you filed or one the person opened to agents the step is ticked; on any other of the person's it stays unticked, said done, until they take your word. Either way the task stays open until `say_done` and the person.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "step": {
+            "description": "One step, by its text — the same as `steps` with one entry",
+            "type": "string"
+          },
+          "steps": {
+            "description": "The steps you did, each by its text as `read` shows it — capitals, accents and the spaces at either end decide nothing. One of `steps` or `step` has to come with the call",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "task": {
+            "description": "The task id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "untick",
+      "title": "Take back a tick given by mistake",
+      "description": "Unmark steps an agent ticked that are not done after all, on a task you filed or one the person opened to agents. On any other of the person's tasks it takes back your word on steps you said were done. Only a tick or a word an agent gave can be taken back: one the person gave is theirs, and naming it unticks nothing. Name each step by its text as `read` shows it. Unticking closes and opens nothing; the task stays as it was.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "step": {
+            "description": "One step, by its text — the same as `steps` with one entry",
+            "type": "string"
+          },
+          "steps": {
+            "description": "The steps to untick, each by its text as `read` shows it — capitals, accents and the spaces at either end decide nothing. One of `steps` or `step` has to come with the call",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "task": {
+            "description": "The task id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "rename",
+      "title": "Rename a task an agent filed",
+      "description": "Give a better title to a task an agent filed. A task the person wrote keeps its title, opened to agents or not.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "description": "The task id",
+            "type": "string"
+          },
+          "title": {
+            "description": "The new title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task",
+          "title"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "reword_step",
+      "title": "Rewrite an open step",
+      "description": "Rewrite a step that is not ticked, on a task you filed or one the person opened to agents. A ticked step is refused: `untick` it first if the tick was yours by mistake.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "step": {
+            "description": "The step, by its text as `read` shows it",
+            "type": "string"
+          },
+          "task": {
+            "description": "The task id",
+            "type": "string"
+          },
+          "text": {
+            "description": "What the step says now, at most 100 characters",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task",
+          "step",
+          "text"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "unplan",
+      "title": "Take open steps off a task",
+      "description": "Take off steps that are not ticked, on a task you filed or one the person opened to agents: a step that no longer applies, or one written twice. With `to` they are not dropped but handed on, added after the steps of the task they belong on. One ticked step among them and nothing is taken off.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "step": {
+            "description": "One step, by its text — the same as `steps` with one entry",
+            "type": "string"
+          },
+          "steps": {
+            "description": "The steps to take off, each by its text as `read` shows it — capitals, accents and the spaces at either end decide nothing. One of `steps` or `step` has to come with the call",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "task": {
+            "description": "The task id",
+            "type": "string"
+          },
+          "to": {
+            "description": "The id of another task you may work on, open and not said done, to add these steps to after its own",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "move",
+      "title": "Hang a task under another, let it go, or put it in a list",
+      "description": "On a task you may work on — one an agent filed, or one the person opened to agents. `part_of` hangs it under another such task as one of its parts, or with null lets it go to stand on its own. `list` puts a task an agent filed in a better list; a task the person filed keeps its list. One level only: a task with parts is no part, and a part holds none. A closed task, on either side, takes nothing, and a whole said done or not to be done takes no new part until the person decides.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "list": {
+            "description": "An existing list, by name, for a task an agent filed; `lists` says which",
+            "type": "string"
+          },
+          "part_of": {
+            "description": "The id of the task to hang it under, or null to let it go from the one it is a part of",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "task": {
+            "description": "The task id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "reword_note",
+      "title": "Rewrite a note in a task's journal",
+      "description": "Rewrite a note in the journal of a task you filed or one the person opened to agents, named by the id `read` shows beside it. The new body replaces the old one whole; a note cannot be emptied.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "description": "What the note says now, in the Tisty language",
+            "type": "string"
+          },
+          "note": {
+            "description": "The note's id, from `read` with `journal`",
+            "type": "string"
+          },
+          "task": {
+            "description": "The task id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task",
+          "note",
+          "body"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "note",
+      "title": "Add to a task's journal",
+      "description": "Append to what a task has recorded. Only a task's: a note set apart inside a document is a callout, `> [!NOTE]`, written with `edit_doc`. Works on tasks the person wrote too. Use it when something new turns up about work that already exists, instead of filing a duplicate. A closed task is history and takes no note: if the work came back, propose it anew.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "description": "What to record, in the Tisty language",
+            "type": "string"
+          },
+          "task": {
+            "description": "The task id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task",
+          "body"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "attach",
+      "title": "Keep a file with a task or in a document",
+      "description": "Copy a file from this machine into Tisty and keep it in one of two places: name a `task` and it goes on that task's journal, with where it came from written down beside it; name a `doc` and it is added at the end of that document, shown there as a picture or a card. An `.html` or `.htm` page attached to a document is drawn there as a live widget, sealed like a ```widget block and with the same classes and colours, which suits a page too large to write inline; to show it as a plain card instead, give its reference the title `\"file\"`: `![name](page-1a2b3c4d.html \"file\")`. One or the other, never both. The file is copied, not linked. A task and a document both take files up to 650 MB — a recording, a video, a slide deck. Only attach what you were asked to.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "doc": {
+            "description": "The document's id, if it goes in a document — an opaque name like `q7ntmzbm-0001`, which `docs` lists",
+            "type": "string"
+          },
+          "label": {
+            "description": "What to call it. Defaults to the file's own name",
+            "type": "string"
+          },
+          "path": {
+            "description": "A path to a file on this machine",
+            "type": "string"
+          },
+          "task": {
+            "description": "The task id, if it is kept with a task",
+            "type": "string"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "write_doc",
+      "title": "Write a document",
+      "description": "Write something to keep and read again — a recipe, a procedure, a reference, a summary; work to do is a task (`propose`). In the Tisty language (`language` has it whole): Markdown from elsewhere is turned into it on the way in, the answer says what changed under `turned`, and only what has no way in is refused, naming it. Left alone it writes a new document; with `doc` and `print` it writes an existing one again, whole — pages the body does not name keep their lines, put back at the end — except, when compacting, the pages you marked, which leave the body. To change one passage, `edit_doc` does it without carrying the whole both ways. Before writing a new one, `find`: a subject that has a document gets `edit_doc`, or this with `doc` and `print`, not a second document; a title carrying a ticket, a date or «v2» is the sign you are writing one, and a title already taken is refused, naming it. With `compact` it writes a document back into the living shape the instructions give: needs `print`, keeps the old body for `restore_doc`, and the answer gives the `size` before and after and what was kept back. A document is tagged by writing #word in its own text, for what it is about: six is already a lot, past 64 the rest are dropped, and `tags` lists those in use.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "anyway": {
+            "description": "A new document whose title names the same subject as one already here is refused; this writes it all the same. Only when it truly is another subject",
+            "type": "boolean"
+          },
+          "body": {
+            "description": "The whole document. Its first line becomes its title. Each paragraph goes on one line, however long: in the Tisty language a single newline is a line break, so markdown wrapped at 80 columns reads broken in the middle of its sentences. Nothing checks this on the way in",
+            "type": "string"
+          },
+          "compact": {
+            "description": "With `doc` and `print`: this writing puts the document back in order — what holds today, the subject, the decisions, the history — rather than changing what it says. Call `rules` first: it says the order. In one whole write: before it, move what leaving pages hold and mark them; in it, today first, then the subject, the decisions and a history naming every link and file taken out — one lost without a name is refused. Only what Tisty confirms is stated as today; what you only read stays dated and unconfirmed. Refused on a document the person began unless `person_asked`. The window shows the person it was compacted, by whom and when, with one click to undo; until they decide, only one more whole `compact` of yours goes in",
+            "type": "boolean"
+          },
+          "doc": {
+            "description": "The id of a document to write again — an opaque name like `q7ntmzbm-0001`, not its title — replacing its body. Needs `print`. Left out, a new document is written instead",
+            "type": "string"
+          },
+          "folder": {
+            "description": "The existing folder its subject belongs in, by its name, its whole path or its id. Expected: `docs` says which exist, the `folder` tool makes a new one once the person agrees, and a name no folder has is refused here. Left out, it sits outside them all, and that needs a reason. Writing an existing document again with `doc` and `print` cannot take `folder`: `file_doc` moves one that is already here",
+            "type": "string"
+          },
+          "keep_compaction": {
+            "description": "Only when the person told you in this conversation to keep a compaction of this document that waits for their word: it is kept, and this write goes ahead",
+            "type": "boolean"
+          },
+          "page_of": {
+            "description": "The id of the document this one is a page of — an opaque name like `q7ntmzbm-0001`, not its title. The page is named at the end of that document, and where it is named is where it sits; `page_doc` with `after` puts that line somewhere else. A page follows that document everywhere and takes its folder, so `folder` is ignored, and it holds no pages of its own",
+            "type": "string"
+          },
+          "person_asked": {
+            "description": "With `compact`: the person asked you in this conversation to compact a document they began. Never otherwise",
+            "type": "boolean"
+          },
+          "print": {
+            "description": "The `print` `read_doc` gave you with the text you are working from. If the document has moved on since, nothing is written and you are told to read it again — so the person cannot lose what they wrote while you were thinking",
+            "type": "string"
+          }
+        },
+        "required": [
+          "body"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "append_doc",
+      "title": "Add to a document, or to a task's page",
+      "description": "Add to a document that exists, at the end or under a heading you name. What is already written stays exactly as it is — you are adding, never rewriting, so nothing the person wrote can be lost and no `print` is needed. For what is chronological by nature — a log, minutes, the dated notes on a task's page. For a fact that changed, `edit_doc` the passage that says the old one: adding the new fact under the old leaves the document saying both. With `under` you can put a paragraph in the right part of a long document without reading any of it; `outline_doc` tells you which headings there are. The answer says how many characters it `grew` by; with `echo` it hands back the lines around what you added. A task's page takes it too, named by the task's id, on a task an agent filed or one the person opened to agents: what you add goes under the assistant's own notes, dated and signed, never among their words. On a task's page, `replace` writes the assistant's notes again whole instead of adding.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "description": "Markdown to add. A blank line is put between this and what was there",
+            "type": "string"
+          },
+          "doc": {
+            "description": "The document's id, as `docs` hands it back — an opaque name like `q7ntmzbm-0001`, not its title — or a task's id, to add to that task's page",
+            "type": "string"
+          },
+          "echo": {
+            "description": "Hand back the lines around the change as well, instead of reading the document again to see it",
+            "type": "boolean"
+          },
+          "keep_compaction": {
+            "description": "Only when the person told you in this conversation to keep a compaction of this document that waits for their word: it is kept, and this write goes ahead",
+            "type": "boolean"
+          },
+          "replace": {
+            "description": "Only with a task's id in `doc`: the assistant's notes on its page are written again, whole, as `body` — one dated digest of state, decisions, what was ruled out and references. The rest of the page stays as it is, a box in it never becomes a step, and what it replaced is kept for `restore_doc` with the task's id",
+            "type": "boolean"
+          },
+          "under": {
+            "description": "A heading to add under, written as it reads. It goes at the end of what that heading holds, before the next one of its rank. Left out, it goes at the end of the document",
+            "type": "string"
+          }
+        },
+        "required": [
+          "doc",
+          "body"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "restore_doc",
+      "title": "Put a document back the way it was",
+      "description": "Undo a write to a document. Changing a passage and replacing a body keep what they replaced, and this puts it back; adding to the end keeps nothing, and neither do the person's own saves. Refused unless the document still reads as that write left it — going back would undo whatever came after — with `even_if_more` to go back over all of it once you have read the document and know that is what you want. What it puts back is kept in turn, so calling it twice leaves the document where it started, which makes it safe to try. Reach for it the moment a write comes back saying something you did not expect, instead of retyping the document from memory.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "doc": {
+            "description": "The document's id, as `docs` hands it back — an opaque name like `q7ntmzbm-0001`, not its title — or a task's id, to put back the assistant's notes on its page as they were before the last write",
+            "type": "string"
+          },
+          "even_if_more": {
+            "description": "Go back even when the document has been written since the kept body was set aside, undoing that writing too. Only when you know what has happened to it — the refusal without this names the risk, and the person may be what was written since",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "doc"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "edit_doc",
+      "title": "Change a passage of a document",
+      "description": "Replace one passage of a document with another, named either by what it says with `old` or by where it sits with `section` or a line range — which let you change a part of a document you never read. What it said before is kept first, and if that cannot be done the edit is refused rather than made; `restore_doc` puts it back. The answer says how many characters the document `grew` by, which is worth reading: an edit should not change the size by much more than what you sent.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "doc": {
+            "description": "The document's id, as `docs` hands it back — an opaque name like `q7ntmzbm-0001`, not its title",
+            "type": "string"
+          },
+          "echo": {
+            "description": "Hand back the lines around the change as well, instead of reading the document again to see it",
+            "type": "boolean"
+          },
+          "from": {
+            "description": "First line to replace, counting from 1. Needs `print`",
+            "type": "integer"
+          },
+          "keep_compaction": {
+            "description": "Only when the person told you in this conversation to keep a compaction of this document that waits for their word: it is kept, and this write goes ahead",
+            "type": "boolean"
+          },
+          "new": {
+            "description": "What takes its place. Empty takes the passage out",
+            "type": "string"
+          },
+          "old": {
+            "description": "The passage as it is written now, copied from `read_doc`, matching one place only — take in the lines around it if a short one would fit twice. Leave it out when naming a `section` or a line range",
+            "type": "string"
+          },
+          "print": {
+            "description": "The print the document read at, from `read_doc` or `outline_doc`. It goes with `section` or a line range and nothing else uses it: an edit named by `old` is matched against the text itself. If anyone wrote since you took it, nothing is changed and you are told to ask `outline_doc` where the passage sits now",
+            "type": "string"
+          },
+          "section": {
+            "description": "One heading and everything under it, named by its number and not by its words: the `at` of a heading in the `outline` `outline_doc` hands back, counting from 0. Needs `print`",
+            "type": "integer"
+          },
+          "to": {
+            "description": "Last line to replace. Left out, it runs to the end. It goes with `from`: on its own it names no place and the edit is refused",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "doc",
+          "new"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "docs",
+      "title": "The documents and the folders",
+      "description": "Everything written down to consult — not the words a task keeps with it, which come with the task — the one written most recently first, with the folder each one sits in, whether it was put away, whether it is locked, and for each one what it is about: how many words it holds, how many sections, and the words it leans on. That is enough to pick which document to open without opening any of them; the `print` of the one you go on to edit comes back from `read_doc` or `outline_doc`. Ask for it before writing, so you do not write again what is already kept.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "after": {
+            "description": "Skip this many. With `total` higher than what came back, ask again with `after` set to how many you have",
+            "type": "integer"
+          },
+          "deep": {
+            "description": "With `folder`: the documents of the folders below it too",
+            "type": "boolean"
+          },
+          "folder": {
+            "description": "Only the documents that sit in this one folder, by its name, its whole path or its id. Pages are left out — they are kept where their document is — and what the folders below it hold is theirs, not this one's: the answer names them under `below`, and `deep` brings their documents",
+            "type": "string"
+          },
+          "folders": {
+            "description": "Send every folder back too, with its id, path, icon and how much it holds. The answer already names them all in its text, so ask for this only when a name is not enough",
+            "type": "boolean"
+          },
+          "limit": {
+            "description": "At most 200, 50 by default",
+            "type": "integer"
+          },
+          "page_of": {
+            "description": "Only the pages of this one document, by its id, in reading order",
+            "type": "string"
+          },
+          "scope": {
+            "description": "Defaults to either",
+            "enum": [
+              "open",
+              "archive",
+              "either"
+            ],
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "import_doc",
+      "title": "Bring a markdown file on this machine in as a document",
+      "description": "Read one markdown file from disk and keep it here as a document, turning on the way in what the Tisty language has no word for into what it can say, and saying what it changed. Every file the text points at beside it — pictures, video, PDFs — is copied in too, and the text is pointed at Tisty's own copies: nothing is left pointing outside. What cannot come in has its link taken out rather than left dangling. The files on disk are left untouched. Nothing is turned away for what it holds: a document carrying what looks like a live credential comes in as written, with a warning at the top for the person to decide about. A task's page brought back hands the task its properties and its words, and makes no document. Takes `folder` and `page_of` like `write_doc`. One file per call — walk an export folder yourself and call it for each, so the person sees what happened to each one.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "anyway": {
+            "description": "Bring it in although a document on the same subject is here already — only when this really is another subject; otherwise update that one",
+            "type": "boolean"
+          },
+          "folder": {
+            "description": "The existing folder its subject belongs in, by its name, its whole path or its id. Expected: left out, it sits outside them all, and that needs a reason",
+            "type": "string"
+          },
+          "page_of": {
+            "description": "The id of the document this becomes a page of",
+            "type": "string"
+          },
+          "path": {
+            "description": "A markdown file under Downloads, Documents, Pictures, Desktop or the temporary folder",
+            "type": "string"
+          },
+          "title": {
+            "description": "A title to put at the top, for a file whose first line is not one. Left out, the file name is used",
+            "type": "string"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "export_doc",
+      "title": "Take a document out to a folder on this machine",
+      "description": "Write a document out as markdown files in a folder the person can reach, with its pages numbered in reading order and its attachments beside them. Nothing here changes and nothing is deleted: an export is a copy. Use it to hand work to something outside Tisty.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "doc": {
+            "description": "The document's id, as `docs` hands it back — an opaque name like `q7ntmzbm-0001`, not its title",
+            "type": "string"
+          },
+          "into": {
+            "description": "A folder that exists on this machine, which an export of this document has not been taken to already: one is made inside it, named after the title, under Downloads, Documents, Pictures, Desktop or the temporary folder",
+            "type": "string"
+          }
+        },
+        "required": [
+          "doc",
+          "into"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "archive_doc",
+      "title": "Put a document or one of its pages away, or bring it back",
+      "description": "Put a document away when the person asks for that, and bring it back with `archived` false. «Delete it» is `flag_doc` instead. Nothing is deleted and no text changes: `docs` and `find` reach the archive as well, unless their `scope` says otherwise. A single page can be put away on its own, and it stays where it lives — under its document, greyed and read-only — rather than moving to the archive. Putting the document away covers its pages too, and bringing it back wakes each page as it was: one that was already apart stays apart. Putting a document away is not the same as finishing a task — a task is the person's to close, and there is no tool here for that.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "archived": {
+            "description": "True to put it away, which is what happens if you leave this out; false to bring it back",
+            "type": "boolean"
+          },
+          "doc": {
+            "description": "The document's id, as `docs` hands it back — an opaque name like `q7ntmzbm-0001`, not its title",
+            "type": "string"
+          },
+          "folder": {
+            "description": "A folder to file it in as it goes, or as it comes back, by its name, its whole path or its id. It is filed either way: what the archive holds can still be put where it belongs",
+            "type": "string"
+          }
+        },
+        "required": [
+          "doc"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "flag_doc",
+      "title": "Say a document has had its day, which is how a document gets deleted",
+      "description": "The tool for «delete this document», and the only one: you cannot delete, so you mark and the person deletes. Mark a document you found is no longer worth keeping — a copy of another, notes folded into a living document, a handover for a flow that was retired — with its `reason`, where what it said lives now in `instead`, and in `body` what makes it old and how you know. Several copies of one thing go in one call, marked alike, so the person settles the set with one click. The mark changes nothing: the document reads the same, stays where it is, and the person sees the mark when they open it. Deleting it and taking the mark off are theirs, from the window; `archive_doc` puts it away only when they ask for that. One mark at a time — a document already marked is refused until the person has looked, and in a set it is skipped and named.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "description": "What makes it old and how you know, in the person's language: what it describes that no longer exists, and what replaced it",
+            "type": "string"
+          },
+          "doc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1,
+                "type": "array"
+              }
+            ],
+            "description": "The id of the document to mark, as `docs` hands it back — an opaque name like `q7ntmzbm-0001`, not its title. A list of ids marks them all alike in one go"
+          },
+          "instead": {
+            "description": "The id of the document or the task that holds what it said now. Needed with duplicate_of, moved and superseded",
+            "type": "string"
+          },
+          "reason": {
+            "description": "Why it has had its day: a duplicate of another, moved into another (only once what it holds worth keeping is there), superseded by another, wrong, obsolete, or a scratch nobody needs",
+            "enum": [
+              "duplicate_of",
+              "moved",
+              "superseded",
+              "wrong",
+              "obsolete",
+              "scratch"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "doc",
+          "body"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "file_doc",
+      "title": "Put a document, or several, in a folder",
+      "description": "Move a document into a folder, or out of every folder by leaving `folder` out. Nothing is deleted and no text changes. Moving is not writing, so a document the archive holds by itself moves too and stays put away: that is how something already archived is filed where it belongs.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "doc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1,
+                "type": "array"
+              }
+            ],
+            "description": "The id of the document to file, as `docs` hands it back — an opaque name like `q7ntmzbm-0001`, not its title. A list of ids does the same to all of them in one go, and if one of them cannot, none of them moves."
+          },
+          "folder": {
+            "description": "An existing folder, by its name, its whole path or its id. Leave it out to take the document out of every folder",
+            "type": "string"
+          }
+        },
+        "required": [
+          "doc"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "page_doc",
+      "title": "Make one document, or several, into pages, put their pages in order, or take them back out",
+      "description": "Needs `doc`, or `order` with `page_of`. A page is real content related to one subject but not part of it — a runbook, a contract, an annex — never a session: a review, a day's progress or a PR's notes belong on the task. Hang a document from another as one of its pages, or take a page out by leaving `page_of` out, which makes it a document of its own again, back in the folder it came from. A page goes with its document everywhere — folder, archive and deletion — and holds no pages of its own. Hanging one writes the line that names it at the end of that document, the same line `write_doc` with `page_of` writes; `after`, `before` and `at` say where that line goes instead. Taking a page out writes nothing: the line stays where it was, now pointing at a document of its own, and taking it out of the text is yours to do. `order` is the third thing this does: it takes the pages of one document and deals the lines they already have back out in the order you name, which is how several are put in order in one call. The order pages are read in is the order their lines sit in the document, and nothing else. The line is `![Its title](tisty:doc/its-name)`, opening bang and all — without it the line is a mention in a sentence and gives the page no place — and a square bracket in the title goes in with a backslash before it.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "after": {
+            "description": "The id of another page of that same document. The line naming this page is written straight after the line naming that one, which is what puts it next in reading order. Needs `page_of`, takes one `doc`, and the page you name has to have a line already",
+            "type": "string"
+          },
+          "at": {
+            "description": "Where to write the line when you are not naming a page to sit beside: \"first\" puts it before every page the document names, \"last\" after them all. It is what to send for a document whose pages no line names yet, since there is no page there to name",
+            "enum": [
+              "first",
+              "last"
+            ],
+            "type": "string"
+          },
+          "before": {
+            "description": "The same, on the other side: the line goes straight before the one naming this page",
+            "type": "string"
+          },
+          "doc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1,
+                "type": "array"
+              }
+            ],
+            "description": "The id of the document to hang or to take out, as `docs` hands it back — an opaque name like `q7ntmzbm-0001`, not its title. A list of ids does the same to all of them in one go, and if one of them cannot, none of them moves."
+          },
+          "order": {
+            "description": "The pages of one document, by their ids, in the order they are to be read. Their lines are moved into each other's places and nothing else in the text moves, so pages you leave out stay where they are. Two or more ids, each named once. Needs `page_of`, and goes on its own: no `doc`, `after`, `before` or `at` — one call says an order, another puts one page somewhere. Every page it names has to have a line of its own already",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "page_of": {
+            "description": "The id of the document it becomes a page of — an opaque name like `q7ntmzbm-0001`, not its title. Leave it out to make it a document of its own",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "folder",
+      "title": "Make a folder",
+      "description": "Make a folder for documents, and give it an icon and a colour if they fit. If a folder by that name is already there it is used as it is — and without `inside`, one by that name is found however deep it sits, so a name you mean as a new top-level folder may hand you one inside another. An icon or colour you send changes how it looks; nothing is renamed, moved or deleted. Folders hold documents, not tasks; tasks go in lists.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "description": "red, orange, amber, green, teal, blue, indigo, purple, pink, brown or gray",
+            "type": "string"
+          },
+          "icon": {
+            "description": "A single emoji, or one name from the drawn catalogue: home, work, money, study, travel, health, food, family, code and the like. An emoji is often the plainer choice",
+            "type": "string"
+          },
+          "inside": {
+            "description": "An existing folder to nest it in, by its name, its whole path or its id. Four deep at most",
+            "type": "string"
+          },
+          "name": {
+            "description": "A word or two, at most 40 characters. It is the folder's own name, never a path: send the whole path only to say where to nest it, and then every step but the last has to exist already",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "read_doc",
+      "title": "Read a document, or a part of one",
+      "description": "The text of a document and the `print` it reads at. Left alone it brings the whole body; one past about 12,000 characters comes back as its outline instead, with `whole` set to false, and then you ask for a `section`, a run of lines or a budget of `chars`, about 12,000 at a time. Reading a part is the ordinary way to work: the print comes with every answer, so a passage can be changed with `edit_doc` without ever bringing the rest. `pages_loose` names the pages no line in the body names.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "chars": {
+            "description": "About how many characters to bring. The answer says `next` when there is more",
+            "type": "integer"
+          },
+          "cursor": {
+            "description": "The `next` a previous answer gave, to carry on from there. It goes with `chars`; on its own it is ignored and the reading starts again from the top",
+            "type": "integer"
+          },
+          "doc": {
+            "description": "The document's id, as `docs` hands it back — an opaque name like `q7ntmzbm-0001`, not its title",
+            "type": "string"
+          },
+          "from": {
+            "description": "First line, counting from 1",
+            "type": "integer"
+          },
+          "print": {
+            "description": "The `print` the previous part came with. Needed only alongside `cursor`, so that two halves are known to be the same document",
+            "type": "string"
+          },
+          "section": {
+            "description": "One heading and everything under it, numbered as `outline_doc` numbers them, from 0",
+            "type": "integer"
+          },
+          "to": {
+            "description": "Last line. Left out, it reads to the end",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "doc"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "catch_up",
+      "title": "Where things stand, and what has moved",
+      "description": "One call to start on: the lists, the folders, the tags already in use, how much there is, the documents written most recently, and a `cursor`. Send that cursor back as `since` next time and what moved comes with it — the tasks touched and the documents written, whoever did it — beside the lists, the folders and the tags, which come every time. It is meant to be the first thing you ask and the thing you ask again when you come back, in place of `lists` and `tags` and a blind `docs`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "since": {
+            "description": "A `cursor` a previous `catch_up` handed back. It adds what moved since to the answer; where things stand comes either way",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "reschedule",
+      "title": "Move the day of a task you filed",
+      "description": "Change the `date` or the `deadline` of a task an agent proposed, when what you learnt since moves it: the meeting slipped a week, the document arrived early. It reaches only what an agent filed — a day the person set is theirs, and naming one of their tasks is refused. Send null to take a day off. Nothing else about the task changes, and closing it is still never yours.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "The day it is to be done (2026-08-31), or null to take it off",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "deadline": {
+            "description": "The day it is owed by, or null to take it off",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "task": {
+            "description": "The task's id, as `find` or `propose` gave it",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "say_done",
+      "title": "Say a task is finished",
+      "description": "Say that a task is done, when you did the work yourself — any task of the person's too, since it is only your word. Say it in the turn the work ends. Every step has to be ticked or said done first; with one left it is refused, and so is a whole with a part still open and unmarked. Reading that it no longer matters is not doing it, and goes in `say_not_doing`. It closes nothing: the task stays open, marked, until the person finishes it or takes the mark off. Say it once; if they have not looked yet, what is new goes in `note` too.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "description": "The account the person reads before deciding: what you did and what makes you sure — the command you ran and what it answered, the commit. In the Tisty language",
+            "type": "string"
+          },
+          "task": {
+            "description": "The task's id, as `find` or `propose` gave it",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task",
+          "body"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "say_not_doing",
+      "title": "Say a task should not be done",
+      "description": "Say that a task will not be done — it no longer matters, something else made it moot — on any task, the person's too, since it is only your word. Unticked steps do not stop it. It drops nothing: the task stays open, marked, until the person drops it or takes the mark off. Say it once; what is new after that goes in `note`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "description": "The account the person reads before deciding: why it should not be done, and what you found that says so. In the Tisty language",
+            "type": "string"
+          },
+          "task": {
+            "description": "The task's id, as `find` or `propose` gave it",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task",
+          "body"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "sum_up",
+      "title": "Say what a document is about",
+      "description": "Leave what you worked out about a document, so the next agent — or you, next week — does not have to read it again to know whether it is the one. A `summary` of what it says, `notes` for what somebody working with it should know. Kept on this machine only: it never syncs, it is not part of the document, and the person does not see it. Stored against the text as it reads now, so a later write marks it as describing an older version. Write it after reading a long document, never instead of reading one, and write what the document says rather than what you would like it to say: the next agent will act on this without opening the document.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "doc": {
+            "description": "The document's id, as `docs` hands it back — an opaque name like `q7ntmzbm-0001`, not its title",
+            "type": "string"
+          },
+          "notes": {
+            "description": "What the next agent should know about working with it — which section holds what, what is out of date, what it is missing",
+            "type": "string"
+          },
+          "summary": {
+            "description": "What the document says and what a reader would come to it for, in a few lines",
+            "type": "string"
+          }
+        },
+        "required": [
+          "doc"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "outline_doc",
+      "title": "What is in a document",
+      "description": "The headings of a document with the lines each one spans and how many characters it holds, how long the whole is, its `print`, and for a document with pages a row per page with its title, length and sections, in reading order — a few hundred tokens instead of the bodies. Ask for this first when a document is long or when you only mean to change one part of it: with the outline you know which `section` to read and what it costs, and with the print you can write into it without having read it at all. It also says which other documents point at this one, which is what you want to know before putting it away: those links go on pointing at it in the archive. `by` says whether an agent or the person began it and each page, `alike` names documents elsewhere whose title names the same subject as this one or one of its pages, and `repeated` the headings written in more than one page — the signs that it wants compacting. `dead` lists the links that lead nowhere, `mislabeled` the page lines showing another name than the page's title, and a page marked `loose` has no line naming it, so the window gives it no place.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "doc": {
+            "description": "The document's id, as `docs` hands it back — an opaque name like `q7ntmzbm-0001`, not its title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "doc"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "read",
+      "title": "Read a whole task",
+      "description": "Everything one task holds: its description, its steps, its journal — each note with the id `reword_note` takes — its parts, what it keeps, and its `document`: the page the person reads and writes, with its sections and their grey hints, its boxes ticked as the steps are and its properties written at the top. Ask for it before adding a note, so you do not write down something already written, and before mending anything, so you change what is there now. With `fields` it brings only the parts you name, which is how to check one thing about a task whose journal is long. A closed task comes with `closed` and a `notice`, and reads as it ended: it is history to consult, and nothing on it changes. `find` with `part_of` brings the parts of any task, closed or open.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "fields": {
+            "description": "Only these parts of it: any of title, status, closed, notice, date, deadline, reminders, tags, source, list, priority, by_agent, via, said_done, said_not_doing, open_to_agents, part_of, parts, description, steps, journal, kept, document. Left out, everything comes. The id always does",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "task": {
+            "description": "The task id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "find",
+      "title": "Search the list and the archive",
+      "description": "Search the tasks — open and archived alike — and the documents: by words with `query`, by what a task is with the sifting fields (alone or narrowing a query), or by `source` alone to see whether something was filed from it already. A task found by what its page, description, steps or notes say comes with `in` and the `line` that says it, so a past decision often reads without `read`. With `doc` it searches inside that one document instead and hands back the matching lines with their numbers and the section each sits in.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "after": {
+            "description": "Skip this many tasks, to page on while `total` is higher than what came back. Documents are not paged: `docsTotal` says how many match, and a higher `limit` brings more",
+            "type": "integer"
+          },
+          "around": {
+            "description": "With `doc`: how many lines to bring on each side of a hit, 1 by default, 0 for none, at most 10",
+            "type": "integer"
+          },
+          "by_agent": {
+            "description": "True for what an agent filed, false for what the person wrote",
+            "type": "boolean"
+          },
+          "doc": {
+            "description": "Look inside this one document rather than across the tasks. Hands back the lines where every word of the query turns up, accents or not, with their numbers, the lines around them unless every one of those is blank, and the section each sits in. A line in `around` is cut at 200 characters; `read_doc` with `from` and `to` brings it whole",
+            "type": "string"
+          },
+          "folder": {
+            "description": "Only the documents in this folder and the folders below it, by its name, its whole path or its id. Documents whose title says the words come first either way, before those that only mention them",
+            "type": "string"
+          },
+          "from": {
+            "description": "Its date or deadline on this day or after (2026-08-31)",
+            "type": "string"
+          },
+          "from_source": {
+            "description": "Only tasks whose `source` starts with this, however it is written: «sereno», «sereno#» and «sereno: » all bring everything read out of that one place",
+            "type": "string"
+          },
+          "limit": {
+            "description": "At most 100, 20 by default",
+            "type": "integer"
+          },
+          "list": {
+            "description": "In this list, named as `lists` names it",
+            "type": "string"
+          },
+          "open_to_agents": {
+            "description": "True for the person's own tasks they opened to agents — yours to fill in and to say done — false for what they kept to themselves",
+            "type": "boolean"
+          },
+          "part_of": {
+            "description": "Only the parts of this task, by its id",
+            "type": "string"
+          },
+          "query": {
+            "description": "Words to look for, not a phrase: each word has to turn up in the same task or document (on the same line, with `doc`), in any order, accents or not; put a phrase in quotes when the order is the point. Not needed when sifting by the fields below",
+            "type": "string"
+          },
+          "said_done": {
+            "description": "True for what an agent spoke for — said done, or said should not be done — and the person has not decided yet; false for what nobody spoke for",
+            "type": "boolean"
+          },
+          "scope": {
+            "description": "Defaults to either: the open tasks and the archive together, which is where how something was solved before is found",
+            "enum": [
+              "open",
+              "archive",
+              "either"
+            ],
+            "type": "string"
+          },
+          "source": {
+            "description": "Ask whether this exact source was proposed already",
+            "type": "string"
+          },
+          "tag": {
+            "description": "Carrying this tag, with or without the #. Any sifting field leaves the documents out of the answer",
+            "type": "string"
+          },
+          "to": {
+            "description": "Its date or deadline on this day or before",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "lists",
+      "title": "The lists that exist",
+      "description": "The names of the person's lists, so you can file a task into one. You cannot make a list; anything you propose without one lands in the inbox.",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "rules",
+      "title": "The rules for working here, by topic",
+      "description": "The rules for working in Tisty, one short guide at a time. Left alone it gives the basics — task or document, whose words count, speaking in titles, updating before adding — and an index of the rest. Ask for the guide your next step needs: «tasks» before filing or working a task, «documents» before writing or changing a document, «tidying» before putting things back in order, consolidating or compacting. «all» gives every rule at once.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "description": "tasks, documents or tidying for that guide; all for every rule at once; left out, the basics and the index. general is what all gave before tidying was split off",
+            "enum": [
+              "tasks",
+              "documents",
+              "tidying",
+              "all",
+              "general"
+            ],
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "language",
+      "title": "What Tisty adds to Markdown",
+      "description": "Plain Markdown needs nothing from here: Tisty takes it as it is and turns it on the way in. Left alone this gives the index of what Tisty adds — pens and their colours, underline, icons, callouts, collapsible sections, tags, cards to other documents, attachments, references, diagrams — apart from what reads as Markdown anywhere. Ask with a `topic` for the one you mean to write, so a pen colour or an icon is one Tisty knows; «all» gives the whole guide. `lang` picks English or Spanish; the language itself is the same.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "lang": {
+            "description": "en for English, es for Spanish. Left out, English",
+            "enum": [
+              "en",
+              "es"
+            ],
+            "type": "string"
+          },
+          "topic": {
+            "description": "One part of the guide, named as the index names it, or all for the whole of it. Left out, the index",
+            "enum": [
+              "glance",
+              "properties",
+              "title",
+              "headings",
+              "paragraphs",
+              "emphasis",
+              "underline",
+              "pens",
+              "links",
+              "lists",
+              "callouts",
+              "collapsible",
+              "tags",
+              "icons",
+              "emoji",
+              "documents",
+              "attachments",
+              "references",
+              "footnotes",
+              "code",
+              "diagrams",
+              "tables",
+              "page-breaks",
+              "comments",
+              "outside",
+              "all"
+            ],
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "tags",
+      "title": "The tags already in use",
+      "description": "Every tag the person already writes, the most used first, with how many times each one appears, in the plain form they are filed under. Capitals and accents decide nothing: #Camión and #camion are one tag. Ask for it before you tag anything and reuse one when the subject really is the same; a second word for something already tagged splits it in two.",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false
+      }
+    }
+  ],
+  "version": "1.32.0",
+  "category": "productivity",
+  "icon": "https://raw.githubusercontent.com/rgdevment/Tisty/v1.32.0/assets/icons/tisty-512.png",
+  "tags": [
+    "notes",
+    "tasks",
+    "documents",
+    "markdown",
+    "local-first",
+    "productivity",
+    "todo",
+    "knowledge-base"
+  ],
+  "localizations": [
+    {
+      "locale": "es-ES",
+      "name": "Tisty",
+      "description": "Notas, documentos y tareas en Markdown simple en tu propio disco, para Windows y macOS. Tu asistente anota tareas con pasos y fechas, escribe y corrige documentos por pasajes y busca trabajo pasado por stdio local, sin cuenta ni servidor; nunca cierra ni borra nada."
+    }
+  ]
+}
