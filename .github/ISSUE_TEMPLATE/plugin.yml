@@ -1,0 +1,43 @@
+name: A problem with a plugin
+description: Installing or loading a plugin from this repository went wrong.
+labels: [plugin]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Only for the plugin itself: the marketplace, installing, the MCP config or the skill. A problem with the app goes in the app's own issues.
+  - type: dropdown
+    id: plugin
+    attributes:
+      label: Plugin
+      options:
+        - tisty
+    validations:
+      required: true
+  - type: dropdown
+    id: host
+    attributes:
+      label: Assistant
+      options:
+        - Claude Code
+        - Claude Desktop
+        - Cursor
+        - Cline
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: The assistant's version and the app's version.
+      placeholder: Claude Code 2.1.308, Tisty 1.32.0
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you ran, what you expected and what you got, with any error as it appeared.
+    validations:
+      required: true

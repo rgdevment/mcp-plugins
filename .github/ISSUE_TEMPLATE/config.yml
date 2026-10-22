@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: A problem with Tisty itself
+    url: https://github.com/rgdevment/Tisty/issues/new/choose
+    about: The app, its tasks, documents, syncing or its MCP server's answers belong in Tisty's own issues.
+  - name: A security problem
+    url: https://github.com/rgdevment/Tisty/security/advisories/new
+    about: Report it privately, never in a public issue.
+  - name: How Tisty works with assistants
+    url: https://www.tisty.app/docs/assistants-and-mcp/
+    about: Connecting, the door for assistants and what they may do.
