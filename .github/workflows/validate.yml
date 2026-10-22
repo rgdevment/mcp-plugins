@@ -1,0 +1,51 @@
+name: Validate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CLAUDE_CODE: "2.1.308"
+  MARKDOWNLINT: "0.24.0"
+
+jobs:
+  plugins:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+      - name: Claude Code marketplace
+        run: npx -y "@anthropic-ai/claude-code@$CLAUDE_CODE" plugin validate .
+      # The directory profile fails on what Anthropic's directory would refuse a submission for.
+      - name: Each plugin as the Claude directory reads it
+        run: |
+          for plugin in plugins/*/; do
+            npx -y "@anthropic-ai/claude-code@$CLAUDE_CODE" plugin validate "$plugin" --profile directory
+          done
+      - name: Cursor marketplace
+        run: node scripts/cursor.mjs
+
+  markdown:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+      - run: npx -y "markdownlint-cli2@$MARKDOWNLINT"
