@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "tisty": {
+      "command": "tisty",
+      "args": [
+        "mcp"
+      ]
+    }
+  }
+}

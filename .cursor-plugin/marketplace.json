@@ -1,0 +1,15 @@
+{
+  "name": "rgdevment",
+  "owner": {
+    "name": "rgdevment"
+  },
+  "metadata": {
+    "description": "Plugins that connect assistants to apps by rgdevment"
+  },
+  "plugins": [
+    {
+      "name": "tisty",
+      "source": "plugins/tisty"
+    }
+  ]
+}

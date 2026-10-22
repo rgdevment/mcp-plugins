@@ -1,0 +1,14 @@
+{
+  "name": "rgdevment",
+  "description": "Plugins that connect assistants to apps by rgdevment",
+  "owner": {
+    "name": "rgdevment",
+    "url": "https://github.com/rgdevment"
+  },
+  "plugins": [
+    {
+      "name": "tisty",
+      "source": "./plugins/tisty"
+    }
+  ]
+}

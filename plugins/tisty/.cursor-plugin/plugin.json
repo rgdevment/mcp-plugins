@@ -1,0 +1,22 @@
+{
+  "name": "tisty",
+  "description": "Notes, documents and tasks as plain Markdown on your own disk. Your assistant files tasks, writes and edits documents and searches past work, locally, through Tisty's MCP server.",
+  "author": {
+    "name": "rgdevment"
+  },
+  "homepage": "https://www.tisty.app/docs/assistants-and-mcp/",
+  "repository": "https://github.com/rgdevment/mcp-plugins",
+  "license": "Apache-2.0",
+  "keywords": [
+    "notes",
+    "tasks",
+    "documents",
+    "markdown",
+    "local-first",
+    "productivity",
+    "todo",
+    "mcp"
+  ],
+  "logo": "assets/logo.png",
+  "mcpServers": ".mcp.json"
+}
