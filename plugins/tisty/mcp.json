@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "tisty": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "tisty-mcp"
+      ]
+    }
+  }
+}
