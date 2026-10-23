@@ -16,6 +16,7 @@ concurrency:
 
 env:
   CLAUDE_CODE: "2.1.308"
+  GEMINI_CLI: "0.65.0"
   MARKDOWNLINT: "0.24.0"
 
 jobs:
@@ -51,6 +52,22 @@ jobs:
               echo "::error::$plugin has different versions: $(echo $versions)"; exit 1
             fi
           done
+      # Gemini CLI takes the whole repository as one extension, the Tisty plugin.
+      - name: Gemini CLI extension
+        run: |
+          npx -y "@google/gemini-cli@$GEMINI_CLI" extensions validate .
+          node -e '
+            const g = require("./gemini-extension.json");
+            const p = require("./plugins/tisty/package.json");
+            const fs = require("node:fs");
+            const fail = (why) => { console.error(`::error::gemini-extension.json: ${why}`); process.exit(1); };
+            if (g.version !== p.version) fail(`version ${g.version}, the plugin is ${p.version}`);
+            if (!fs.existsSync(g.contextFileName)) fail(`contextFileName ${g.contextFileName} is not there`);
+            for (const [name, server] of Object.entries(g.mcpServers)) {
+              const file = server.args[0].replace("${extensionPath}${/}", "").split("${/}").join("/");
+              if (!fs.existsSync(file)) fail(`server ${name} runs ${file}, which is not there`);
+            }
+          '
 
   markdown:
     runs-on: ubuntu-24.04

@@ -20,6 +20,12 @@ Or add the marketplace first and install from it:
 /plugin install tisty@rgdevment
 ```
 
+**Gemini CLI**:
+
+```console
+gemini extensions install https://github.com/rgdevment/mcp-plugins
+```
+
 **Cursor**: install from the [Cursor
 Directory](https://cursor.directory/plugins), or add this repository as a plugin
 source in Cursor's settings.
@@ -73,6 +79,7 @@ both, so the assistant does not run Tisty's server twice.
 ```text
 .claude-plugin/marketplace.json   Claude Code marketplace
 .cursor-plugin/marketplace.json   Cursor marketplace
+gemini-extension.json             Gemini CLI extension (the Tisty plugin)
 plugins/<app>/                    one folder per plugin, with each host's manifest,
                                   its MCP config, its skills and its launcher
 test/                             tests for the launchers
