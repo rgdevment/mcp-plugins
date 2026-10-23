@@ -16,9 +16,9 @@ apps; the apps live in their own repositories, and so do their issues.
 3. Check what CI checks: `node --test test/*.test.mjs`,
    `npx markdownlint-cli2`, and `claude plugin validate .` plus
    `--profile directory` on the plugin.
-4. A change to a plugin raises its version, the same in its `package.json` and
-   in both `plugin.json` files: Claude Code keeps people on the version they
-   have until it changes.
+4. A change to a plugin raises its version, the same in its `package.json`,
+   in both `plugin.json` files and, for Tisty, in `gemini-extension.json`:
+   Claude Code keeps people on the version they have until it changes.
 5. Commit messages and the pull request title follow
    [Conventional Commits](https://www.conventionalcommits.org/), on one line.
 

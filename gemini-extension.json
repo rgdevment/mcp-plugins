@@ -1,0 +1,12 @@
+{
+  "name": "tisty",
+  "version": "1.0.2",
+  "description": "Notes, documents and tasks as plain Markdown on your own disk, through the Tisty app's own MCP server. Requires the free Tisty app for Windows or macOS.",
+  "mcpServers": {
+    "tisty": {
+      "command": "node",
+      "args": ["${extensionPath}${/}plugins${/}tisty${/}server${/}tisty.mjs"]
+    }
+  },
+  "contextFileName": "plugins/tisty/skills/tisty/SKILL.md"
+}
