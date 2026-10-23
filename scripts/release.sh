@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# After a Tisty release: refresh the LobeHub listing from that release's server and publish it.
+# After a Tisty release: publish the LobeHub listing the daily workflow refreshed, or refresh it here first.
 #   scripts/release.sh 1.33.0
 set -euo pipefail
 
@@ -19,13 +19,22 @@ if ! npx -y "$cli" auth status --output json 2>/dev/null | grep -q '"status": "a
   echo "LobeHub needs you signed in first: npx -y $cli login" >&2
   exit 1
 fi
+work=$(mktemp -d)
+trap 'rm -rf "$work"' EXIT
+
+git fetch -q origin
+mkdir "$work/merged"
+git show "origin/main:$listing/lhm.plugin.json" > "$work/merged/lhm.plugin.json"
+if [ "$(node -p "require(process.argv[1]).version" "$work/merged/lhm.plugin.json")" = "$version" ]; then
+  npx -y "$cli" plugin update --dir "$work/merged"
+  echo "LobeHub has Tisty $version."
+  exit 0
+fi
+
 if [ -n "$(git status --porcelain)" ]; then
   echo "the working tree has changes; commit or set them aside first" >&2
   exit 1
 fi
-
-work=$(mktemp -d)
-trap 'rm -rf "$work"' EXIT
 
 # The bundle carries the server for both systems, so no Tisty install is needed to read its tools.
 gh release download "v$version" -R rgdevment/Tisty --dir "$work" \
@@ -37,7 +46,6 @@ case "$(uname -s)" in
   *) server="$work/bundle/server/tisty"; chmod +x "$server" ;;
 esac
 
-git fetch -q origin
 git switch -q -c "$branch" --no-track origin/main
 node scripts/lobehub.mjs "$version" "$server"
 git add "$listing/lhm.plugin.json"

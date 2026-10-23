@@ -1,0 +1,99 @@
+name: LobeHub listing
+
+on:
+  schedule:
+    - cron: "23 10 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lobehub-listing
+
+jobs:
+  refresh:
+    # The MCP bundle carries Windows and macOS servers only.
+    runs-on: windows-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    defaults:
+      run:
+        shell: bash
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      LISTING: listings/lobehub/tisty/lhm.plugin.json
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+
+      # `gh release view` with no tag answers with the latest release, which is never a pre-release.
+      - name: Is there a Tisty release LobeHub has not been given
+        id: look
+        run: |
+          version=$(gh release view -R rgdevment/Tisty --json tagName -q .tagName)
+          version="${version#v}"
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Tisty's latest release is «$version», not a version"; exit 1
+          fi
+          listed=$(node -p "require('./$LISTING').version")
+          branch="chore/lobehub-$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+          # A pull request closed without merging is an answer too, so it is not opened again.
+          asked=$(gh pr list --repo "$REPO" --head "$branch" --state all --json number -q length)
+          if [ "$version" = "$listed" ]; then
+            echo "LobeHub's manifest already lists Tisty $version"
+          elif [ "$asked" != "0" ]; then
+            echo "$branch already has a pull request"
+          else
+            echo "due=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Take the server from that release
+        if: steps.look.outputs.due == 'true'
+        env:
+          VERSION: ${{ steps.look.outputs.version }}
+        run: |
+          gh release download "v$VERSION" -R rgdevment/Tisty --dir tisty \
+            --pattern "tisty-mcp-$VERSION.mcpb" --pattern SHA256SUMS
+          (cd tisty && sha256sum --check --strict --ignore-missing SHA256SUMS)
+          unzip -q "tisty/tisty-mcp-$VERSION.mcpb" 'server/*' -d tisty/bundle
+
+      - name: Regenerate the manifest from its tools
+        if: steps.look.outputs.due == 'true'
+        env:
+          VERSION: ${{ steps.look.outputs.version }}
+        run: node scripts/lobehub.mjs "$VERSION" "$GITHUB_WORKSPACE/tisty/bundle/server/tisty.exe"
+
+      # Written through the contents API so GitHub signs the commit, as the branch rules ask.
+      - name: Open the pull request
+        if: steps.look.outputs.due == 'true'
+        env:
+          VERSION: ${{ steps.look.outputs.version }}
+          BRANCH: ${{ steps.look.outputs.branch }}
+        run: |
+          title="chore(listings): LobeHub lists Tisty $VERSION"
+          base=$(gh api "repos/$REPO/git/ref/heads/main" -q .object.sha)
+          # A branch left by a run that failed before its pull request is started over.
+          gh api -X POST "repos/$REPO/git/refs" -f ref="refs/heads/$BRANCH" -f sha="$base" --silent 2>/dev/null \
+            || gh api -X PATCH "repos/$REPO/git/refs/heads/$BRANCH" -f sha="$base" -F force=true --silent
+          sha=$(gh api "repos/$REPO/contents/$LISTING?ref=$BRANCH" -q .sha)
+          node -e '
+            const fs = require("node:fs");
+            const [file, message, branch, sha] = process.argv.slice(1);
+            const content = fs.readFileSync(file).toString("base64");
+            fs.writeFileSync("put.json", JSON.stringify({ message, branch, sha, content }));
+          ' "$LISTING" "$title" "$BRANCH" "$sha"
+          gh api -X PUT "repos/$REPO/contents/$LISTING" --input put.json --silent
+          gh pr create --repo "$REPO" --base main --head "$BRANCH" --title "$title" --body "The LobeHub manifest regenerated from Tisty $VERSION's server. Once merged, publish it signed in to LobeHub: \`scripts/release.sh $VERSION\`."
+          # A pull request opened with this token starts no workflow of its own, so the required checks are asked for.
+          gh workflow run validate.yml --repo "$REPO" --ref "$BRANCH"
