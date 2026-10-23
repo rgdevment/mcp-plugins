@@ -67,11 +67,18 @@ test("the newest Tisty wins, and the earlier place a tie", () => {
   assert.equal(newest(["gone"], (file) => said[file]), undefined);
 });
 
+// The stand-in can answer within the write that asked, before anyone waits, so answers queue up.
 function talk(stream) {
   const lines = createInterface({ input: stream });
+  const said = [];
   const waiting = [];
-  lines.on("line", (line) => waiting.shift()?.(JSON.parse(line)));
-  return () => new Promise((answer) => waiting.push(answer));
+  lines.on("line", (line) => {
+    const message = JSON.parse(line);
+    const answer = waiting.shift();
+    if (answer) answer(message);
+    else said.push(message);
+  });
+  return () => (said.length ? Promise.resolve(said.shift()) : new Promise((answer) => waiting.push(answer)));
 }
 
 test("without Tisty, the stand-in answers with how to install it", async () => {
