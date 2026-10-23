@@ -41,14 +41,19 @@ jobs:
         run: |
           version=$(gh release view -R rgdevment/Tisty --json tagName -q .tagName)
           version="${version#v}"
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Tisty's latest release is «$version», not a version"; exit 1
+          fi
           listed=$(node -p "require('./$LISTING').version")
           branch="chore/lobehub-$version"
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "branch=$branch" >> "$GITHUB_OUTPUT"
+          # A pull request closed without merging is an answer too, so it is not opened again.
+          asked=$(gh pr list --repo "$REPO" --head "$branch" --state all --json number -q length)
           if [ "$version" = "$listed" ]; then
             echo "LobeHub's manifest already lists Tisty $version"
-          elif gh api "repos/$REPO/branches/$branch" --silent 2>/dev/null; then
-            echo "$branch is already waiting for review"
+          elif [ "$asked" != "0" ]; then
+            echo "$branch already has a pull request"
           else
             echo "due=true" >> "$GITHUB_OUTPUT"
           fi
@@ -78,7 +83,9 @@ jobs:
         run: |
           title="chore(listings): LobeHub lists Tisty $VERSION"
           base=$(gh api "repos/$REPO/git/ref/heads/main" -q .object.sha)
-          gh api -X POST "repos/$REPO/git/refs" -f ref="refs/heads/$BRANCH" -f sha="$base" --silent
+          # A branch left by a run that failed before its pull request is started over.
+          gh api -X POST "repos/$REPO/git/refs" -f ref="refs/heads/$BRANCH" -f sha="$base" --silent 2>/dev/null \
+            || gh api -X PATCH "repos/$REPO/git/refs/heads/$BRANCH" -f sha="$base" -F force=true --silent
           sha=$(gh api "repos/$REPO/contents/$LISTING?ref=$BRANCH" -q .sha)
           node -e '
             const fs = require("node:fs");
