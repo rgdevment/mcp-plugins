@@ -10,11 +10,26 @@ if (!tisty) {
 }
 
 // A profile of its own, so the check never reaches anybody's real data.
-const server = spawn(tisty, ["mcp"], { env: { ...process.env, TISTY_PROFILE: "plugin-compat" } });
+const server = spawn(tisty, ["mcp"], {
+  env: { ...process.env, TISTY_PROFILE: "plugin-compat" },
+  stdio: ["pipe", "pipe", "inherit"],
+});
+const fail = (why) => {
+  console.error(`::error::${why}`);
+  server.kill();
+  process.exit(1);
+};
+server.on("error", (why) => fail(`${tisty} could not start: ${why.message}`));
+server.on("exit", (code, signal) => fail(`the server stopped before answering (${signal ?? `exit ${code}`})`));
 const lines = createInterface({ input: server.stdout });
 const waiting = new Map();
 lines.on("line", (line) => {
-  const message = JSON.parse(line);
+  let message;
+  try {
+    message = JSON.parse(line);
+  } catch {
+    fail(`the server wrote something that is not JSON on stdout: ${line.slice(0, 200)}`);
+  }
   waiting.get(message.id)?.(message);
 });
 const ask = (id, method, params = {}) =>
@@ -22,11 +37,6 @@ const ask = (id, method, params = {}) =>
     waiting.set(id, answer);
     server.stdin.write(`${JSON.stringify({ jsonrpc: "2.0", id, method, params })}\n`);
   });
-const fail = (why) => {
-  console.error(`::error::${why}`);
-  server.kill();
-  process.exit(1);
-};
 setTimeout(() => fail("the server did not answer within 30 seconds"), 30_000).unref();
 
 const hello = await ask(1, "initialize", {
