@@ -43,6 +43,13 @@ edits documents passage by passage, files them into folders and searches open
 and archived work. It never closes or deletes anything: it says a task is done
 and you confirm it.
 
+**Your agents' work, in the open.** Through Tisty, an agent plans in
+documents and works in tasks: it writes the plan, what it found and what it
+decided as Markdown, breaks the work into tasks with steps and ticks them off as
+it goes. Nothing stays buried in a chat: every stage lands in Tisty, on your
+computer, where you can follow it as it happens and audit it later. When it says
+a task is done, you are the one who closes it.
+
 ![Settings › Assistants in Tisty lists the assistants on this computer and connects each through MCP](docs/tisty-assistants.png)
 
 **Requires the Tisty app and Node.js.** A small launcher finds the Tisty
