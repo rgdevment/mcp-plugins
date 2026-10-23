@@ -23,5 +23,6 @@
   "icon": "./assets/logo.png",
   "documentationUrl": "https://www.tisty.app/docs/assistants-and-mcp/",
   "supportUrl": "https://github.com/rgdevment/mcp-plugins/issues",
-  "privacyPolicyUrl": "https://www.tisty.app/privacy/"
+  "privacyPolicyUrl": "https://www.tisty.app/privacy/",
+  "termsOfServiceUrl": "https://www.tisty.app/terms/"
 }
