@@ -72,4 +72,6 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: ${{ matrix.node }}
-      - run: node --test test/
+      # Node 18 takes no glob of its own, so bash expands it on every system.
+      - run: node --test test/*.test.mjs
+        shell: bash
