@@ -20,6 +20,7 @@ test("Windows looks at the Store alias, then the installer's folder, then the PA
   const found = places({
     env: { LOCALAPPDATA: "C:\\Users\\a\\AppData\\Local", PATH: "C:\\bin;C:\\Users\\a\\AppData\\Local\\Programs\\Tisty" },
     platform: "win32",
+    exists: () => true,
   });
   assert.deepEqual(found, [
     "C:\\Users\\a\\AppData\\Local\\Microsoft\\WindowsApps\\tisty.exe",
@@ -29,7 +30,7 @@ test("Windows looks at the Store alias, then the installer's folder, then the PA
 });
 
 test("macOS looks in Applications and Homebrew before the PATH", () => {
-  const found = places({ env: { PATH: "/usr/bin" }, platform: "darwin", home: "/Users/a" });
+  const found = places({ env: { PATH: "/usr/bin" }, platform: "darwin", home: "/Users/a", exists: () => true });
   assert.deepEqual(found, [
     "/Applications/Tisty.app/Contents/MacOS/tisty",
     "/Users/a/Applications/Tisty.app/Contents/MacOS/tisty",
@@ -45,6 +46,11 @@ test("WSL reaches the Windows install", () => {
     "/mnt/c/Users/a/AppData/Local/Microsoft/WindowsApps/tisty.exe",
     "/mnt/c/Users/a/AppData/Local/Programs/Tisty/tisty.exe",
   ]);
+});
+
+test("PATH folders without a tisty in them are left out", () => {
+  const found = places({ env: { PATH: "/usr/bin:/opt/tisty/bin" }, platform: "linux", exists: (file) => file === "/opt/tisty/bin/tisty" });
+  assert.deepEqual(found, ["/opt/tisty/bin/tisty"]);
 });
 
 test("versions read from `tisty --version`", () => {

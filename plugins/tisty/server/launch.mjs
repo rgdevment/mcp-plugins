@@ -1,5 +1,5 @@
 import { spawn, spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import path from "node:path";
 import { createInterface } from "node:readline";
@@ -8,11 +8,22 @@ export const INSTALL = "https://www.tisty.app/docs/installation/";
 const { version: VERSION } = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
 
 /** Where a Tisty install leaves its `tisty` command, most likely first; TISTY_PATH alone when it is set. */
-export function places({ env = process.env, platform = process.platform, home = homedir(), windowsLocal } = {}) {
+export function places({
+  env = process.env,
+  platform = process.platform,
+  home = homedir(),
+  windowsLocal,
+  exists = existsSync,
+} = {}) {
   if (env.TISTY_PATH) return [env.TISTY_PATH];
   const paths = platform === "win32" ? path.win32 : path.posix;
+  // A PATH holds dozens of folders; asking only where a file is spares a process per folder at every start.
   const onPath = (name) =>
-    (env.PATH ?? env.Path ?? "").split(paths.delimiter).filter(Boolean).map((dir) => paths.join(dir, name));
+    (env.PATH ?? env.Path ?? "")
+      .split(paths.delimiter)
+      .filter(Boolean)
+      .map((dir) => paths.join(dir, name))
+      .filter((file) => exists(file));
   let found = [];
   if (platform === "win32") {
     const local = env.LOCALAPPDATA ?? path.win32.join(home, "AppData", "Local");
