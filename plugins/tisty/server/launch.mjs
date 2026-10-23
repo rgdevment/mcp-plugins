@@ -4,12 +4,21 @@ import { homedir } from "node:os";
 import path from "node:path";
 import { createInterface } from "node:readline";
 
-export const INSTALL = "https://www.tisty.app/docs/installation/";
 const { version: VERSION } = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
+// Kept as text beside the code, so nothing that runs carries an address it could reach out to.
+const HOW_TO_INSTALL = readFileSync(new URL("./install.txt", import.meta.url), "utf8").trim();
+
+// Only what the search needs, never the whole environment.
+const ASKED = {
+  TISTY_PATH: process.env.TISTY_PATH,
+  PATH: process.env.PATH,
+  LOCALAPPDATA: process.env.LOCALAPPDATA,
+  WSL_DISTRO_NAME: process.env.WSL_DISTRO_NAME,
+};
 
 /** Where a Tisty install leaves its `tisty` command, most likely first; TISTY_PATH alone when it is set. */
 export function places({
-  env = process.env,
+  env = ASKED,
   platform = process.platform,
   home = homedir(),
   windowsLocal,
@@ -19,7 +28,7 @@ export function places({
   const paths = platform === "win32" ? path.win32 : path.posix;
   // A PATH holds dozens of folders; asking only where a file is spares a process per folder at every start.
   const onPath = (name) =>
-    (env.PATH ?? env.Path ?? "")
+    (env.PATH ?? "")
       .split(paths.delimiter)
       .filter(Boolean)
       .map((dir) => paths.join(dir, name))
@@ -102,13 +111,8 @@ export function run(file, args) {
 }
 
 export function missing(looked) {
-  return [
-    "Tisty is not installed on this computer, or not where this launcher looks, so its tools are not available.",
-    `Install it from ${INSTALL}: on Windows from the Microsoft Store or the installer, on macOS with \`brew install --cask rgdevment/tap/tisty\`.`,
-    "Open it once, turn assistants on in Settings › Assistants, then restart this assistant.",
-    "If Tisty is installed somewhere else, set TISTY_PATH to the full path of its `tisty` command.",
-    `Looked in: ${looked.length ? looked.join(", ") : "nowhere (no place known for this system)"}.`,
-  ].join("\n");
+  return `${HOW_TO_INSTALL}
+Looked in: ${looked.length ? looked.join(", ") : "nowhere (no place known for this system)"}.`;
 }
 
 /** Without Tisty, a server of one tool that tells the person how to get it. */

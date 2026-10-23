@@ -39,6 +39,18 @@ jobs:
           done
       - name: Cursor marketplace
         run: node scripts/cursor.mjs
+      # Claude Code pins people to a plugin's version, so a change that forgets to raise it never reaches them.
+      - name: One version for a plugin and its npm launcher
+        run: |
+          for plugin in plugins/*/; do
+            [ -f "$plugin/package.json" ] || continue
+            versions=$(for f in package.json .claude-plugin/plugin.json .cursor-plugin/plugin.json; do
+              node -p "require('./$plugin$f').version"
+            done | sort -u)
+            if [ "$(echo "$versions" | wc -l)" -ne 1 ]; then
+              echo "::error::$plugin has different versions: $(echo $versions)"; exit 1
+            fi
+          done
 
   markdown:
     runs-on: ubuntu-24.04

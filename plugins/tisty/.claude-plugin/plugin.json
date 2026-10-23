@@ -1,6 +1,7 @@
 {
   "name": "tisty",
   "displayName": "Tisty",
+  "version": "1.0.2",
   "description": "Notes, documents and tasks as plain Markdown on your own disk. Your assistant files tasks, writes and edits documents and searches past work, locally, through Tisty's MCP server.",
   "author": {
     "name": "rgdevment",
