@@ -4,6 +4,8 @@ on:
   pull_request:
   push:
     branches: [main]
+  # The LobeHub workflow's pull requests start no run of their own, so it asks for this one.
+  workflow_dispatch:
 
 permissions:
   contents: read
