@@ -1,0 +1,35 @@
+{
+  "name": "tisty-mcp",
+  "version": "1.0.0",
+  "description": "Starts the MCP server of the Tisty app installed on this computer: notes, documents and tasks as plain Markdown on your own disk.",
+  "mcpName": "io.github.rgdevment/tisty",
+  "type": "module",
+  "bin": {
+    "tisty-mcp": "server/tisty.mjs"
+  },
+  "files": [
+    "server/launch.mjs",
+    "server/tisty.mjs"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "mcp",
+    "tisty",
+    "notes",
+    "tasks",
+    "documents",
+    "markdown",
+    "local-first"
+  ],
+  "homepage": "https://www.tisty.app/docs/assistants-and-mcp/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rgdevment/mcp-plugins.git",
+    "directory": "plugins/tisty"
+  },
+  "bugs": "https://github.com/rgdevment/mcp-plugins/issues",
+  "license": "Apache-2.0",
+  "author": "rgdevment"
+}

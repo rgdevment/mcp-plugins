@@ -1,0 +1,41 @@
+name: npm
+
+on:
+  push:
+    branches: [main]
+    paths: ["plugins/tisty/package.json"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: npm-tisty-mcp
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      # Trusted publishing: npm takes the workflow's identity instead of a stored token.
+      id-token: write
+    defaults:
+      run:
+        working-directory: plugins/tisty
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - name: Publish a version npm does not have yet
+        run: |
+          version=$(node -p "require('./package.json').version")
+          if npm view "tisty-mcp@$version" version >/dev/null 2>&1; then
+            echo "tisty-mcp $version is already on npm"
+          else
+            npm publish --provenance --access public
+          fi

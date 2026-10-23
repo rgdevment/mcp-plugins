@@ -39,8 +39,11 @@ and you confirm it.
 
 ![Settings › Assistants in Tisty lists the assistants on this computer and connects each through MCP](docs/tisty-assistants.png)
 
-**Requires the Tisty app.** The plugin starts its MCP server with the command
-`tisty`, which a stable Tisty puts on your PATH while assistants have a voice.
+**Requires the Tisty app and Node.js.** A small launcher finds the Tisty
+installed on your computer and starts its own MCP server, so the server always
+matches the app and your data. Without Tisty, it tells your assistant how to
+install it. Other assistants, such as VS Code, take the same launcher from npm:
+`npx -y tisty-mcp`. More in the [plugin's readme](plugins/tisty/README.md).
 
 | Install Tisty | |
 | --- | --- |
@@ -49,10 +52,8 @@ and you confirm it.
 | Every way | [Installation guide](https://www.tisty.app/docs/installation/) |
 
 If your assistant does not see Tisty's tools, restart it after installing Tisty.
-On a Mac installed from the disk image, or in an app that does not read your
-terminal's PATH, connect it from Tisty's Settings › Assistants instead, and turn
-this plugin off so the assistant does not run Tisty's server twice. Use one or
-the other, not both.
+Connect Tisty either with this plugin or from Tisty's Settings › Assistants, not
+both, so the assistant does not run Tisty's server twice.
 
 | Learn more | |
 | --- | --- |
@@ -73,7 +74,8 @@ the other, not both.
 .claude-plugin/marketplace.json   Claude Code marketplace
 .cursor-plugin/marketplace.json   Cursor marketplace
 plugins/<app>/                    one folder per plugin, with each host's manifest,
-                                  its MCP config and its skills
+                                  its MCP config, its skills and its launcher
+test/                             tests for the launchers
 listings/                         manifests some directories publish from
 ```
 
