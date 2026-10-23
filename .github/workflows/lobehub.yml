@@ -13,9 +13,8 @@ concurrency:
 
 jobs:
   refresh:
-    # The MCP bundle carries Windows and macOS servers only.
-    runs-on: windows-latest
-    timeout-minutes: 15
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
     permissions:
       contents: write
       pull-requests: write
@@ -58,21 +57,21 @@ jobs:
             echo "due=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Take the server from that release
+      - name: Build the server of that release
+        id: build
         if: steps.look.outputs.due == 'true'
         env:
           VERSION: ${{ steps.look.outputs.version }}
         run: |
-          gh release download "v$VERSION" -R rgdevment/Tisty --dir tisty \
-            --pattern "tisty-mcp-$VERSION.mcpb" --pattern SHA256SUMS
-          (cd tisty && sha256sum --check --strict --ignore-missing SHA256SUMS)
-          unzip -q "tisty/tisty-mcp-$VERSION.mcpb" 'server/*' -d tisty/bundle
+          built=$(scripts/build-tisty.sh "$VERSION")
+          echo "tisty=$built" >> "$GITHUB_OUTPUT"
 
       - name: Regenerate the manifest from its tools
         if: steps.look.outputs.due == 'true'
         env:
           VERSION: ${{ steps.look.outputs.version }}
-        run: node scripts/lobehub.mjs "$VERSION" "$GITHUB_WORKSPACE/tisty/bundle/server/tisty.exe"
+          TISTY: ${{ steps.build.outputs.tisty }}
+        run: node scripts/lobehub.mjs "$VERSION" "$TISTY"
 
       # Written through the contents API so GitHub signs the commit, as the branch rules ask.
       - name: Open the pull request
