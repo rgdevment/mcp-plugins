@@ -13,8 +13,9 @@ apps; the apps live in their own repositories, and so do their issues.
 
 1. Branch from `main` and keep one change per pull request.
 2. Write in English, and wrap Markdown at 80 columns.
-3. Check what CI checks: `node --test test/`, `npx markdownlint-cli2`, and
-   `claude plugin validate .` plus `--profile directory` on the plugin.
+3. Check what CI checks: `node --test test/*.test.mjs`,
+   `npx markdownlint-cli2`, and `claude plugin validate .` plus
+   `--profile directory` on the plugin.
 4. Commit messages and the pull request title follow
    [Conventional Commits](https://www.conventionalcommits.org/), on one line.
 
