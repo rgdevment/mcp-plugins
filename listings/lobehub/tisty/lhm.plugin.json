@@ -1,7 +1,7 @@
 {
   "author": "rgdevment",
   "authorUrl": "https://github.com/rgdevment",
-  "description": "Notes, documents and tasks as plain Markdown on your own disk, for Windows and macOS. Your assistant files tasks with steps and dates, writes and edits documents passage by passage, and searches past work over local stdio, with no account or server; it never closes or deletes anything.",
+  "description": "Your agents plan in Markdown documents and work in tasks with steps, in Tisty on your own disk: every stage stays where you can follow and audit it. For Windows and macOS. Your assistant files tasks with steps and dates, writes and edits documents passage by passage, and searches past work over local stdio, with no account or server; it never closes or deletes anything.",
   "homepage": "https://www.tisty.app/",
   "identifier": "rgdevment-tisty",
   "name": "Tisty",
