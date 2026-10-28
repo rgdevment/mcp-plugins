@@ -1,5 +1,7 @@
 # mcp-plugins
 
+[![M8ven Score](https://m8ven.ai/badge/mcp/rgdevment-mcp-plugins-2laaew?v=06dbce625c1e078795aefb9f9b4894b7&variant=verified)](https://m8ven.ai/mcp/rgdevment-mcp-plugins-2laaew?s=readme)
+
 Plugins that connect assistants to apps by
 [rgdevment](https://github.com/rgdevment). Each plugin brings an app's MCP
 server and a skill that teaches the assistant how to work with it. The apps run
