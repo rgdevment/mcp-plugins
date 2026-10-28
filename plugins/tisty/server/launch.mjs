@@ -7,6 +7,8 @@ import { createInterface } from "node:readline";
 const { version: VERSION } = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
 // Kept as text beside the code, so nothing that runs carries an address it could reach out to.
 const HOW_TO_INSTALL = readFileSync(new URL("./install.txt", import.meta.url), "utf8").trim();
+// The ones Tisty's own server answers `initialize` with, so the stand-in promises nothing the app would not.
+const PROTOCOL_VERSIONS = ["2025-11-25", "2025-06-18"];
 
 // Only what the search needs, never the whole environment.
 const ASKED = {
@@ -133,7 +135,9 @@ export function standIn(looked, input = process.stdin, output = process.stdout) 
     switch (request.method) {
       case "initialize":
         return answer(request.id, {
-          protocolVersion: request.params?.protocolVersion ?? "2025-06-18",
+          protocolVersion: PROTOCOL_VERSIONS.includes(request.params?.protocolVersion)
+            ? request.params.protocolVersion
+            : PROTOCOL_VERSIONS[0],
           capabilities: { tools: {} },
           serverInfo: { name: "tisty", version: VERSION },
           instructions: message,
@@ -149,6 +153,7 @@ export function standIn(looked, input = process.stdin, output = process.stdout) 
               description:
                 "Tisty is not installed on this computer, so its tools are missing. Call this for the steps to install it and tell the person.",
               inputSchema: { type: "object", properties: {}, additionalProperties: false },
+              annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
             },
           ],
         });

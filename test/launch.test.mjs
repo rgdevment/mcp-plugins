@@ -101,13 +101,34 @@ test("without Tisty, the stand-in answers with how to install it", async () => {
 
   send({ method: "notifications/initialized" });
   send({ id: 2, method: "tools/list" });
-  assert.deepEqual((await next()).result.tools.map((tool) => tool.name), ["install_tisty"]);
+  const { tools } = (await next()).result;
+  assert.deepEqual(tools.map((tool) => tool.name), ["install_tisty"]);
+  assert.deepEqual(tools[0].annotations, {
+    readOnlyHint: true,
+    destructiveHint: false,
+    idempotentHint: true,
+    openWorldHint: false,
+  });
 
   send({ id: 3, method: "tools/call", params: { name: "install_tisty", arguments: {} } });
   assert.match((await next()).result.content[0].text, /Looked in: \/nowhere\/tisty/);
 
   send({ id: 4, method: "resources/list" });
   assert.equal((await next()).error.code, -32601);
+  lines.close();
+});
+
+test("the stand-in answers a protocol version it does not speak with the newest it does", async () => {
+  const input = new PassThrough();
+  const output = new PassThrough();
+  const next = talk(output);
+  const lines = standIn(["/nowhere/tisty"], input, output);
+  const send = (message) => input.write(`${JSON.stringify({ jsonrpc: "2.0", ...message })}\n`);
+
+  send({ id: 1, method: "initialize", params: { protocolVersion: "2024-11-05" } });
+  assert.equal((await next()).result.protocolVersion, "2025-11-25");
+  send({ id: 2, method: "initialize", params: { protocolVersion: "2025-06-18" } });
+  assert.equal((await next()).result.protocolVersion, "2025-06-18");
   lines.close();
 });
 

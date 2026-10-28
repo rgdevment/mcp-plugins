@@ -1,6 +1,6 @@
 {
   "name": "tisty",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Your agents plan in Markdown documents and work in tasks with steps, in Tisty on your own disk: every stage stays where you can follow and audit it. Requires the free Tisty app for Windows or macOS.",
   "mcpServers": {
     "tisty": {
