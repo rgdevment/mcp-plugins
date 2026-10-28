@@ -101,7 +101,15 @@ test("without Tisty, the stand-in answers with how to install it", async () => {
 
   send({ method: "notifications/initialized" });
   send({ id: 2, method: "tools/list" });
-  assert.deepEqual((await next()).result.tools.map((tool) => tool.name), ["install_tisty"]);
+  const [tool, ...others] = (await next()).result.tools;
+  assert.equal(tool.name, "install_tisty");
+  assert.deepEqual(others, []);
+  assert.deepEqual(tool.annotations, {
+    readOnlyHint: true,
+    destructiveHint: false,
+    idempotentHint: true,
+    openWorldHint: false,
+  });
 
   send({ id: 3, method: "tools/call", params: { name: "install_tisty", arguments: {} } });
   assert.match((await next()).result.content[0].text, /Looked in: \/nowhere\/tisty/);

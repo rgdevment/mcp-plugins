@@ -149,6 +149,7 @@ export function standIn(looked, input = process.stdin, output = process.stdout) 
               description:
                 "Tisty is not installed on this computer, so its tools are missing. Call this for the steps to install it and tell the person.",
               inputSchema: { type: "object", properties: {}, additionalProperties: false },
+              annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
             },
           ],
         });
