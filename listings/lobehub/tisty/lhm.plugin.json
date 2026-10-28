@@ -1256,6 +1256,68 @@
       }
     },
     {
+      "name": "help",
+      "title": "How Tisty itself works",
+      "description": "The pages of Tisty's own Help, the ones tisty.app shows: installing, tasks and how they are written, documents, pages and PDF, sync, encrypting the cloud and letting a computer in, assistants, keyboard shortcuts, privacy. Ask it when the person asks how Tisty does something, instead of guessing. Left alone it gives the index; a `topic` gives one page. `lang` picks English or Spanish.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "lang": {
+            "description": "en for English, es for Spanish. Left out, English",
+            "enum": [
+              "en",
+              "es"
+            ],
+            "type": "string"
+          },
+          "topic": {
+            "description": "One page, named as the index names it. Left out, the index",
+            "enum": [
+              "index",
+              "installation",
+              "keyboard-shortcuts",
+              "tasks",
+              "natural-language",
+              "spread-and-reminders",
+              "archive",
+              "assistants-and-mcp",
+              "mcp-permissions",
+              "mcp-tools",
+              "documents",
+              "markdown-editor",
+              "convert-to-and-from-markdown",
+              "pages-and-pdf",
+              "widgets",
+              "sync-and-backup",
+              "privacy",
+              "command-line",
+              "faq",
+              "instalacion",
+              "atajos-de-teclado",
+              "tareas",
+              "lenguaje-natural",
+              "reparto-y-recordatorios",
+              "el-archivo",
+              "asistentes-y-mcp",
+              "que-puede-hacer-un-asistente",
+              "herramientas-mcp",
+              "documentos",
+              "editor-markdown",
+              "convertir-a-y-desde-markdown",
+              "paginas-y-pdf",
+              "widgets-en-documentos",
+              "sincronizar-y-respaldar",
+              "privacidad",
+              "linea-de-comandos",
+              "preguntas-frecuentes"
+            ],
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
       "name": "tags",
       "title": "The tags already in use",
       "description": "Every tag the person already writes, the most used first, with how many times each one appears, in the plain form they are filed under. Capitals and accents decide nothing: #Camión and #camion are one tag. Ask for it before you tag anything and reuse one when the subject really is the same; a second word for something already tagged splits it in two.",
@@ -1265,9 +1327,9 @@
       }
     }
   ],
-  "version": "1.36.2",
+  "version": "1.37.1",
   "category": "productivity",
-  "icon": "https://raw.githubusercontent.com/rgdevment/Tisty/v1.36.2/assets/icons/tisty-512.png",
+  "icon": "https://raw.githubusercontent.com/rgdevment/Tisty/v1.37.1/assets/icons/tisty-512.png",
   "tags": [
     "notes",
     "tasks",
