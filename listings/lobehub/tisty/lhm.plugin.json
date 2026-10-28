@@ -1265,9 +1265,9 @@
       }
     }
   ],
-  "version": "1.33.0",
+  "version": "1.35.0",
   "category": "productivity",
-  "icon": "https://raw.githubusercontent.com/rgdevment/Tisty/v1.33.0/assets/icons/tisty-512.png",
+  "icon": "https://raw.githubusercontent.com/rgdevment/Tisty/v1.35.0/assets/icons/tisty-512.png",
   "tags": [
     "notes",
     "tasks",
