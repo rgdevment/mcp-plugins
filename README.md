@@ -36,7 +36,10 @@ source in Cursor's settings.
 
 ### Tisty
 
-<img src="plugins/tisty/assets/logo.png" width="96" height="96" alt="Tisty"/>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="plugins/tisty/assets/logo.png"/>
+  <img src="plugins/tisty/assets/logo-on-light.png" width="96" height="96" alt="Tisty"/>
+</picture>
 
 Notes, documents and tasks as plain Markdown on your own disk, for Windows and
 macOS. No account, no subscription, no telemetry, no server. With the plugin,
