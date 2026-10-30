@@ -1,9 +1,6 @@
 # Tisty for assistants
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/logo.png"/>
-  <img src="assets/logo-on-light.png" width="96" height="96" alt="Tisty"/>
-</picture>
+<img src="assets/logo.png" width="96" height="96" alt="Tisty"/>
 
 [Tisty](https://www.tisty.app/) keeps notes, documents and tasks as plain
 Markdown on your own disk, for Windows and macOS. This plugin connects your
