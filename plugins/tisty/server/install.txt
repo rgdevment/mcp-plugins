@@ -1,4 +1,4 @@
 Tisty is not installed on this computer, or not where this launcher looks, so its tools are not available.
-Install it from https://www.tisty.app/docs/installation/: on Windows from the Microsoft Store or the installer, on macOS with `brew tap rgdevment/tap && brew trust rgdevment/tap && brew install --cask tisty`.
+Install it from https://www.tisty.app/docs/installation/: on Windows from the Microsoft Store, with `winget install rgdevment.Tisty` or the installer, on macOS with `brew tap rgdevment/tap && brew trust rgdevment/tap && brew install --cask tisty`.
 Open it once, turn assistants on in Settings › Assistants, then restart this assistant.
 If Tisty is installed somewhere else, set TISTY_PATH to the full path of its `tisty` command.
