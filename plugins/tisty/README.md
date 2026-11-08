@@ -39,7 +39,7 @@ leaves your computer.
 | Install Tisty | |
 | --- | --- |
 | Windows | [Microsoft Store](https://apps.microsoft.com/detail/9PGVWXD8X93N) |
-| macOS | `brew install --cask rgdevment/tap/tisty` |
+| macOS | `brew tap rgdevment/tap && brew trust rgdevment/tap && brew install --cask tisty` |
 | Every way | [Installation guide](https://www.tisty.app/docs/installation/) |
 
 Without Tisty, the assistant gets one tool, `install_tisty`, that tells you how
