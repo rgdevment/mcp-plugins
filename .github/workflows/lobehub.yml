@@ -3,6 +3,9 @@ name: LobeHub listing
 on:
   schedule:
     - cron: "23 10 * * *"
+  push:
+    branches: [main]
+    paths: ["listings/lobehub/**"]
   workflow_dispatch:
 
 permissions:
@@ -13,6 +16,7 @@ concurrency:
 
 jobs:
   refresh:
+    if: github.event_name != 'push'
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     permissions:
@@ -96,3 +100,62 @@ jobs:
           gh pr create --repo "$REPO" --base main --head "$BRANCH" --title "$title" --body "The LobeHub manifest regenerated from Tisty $VERSION's server. Once merged, publish it signed in to LobeHub: \`scripts/release.sh $VERSION\`."
           # A pull request opened with this token starts no workflow of its own, so the required checks are asked for.
           gh workflow run validate.yml --repo "$REPO" --ref "$BRANCH"
+
+  # Publishing needs the person's own LobeHub sign-in, so an issue keeps asking until LobeHub carries what main lists.
+  remind:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+    defaults:
+      run:
+        shell: bash
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      LISTING: listings/lobehub/tisty/lhm.plugin.json
+      PAGE: https://market.lobehub.com/s/plugins/rgdevment-tisty
+      TITLE: LobeHub awaits Tisty
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Ask for the publish while LobeHub lags behind main
+        run: |
+          listed=$(node -p "require('./$LISTING').version")
+          code=$(curl -s -o page.md -w '%{http_code}' "$PAGE")
+          case "$code" in
+            200) published=$(sed -nE 's/^[|] Version +[|] *([0-9.]+).*/\1/p' page.md) ;;
+            404) published="none" ;;
+            *) echo "::warning::LobeHub answered $code, so there is nothing to compare"; exit 0 ;;
+          esac
+          if [ -z "$published" ]; then
+            echo "::warning::LobeHub's page names no version"; exit 0
+          fi
+          open=$(gh issue list --repo "$REPO" --state open --json number,title -q "map(select(.title | startswith(\"$TITLE \"))) | .[0].number // empty")
+          if [ "$published" = "$listed" ]; then
+            echo "LobeHub carries Tisty $listed"
+            if [ -n "$open" ]; then
+              gh issue close "$open" --repo "$REPO" --comment "LobeHub carries Tisty $listed now."
+            fi
+            exit 0
+          fi
+          title="$TITLE $listed"
+          body=$(printf '%s\n' \
+            "main lists Tisty $listed for LobeHub, and LobeHub shows $published: $PAGE" \
+            "" \
+            "Publish it signed in to LobeHub, from Git Bash in a clone of this repository:" \
+            "" \
+            '```sh' \
+            "npx -y @lobehub/market-cli@0.0.43 login" \
+            "scripts/release.sh $listed" \
+            '```' \
+            "" \
+            "This issue closes by itself once LobeHub shows $listed.")
+          if [ -n "$open" ]; then
+            gh issue edit "$open" --repo "$REPO" --title "$title" --body "$body"
+          else
+            gh issue create --repo "$REPO" --title "$title" --body "$body" --assignee "$GITHUB_REPOSITORY_OWNER"
+          fi
