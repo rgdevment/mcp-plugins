@@ -31,8 +31,8 @@ and this skill does not repeat them.
 The plugin's launcher finds the Tisty installed on the computer and starts its
 server. If the only tool is `install_tisty`, Tisty was not found: call it and
 pass on what it says. It is free for Windows and macOS, from the
-[Microsoft Store](https://apps.microsoft.com/detail/9PGVWXD8X93N), from
-Homebrew, or every other way in the
+[Microsoft Store](https://apps.microsoft.com/detail/9PGVWXD8X93N), with
+`winget install rgdevment.Tisty`, from Homebrew, or every other way in the
 [installation guide](https://www.tisty.app/docs/installation/):
 
 ```sh

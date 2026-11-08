@@ -11,7 +11,8 @@ fetching the launcher once.
 Ask the person whether Tisty is installed. If it is not, they install it from
 one of these, then open it once:
 
-- Windows: [Microsoft Store](https://apps.microsoft.com/detail/9PGVWXD8X93N)
+- Windows: [Microsoft Store](https://apps.microsoft.com/detail/9PGVWXD8X93N) or
+  `winget install rgdevment.Tisty`
 - macOS, with Homebrew:
 
   ```sh
