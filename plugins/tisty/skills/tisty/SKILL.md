@@ -32,7 +32,7 @@ The plugin's launcher finds the Tisty installed on the computer and starts its
 server. If the only tool is `install_tisty`, Tisty was not found: call it and
 pass on what it says. It is free for Windows and macOS:
 [Microsoft Store](https://apps.microsoft.com/detail/9PGVWXD8X93N),
-`brew install --cask rgdevment/tap/tisty`, or every other way in the
+`brew tap rgdevment/tap && brew trust rgdevment/tap && brew install --cask tisty`, or every other way in the
 [installation guide](https://www.tisty.app/docs/installation/). After
 installing, the person restarts the assistant.
 

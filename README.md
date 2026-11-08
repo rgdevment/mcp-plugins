@@ -63,7 +63,7 @@ install it. Other assistants, such as VS Code, take the same launcher from npm:
 | Install Tisty | |
 | --- | --- |
 | Windows | [Microsoft Store](https://apps.microsoft.com/detail/9PGVWXD8X93N) |
-| macOS | `brew install --cask rgdevment/tap/tisty` |
+| macOS | `brew tap rgdevment/tap && brew trust rgdevment/tap && brew install --cask tisty` |
 | Every way | [Installation guide](https://www.tisty.app/docs/installation/) |
 
 If your assistant does not see Tisty's tools, restart it after installing Tisty.

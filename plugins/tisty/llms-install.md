@@ -12,7 +12,7 @@ Ask the person whether Tisty is installed. If it is not, they install it from
 one of these, then open it once:
 
 - Windows: [Microsoft Store](https://apps.microsoft.com/detail/9PGVWXD8X93N)
-- macOS: `brew install --cask rgdevment/tap/tisty`
+- macOS: `brew tap rgdevment/tap && brew trust rgdevment/tap && brew install --cask tisty`
 - Every other way: [installation guide](https://www.tisty.app/docs/installation/)
 
 ## 2. Add the server
