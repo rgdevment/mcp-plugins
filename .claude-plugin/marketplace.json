@@ -8,7 +8,19 @@
   "plugins": [
     {
       "name": "tisty",
-      "source": "./plugins/tisty"
+      "source": "./plugins/tisty",
+      "description": "Local tasks, todo lists and notes as Markdown on your own disk, where your agents plan and track work you can audit. Needs the free Tisty app for Windows or macOS.",
+      "category": "productivity",
+      "keywords": [
+        "tasks",
+        "todo",
+        "notes",
+        "documents",
+        "markdown",
+        "local-first",
+        "task-manager",
+        "mcp-server"
+      ]
     }
   ]
 }
