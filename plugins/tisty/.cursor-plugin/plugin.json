@@ -1,6 +1,6 @@
 {
   "name": "tisty",
-  "version": "1.0.5",
+  "version": "1.1.1",
   "description": "Your agents plan in Markdown documents and work in tasks with steps, in Tisty on your own disk: every stage stays where you can follow and audit it.",
   "author": {
     "name": "rgdevment"
@@ -16,7 +16,10 @@
     "local-first",
     "productivity",
     "todo",
-    "mcp"
+    "mcp",
+    "task-manager",
+    "mcp-server",
+    "claude"
   ],
   "logo": "assets/logo.png",
   "mcpServers": "mcp.json"

@@ -1717,13 +1717,54 @@
     "local-first",
     "productivity",
     "todo",
-    "knowledge-base"
+    "knowledge-base",
+    "task-manager"
   ],
   "localizations": [
     {
       "locale": "es-ES",
       "name": "Tisty",
       "description": "Tus agentes planifican en documentos Markdown y trabajan en tareas con pasos, en Tisty en tu propio disco: cada etapa queda donde puedes seguirla y auditarla. Para Windows y macOS. Tu asistente anota tareas con pasos y fechas, escribe y corrige documentos por pasajes, cambia sus tablas por filas y columnas, y busca trabajo pasado por stdio local, sin cuenta ni servidor; nunca cierra ni borra nada."
+    }
+  ],
+  "deploymentOptions": [
+    {
+      "installationMethod": "npm",
+      "isRecommended": true,
+      "description": "The tisty-mcp launcher finds the Tisty app installed on this computer and starts its own MCP server over stdio.",
+      "connection": {
+        "type": "stdio",
+        "command": "npx",
+        "args": [
+          "-y",
+          "tisty-mcp"
+        ]
+      },
+      "installationDetails": {
+        "packageName": "tisty-mcp",
+        "setupSteps": [
+          "Install Tisty: from the Microsoft Store or `winget install rgdevment.Tisty` on Windows, or `brew tap rgdevment/tap && brew trust rgdevment/tap && brew install --cask tisty` on macOS.",
+          "Open Tisty once. Settings › Assistants keeps the door for assistants open or closed."
+        ]
+      },
+      "systemDependencies": [
+        {
+          "name": "node",
+          "type": "runtime",
+          "requiredVersion": ">=18",
+          "checkCommand": "node --version",
+          "description": "Runs the tisty-mcp launcher through npx."
+        },
+        {
+          "name": "tisty",
+          "type": "application",
+          "description": "The free Tisty app for Windows or macOS, whose own server the launcher starts.",
+          "installInstructions": {
+            "windows": "winget install rgdevment.Tisty",
+            "macos": "brew tap rgdevment/tap && brew trust rgdevment/tap && brew install --cask tisty"
+          }
+        }
+      ]
     }
   ]
 }
