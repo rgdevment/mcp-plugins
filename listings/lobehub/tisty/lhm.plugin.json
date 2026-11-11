@@ -122,19 +122,9 @@
           }
         },
         "required": [
-            "memory",
-            "agent-memory",
-            "context",
-            "notes",
-            "tasks",
-            "documents",
-            "markdown",
-            "local-first",
-            "productivity",
-            "todo",
-            "knowledge-base",
-            "task-manager"
-          ],
+          "task",
+          "at"
+        ],
         "additionalProperties": false
       },
       "annotations": {
@@ -1720,6 +1710,9 @@
   "category": "productivity",
   "icon": "https://raw.githubusercontent.com/rgdevment/Tisty/v1.45.0/assets/icons/tisty-512.png",
   "tags": [
+    "memory",
+    "agent-memory",
+    "context",
     "notes",
     "tasks",
     "documents",
