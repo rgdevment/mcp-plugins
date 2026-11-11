@@ -9,9 +9,12 @@
     {
       "name": "tisty",
       "source": "./plugins/tisty",
-      "description": "Local tasks, todo lists and notes as Markdown on your own disk, where your agents plan and track work you can audit. Needs the free Tisty app for Windows or macOS.",
+      "description": "Local memory and context for your AI agent: it picks up where it left off from tasks with steps and a dated journal, and reads Markdown documents a section at a time, on your own disk where you can follow and audit it. Needs the free Tisty app for Windows or macOS.",
       "category": "productivity",
       "keywords": [
+        "memory",
+        "agent-memory",
+        "context",
         "tasks",
         "todo",
         "notes",
