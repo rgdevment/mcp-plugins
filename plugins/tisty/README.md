@@ -2,13 +2,16 @@
 
 <img src="assets/logo.png" width="96" height="96" alt="Tisty"/>
 
-[Tisty](https://www.tisty.app/) keeps notes, documents and tasks as plain
-Markdown on your own disk, for Windows and macOS. This plugin connects your
-assistant to the Tisty app on your computer: it files tasks with steps and
-dates, writes and edits documents passage by passage, changes their tables by
-rows and columns, draws diagrams in Mermaid, files them into folders and
-searches open and archived work. It never closes or deletes anything: it
-says a task is done and you confirm it in the app.
+[Tisty](https://www.tisty.app/) is local memory and context for you and your AI
+agent: notes, documents and tasks as plain Markdown on your own disk, for
+Windows and macOS. Your agent forgets everything when the session ends; with
+this plugin it picks up where it left off, asking what moved since last time
+and reading a long document by its outline and one section instead of the whole
+file. It connects your assistant to the Tisty app on your computer: it files
+tasks with steps and dates, writes and edits documents passage by passage,
+changes their tables by rows and columns, draws diagrams in Mermaid, files them
+into folders and searches open and archived work. It never closes or deletes
+anything: it says a task is done and you confirm it in the app.
 
 **Your agents' work, in the open.** Through Tisty, an agent plans in
 documents and works in tasks: it writes the plan, what it found and what it

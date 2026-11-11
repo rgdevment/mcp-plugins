@@ -1,7 +1,8 @@
 # Installing Tisty's MCP server
 
 These steps are for an assistant setting up Tisty for the person, such as Cline.
-Tisty is a desktop app for Windows and macOS with its own MCP server. The
+Tisty is a desktop app for Windows and macOS that gives an assistant local
+memory and context between sessions through its own MCP server. The
 `tisty-mcp` launcher on npm finds the installed app and starts that server
 locally over stdio. It needs Node.js, and no API key, account or network beyond
 fetching the launcher once.

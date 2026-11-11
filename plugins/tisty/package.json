@@ -1,7 +1,7 @@
 {
   "name": "tisty-mcp",
-  "version": "1.1.1",
-  "description": "Starts the MCP server of the Tisty app installed on this computer: notes, documents and tasks as plain Markdown on your own disk.",
+  "version": "1.2.0",
+  "description": "Starts the MCP server of the Tisty app installed on this computer: local memory and context for your AI agent, with notes, documents and tasks as Markdown on your own disk.",
   "mcpName": "io.github.rgdevment/tisty",
   "type": "module",
   "bin": {
@@ -18,6 +18,13 @@
   "keywords": [
     "mcp",
     "tisty",
+    "memory",
+    "agent-memory",
+    "ai-memory",
+    "context",
+    "persistent-memory",
+    "long-term-memory",
+    "context-engineering",
     "notes",
     "tasks",
     "documents",
@@ -26,7 +33,11 @@
     "todo",
     "task-manager",
     "mcp-server",
-    "claude"
+    "claude",
+    "claude-code",
+    "github-copilot",
+    "cursor",
+    "codex"
   ],
   "homepage": "https://www.tisty.app/docs/assistants-and-mcp/",
   "repository": {

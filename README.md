@@ -38,12 +38,16 @@ source in Cursor's settings.
 
 <img src="plugins/tisty/assets/logo.png" width="96" height="96" alt="Tisty"/>
 
-Notes, documents and tasks as plain Markdown on your own disk, for Windows and
-macOS. No account, no subscription, no telemetry, no server. With the plugin,
-your assistant files tasks with steps and dates, sets reminders, writes and
-edits documents passage by passage, files them into folders and searches open
-and archived work. It never closes or deletes anything: it says a task is done
-and you confirm it.
+**Local memory and context for your AI agent.** Your agent forgets everything
+when the session ends; Tisty keeps it. Tasks with steps and a dated journal,
+and documents one per subject, as plain Markdown on your own disk, for Windows
+and macOS. No account, no subscription, no telemetry, no server. With the
+plugin, your assistant picks up where it left off by asking what moved since
+last time, reads a long document by its outline and one section instead of the
+whole file, files tasks with steps and dates, sets reminders, writes and edits
+documents passage by passage, files them into folders and searches open and
+archived work. It never closes or deletes anything: it says a task is done and
+you confirm it.
 
 **Your agents' work, in the open.** Through Tisty, an agent plans in
 documents and works in tasks: it writes the plan, what it found and what it
@@ -57,8 +61,8 @@ a task is done, you are the one who closes it.
 **Requires the Tisty app and Node.js.** A small launcher finds the Tisty
 installed on your computer and starts its own MCP server, so the server always
 matches the app and your data. Without Tisty, it tells your assistant how to
-install it. Other assistants, such as VS Code, take the same launcher from npm:
-`npx -y tisty-mcp`. More in the [plugin's readme](plugins/tisty/README.md).
+install it. Other assistants, such as GitHub Copilot in VS Code, take the same
+launcher from npm: `npx -y tisty-mcp`. More in the [plugin's readme](plugins/tisty/README.md).
 
 | Install Tisty | |
 | --- | --- |
