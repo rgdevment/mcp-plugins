@@ -56,7 +56,7 @@ it goes. Nothing stays buried in a chat: every stage lands in Tisty, on your
 computer, where you can follow it as it happens and audit it later. When it says
 a task is done, you are the one who closes it.
 
-![Settings › Assistants in Tisty lists the assistants on this computer and connects each through MCP](docs/tisty-assistants.png)
+![No more blank chats, open the MCP door: Settings › Assistants in Tisty connects the assistants on this computer through MCP, so your agent asks where were we? and opens the task it was on](docs/tisty-agent.png)
 
 **Requires the Tisty app and Node.js.** A small launcher finds the Tisty
 installed on your computer and starts its own MCP server, so the server always
