@@ -1,7 +1,7 @@
 {
   "name": "tisty",
-  "version": "1.1.1",
-  "description": "Your agents plan in Markdown documents and work in tasks with steps, in Tisty on your own disk: every stage stays where you can follow and audit it.",
+  "version": "1.2.0",
+  "description": "Local memory and context for your AI agent: it picks up where it left off from tasks with steps and a dated journal, and reads Markdown documents a section at a time, on your own disk where you can follow and audit it.",
   "author": {
     "name": "rgdevment"
   },
@@ -9,6 +9,10 @@
   "repository": "https://github.com/rgdevment/mcp-plugins",
   "license": "Apache-2.0",
   "keywords": [
+    "memory",
+    "agent-memory",
+    "context",
+    "persistent-memory",
     "notes",
     "tasks",
     "documents",
@@ -19,7 +23,10 @@
     "mcp",
     "task-manager",
     "mcp-server",
-    "claude"
+    "claude",
+    "claude-code",
+    "github-copilot",
+    "cursor"
   ],
   "logo": "assets/logo.png",
   "mcpServers": "mcp.json"
