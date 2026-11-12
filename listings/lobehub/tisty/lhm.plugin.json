@@ -1,7 +1,7 @@
 {
   "author": "rgdevment",
   "authorUrl": "https://github.com/rgdevment",
-  "description": "Local memory and context for your AI agent, in Tisty on your own disk, for Windows and macOS. Your assistant picks up where it left off, files tasks with steps and dates, keeps a dated journal, writes and edits documents passage by passage, reads them by outline and section, and searches past work over local stdio, with no account or server; it never closes or deletes anything.",
+  "description": "Local memory and context for you and your AI agent, in Tisty on your own disk, for Windows and macOS. Your assistant picks up where it left off, files tasks with steps and dates, keeps a dated journal, writes and edits documents passage by passage, reads them by outline and section, and searches past work over local stdio, with no account or server; it never closes or deletes anything.",
   "homepage": "https://www.tisty.app/",
   "identifier": "rgdevment-tisty",
   "name": "Tisty",
@@ -1738,7 +1738,7 @@
     {
       "locale": "es-ES",
       "name": "Tisty",
-      "description": "Memoria y contexto locales para tu agente de IA, en Tisty y en tu propio disco, para Windows y macOS. Tu asistente retoma donde quedó, anota tareas con pasos y fechas, lleva una bitácora con fechas, escribe y corrige documentos por pasajes, los lee por índice y sección, y busca trabajo pasado por stdio local, sin cuenta ni servidor; nunca cierra ni borra nada."
+      "description": "Memoria y contexto locales para ti y tu agente de IA, en Tisty y en tu propio disco, para Windows y macOS. Tu asistente retoma donde quedó, anota tareas con pasos y fechas, lleva una bitácora con fechas, escribe y corrige documentos por pasajes, los lee por índice y sección, y busca trabajo pasado por stdio local, sin cuenta ni servidor; nunca cierra ni borra nada."
     }
   ],
   "deploymentOptions": [

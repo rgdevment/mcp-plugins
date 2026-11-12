@@ -38,7 +38,7 @@ source in Cursor's settings.
 
 <img src="plugins/tisty/assets/logo.png" width="96" height="96" alt="Tisty"/>
 
-**Local memory and context for your AI agent.** Your agent forgets everything
+**Local memory and context for you and your AI agent.** Your agent forgets everything
 when the session ends; Tisty keeps it. Tasks with steps and a dated journal,
 and documents one per subject, as plain Markdown on your own disk, for Windows
 and macOS. No account, no subscription, no telemetry, no server. With the
