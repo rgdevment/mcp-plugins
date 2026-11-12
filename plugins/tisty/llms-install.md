@@ -59,8 +59,8 @@ as a device they can shut out at any time.
 
 It can file tasks with steps and dates, set reminders, write documents and
 correct them passage by passage, change their tables by rows and columns, draw
-diagrams in Mermaid, file them into folders, attach files and
-search open and archived work. It never closes or deletes anything: it says a
-task is done and the person confirms it in the app.
+diagrams in Mermaid, file them into folders, attach files, jot and sort ideas on
+Brainstorm and search open and archived work. It never closes or deletes
+anything: it says a task is done and the person confirms it in the app.
 
 More in the [documentation](https://www.tisty.app/docs/assistants-and-mcp/).

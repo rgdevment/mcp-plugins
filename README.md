@@ -38,16 +38,17 @@ source in Cursor's settings.
 
 <img src="plugins/tisty/assets/logo.png" width="96" height="96" alt="Tisty"/>
 
-**Local memory and context for you and your AI agent.** Your agent forgets everything
-when the session ends; Tisty keeps it. Tasks with steps and a dated journal,
-and documents one per subject, as plain Markdown on your own disk, for Windows
-and macOS. No account, no subscription, no telemetry, no server. With the
-plugin, your assistant picks up where it left off by asking what moved since
-last time, reads a long document by its outline and one section instead of the
-whole file, files tasks with steps and dates, sets reminders, writes and edits
-documents passage by passage, files them into folders and searches open and
-archived work. It never closes or deletes anything: it says a task is done and
-you confirm it.
+**Local memory and context for you and your AI agent.** Your agent forgets
+everything when the session ends; Tisty keeps it. Tasks with steps and a dated
+journal, and documents one per subject, as plain Markdown on your own disk, for
+Windows and macOS. Ideas caught on the fly wait as sticky notes in Brainstorm,
+to become a task or go into a document later. No account, no subscription, no
+telemetry, no server. With the plugin, your assistant picks up where it left off
+by asking what moved since last time, reads a long document by its outline and
+one section instead of the whole file, files tasks with steps and dates, sets
+reminders, writes and edits documents passage by passage, files them into
+folders, jots and sorts ideas with you and searches open and archived work. It
+never closes or deletes anything: it says a task is done and you confirm it.
 
 **Your agents' work, in the open.** Through Tisty, an agent plans in
 documents and works in tasks: it writes the plan, what it found and what it

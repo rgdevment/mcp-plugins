@@ -4,14 +4,16 @@
 
 [Tisty](https://www.tisty.app/) is local memory and context for you and your AI
 agent: notes, documents and tasks as plain Markdown on your own disk, for
-Windows and macOS. Your agent forgets everything when the session ends; with
-this plugin it picks up where it left off, asking what moved since last time
-and reading a long document by its outline and one section instead of the whole
-file. It connects your assistant to the Tisty app on your computer: it files
-tasks with steps and dates, writes and edits documents passage by passage,
-changes their tables by rows and columns, draws diagrams in Mermaid, files them
-into folders and searches open and archived work. It never closes or deletes
-anything: it says a task is done and you confirm it in the app.
+Windows and macOS. Ideas caught on the fly wait as sticky notes in Brainstorm,
+to become a task or go into a document later. Your agent forgets everything when
+the session ends; with this plugin it picks up where it left off, asking what
+moved since last time and reading a long document by its outline and one section
+instead of the whole file. It connects your assistant to the Tisty app on your
+computer: it files tasks with steps and dates, writes and edits documents
+passage by passage, changes their tables by rows and columns, draws diagrams in
+Mermaid, files them into folders, jots and sorts ideas with you and searches
+open and archived work. It never closes or deletes anything: it says a task is
+done and you confirm it in the app.
 
 **Your agents' work, in the open.** Through Tisty, an agent plans in
 documents and works in tasks: it writes the plan, what it found and what it
@@ -32,12 +34,12 @@ In Cursor, from the [Cursor Directory](https://cursor.directory/plugins).
 
 ## What it needs
 
-The Tisty app, installed and opened once, with assistants turned on in
-Settings › Assistants. The plugin finds it by itself: the Microsoft Store copy,
-the Windows installer's, `/Applications` on a Mac, Homebrew or your PATH, and
-uses the newest when there are several. It talks to the app's own MCP server,
-so what your assistant writes always matches the version of your data. Nothing
-leaves your computer.
+The Tisty app, installed and opened once. Its door for assistants comes open on
+its own, and Settings › Assistants closes it. The plugin finds it by itself: the
+Microsoft Store copy, the Windows installer's, `/Applications` on a Mac,
+Homebrew or your PATH, and uses the newest when there are several. It talks to
+the app's own MCP server, so what your assistant writes always matches the
+version of your data. Nothing leaves your computer.
 
 | Install Tisty | |
 | --- | --- |
