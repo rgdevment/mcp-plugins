@@ -31,7 +31,7 @@ body:
     attributes:
       label: Versions
       description: The assistant's version and the app's version.
-      placeholder: Claude Code 2.1.308, Tisty 1.32.0
+      placeholder: Claude Code 2.1.308, Tisty 1.46.0
     validations:
       required: true
   - type: textarea

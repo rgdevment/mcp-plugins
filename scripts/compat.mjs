@@ -2,7 +2,7 @@
 import { spawn } from "node:child_process";
 import { createInterface } from "node:readline";
 
-const NAMED = ["rules", "find", "propose", "write_doc"];
+const NAMED = ["rules", "catch_up", "read", "find", "propose", "write_doc"];
 const [tisty] = process.argv.slice(2);
 if (!tisty) {
   console.error("usage: node scripts/compat.mjs <path-to-tisty>");

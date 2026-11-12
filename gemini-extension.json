@@ -1,11 +1,13 @@
 {
   "name": "tisty",
   "version": "1.2.0",
-  "description": "Local memory and context for your AI agent: it picks up where it left off from tasks with steps and a dated journal, and reads Markdown documents a section at a time, on your own disk where you can follow and audit it. Requires the free Tisty app for Windows or macOS.",
+  "description": "Local memory and context for you and your AI agent: tasks with steps and a dated journal, and Markdown documents, on your own disk. Your agent picks up where it left off and reads a section at a time, where you can follow and audit it. Requires the free Tisty app for Windows or macOS.",
   "mcpServers": {
     "tisty": {
       "command": "node",
-      "args": ["${extensionPath}${/}plugins${/}tisty${/}server${/}tisty.mjs"]
+      "args": [
+        "${extensionPath}${/}plugins${/}tisty${/}server${/}tisty.mjs"
+      ]
     }
   },
   "contextFileName": "plugins/tisty/skills/tisty/SKILL.md"
