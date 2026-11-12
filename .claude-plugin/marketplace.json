@@ -9,7 +9,7 @@
     {
       "name": "tisty",
       "source": "./plugins/tisty",
-      "description": "Local memory and context for you and your AI agent: tasks with steps and a dated journal, and Markdown documents, on your own disk. Your agent picks up where it left off and reads a section at a time, where you can follow and audit it. Needs the free Tisty app for Windows or macOS.",
+      "description": "Local memory and context for you and your AI agent: tasks with steps and a dated journal, Markdown documents and Brainstorm ideas, on your own disk. Your agent picks up where it left off and reads a section at a time, where you can follow and audit it. Needs the free Tisty app for Windows or macOS.",
       "category": "productivity",
       "keywords": [
         "memory",
@@ -19,6 +19,8 @@
         "todo",
         "notes",
         "documents",
+        "ideas",
+        "brainstorm",
         "markdown",
         "local-first",
         "task-manager",

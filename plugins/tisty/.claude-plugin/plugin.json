@@ -1,8 +1,8 @@
 {
   "name": "tisty",
   "displayName": "Tisty",
-  "version": "1.2.0",
-  "description": "Local memory and context for you and your AI agent: tasks with steps and a dated journal, and Markdown documents, on your own disk. Your agent picks up where it left off and reads a section at a time, where you can follow and audit it.",
+  "version": "1.3.0",
+  "description": "Local memory and context for you and your AI agent: tasks with steps and a dated journal, Markdown documents and Brainstorm ideas, on your own disk. Your agent picks up where it left off and reads a section at a time, where you can follow and audit it.",
   "author": {
     "name": "rgdevment",
     "url": "https://github.com/rgdevment"
@@ -18,6 +18,8 @@
     "notes",
     "tasks",
     "documents",
+    "ideas",
+    "brainstorm",
     "markdown",
     "local-first",
     "productivity",
