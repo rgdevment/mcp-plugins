@@ -50,8 +50,9 @@ brew install --cask tisty
 
 After installing, the person restarts the assistant.
 
-If the tools are there but every call is refused, assistants have no voice in
-Tisty: the person turns it on in Tisty under Settings › Assistants.
+If the tools are there but every call is refused, the person closed Tisty's
+door to assistants: they open it again in Settings › Assistants, or with «Let
+it in» when Tisty says this assistant tried to come in.
 
 The chat on claude.ai cannot reach servers on the person's computer; Claude
 Code and Claude Desktop can.

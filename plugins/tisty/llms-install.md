@@ -51,9 +51,9 @@ server's tools. Tisty's tools include `rules`, `find`, `propose` and
 working in Tisty. If the only tool is `install_tisty`, the launcher did not find
 Tisty: call it and pass its steps on to the person.
 
-If every call is refused, assistants have no voice in Tisty: the person turns
-it on in Tisty under Settings › Assistants, where this assistant also appears
-as a device they can shut out at any time.
+If every call is refused, the person closed Tisty's door to assistants: they
+open it again in Settings › Assistants, or with «Let it in» when Tisty says
+this assistant tried to come in.
 
 ## What it may do
 
