@@ -1,6 +1,6 @@
 {
   "name": "tisty",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Local memory and context for you and your AI agent: tasks with steps and a dated journal, Markdown documents and Brainstorm ideas, on your own disk. Your agent picks up where it left off and reads a section at a time, where you can follow and audit it. Requires the free Tisty app for Windows or macOS.",
   "mcpServers": {
     "tisty": {
