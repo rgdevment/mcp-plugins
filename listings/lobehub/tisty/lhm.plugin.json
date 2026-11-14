@@ -18,6 +18,17 @@
       ]
     },
     {
+      "name": "leave_off",
+      "title": "Leave this where I can pick it up",
+      "description": "Tick what is finished and note what was done, ruled out and comes next, so the next session starts from there.",
+      "arguments": [
+        {
+          "name": "task",
+          "description": "A word from the task to leave; left out, the one we are on"
+        }
+      ]
+    },
+    {
       "name": "plan_task",
       "title": "Plan this work as a task with steps",
       "description": "One task with its steps in its list, once no task already covers it.",
@@ -49,6 +60,28 @@
           "description": "What the decision is about; left out, plain from the conversation"
         }
       ]
+    },
+    {
+      "name": "brainstorm",
+      "title": "Brainstorm ideas with me",
+      "description": "Think up short ideas on a subject together, and jot on Brainstorm the ones I keep.",
+      "arguments": [
+        {
+          "name": "subject",
+          "description": "What the ideas are about; left out, what we have been talking about"
+        }
+      ]
+    },
+    {
+      "name": "sort_ideas",
+      "title": "Sort out my Brainstorm",
+      "description": "Group the ideas waiting on Brainstorm and propose which become tasks, which go into documents and which are marked as old.",
+      "arguments": [
+        {
+          "name": "subject",
+          "description": "A word for the ideas to sort; left out, all of them"
+        }
+      ]
     }
   ],
   "resources": [
@@ -64,7 +97,7 @@
     {
       "name": "propose",
       "title": "Propose a task",
-      "description": "Propose a task, something to do; what is kept to read again is `write_doc`. Several from one thread go in `tasks`, each judged alone. Work of several tasks with one end goes in `parts`, not packed into steps. Tisty tags it #agent.",
+      "description": "Propose a task, something to do; what is kept to read again is `write_doc`. Several from one thread go in `tasks`, each judged alone. Work of several tasks with one end goes in `parts`, not packed into steps. An idea named as `source` leaves Brainstorm. Tisty tags it #agent.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -85,11 +118,11 @@
             "type": "string"
           },
           "list": {
-            "description": "An existing list, by name (`lists`). Left out, it lands in the inbox, which needs a reason",
+            "description": "An existing list, by name, as `catch_up` names it. Left out, it lands in the inbox, which needs a reason",
             "type": "string"
           },
           "part_of": {
-            "description": "Id of a task you may work on that this one is a part of",
+            "description": "Id of an open task this one is a part of",
             "type": "string"
           },
           "parts": {
@@ -128,14 +161,14 @@
             "type": "array"
           },
           "tags": {
-            "description": "Its subjects, one plain word each, reusing what `tags` lists; six is already a lot",
+            "description": "Its subjects, one plain word each, reusing the tags `catch_up` shows; six is already a lot",
             "items": {
               "type": "string"
             },
             "type": "array"
           },
           "tasks": {
-            "description": "Several tasks, each shaped like a single one; left out for one",
+            "description": "Several tasks, each shaped like a single one, at most 32; left out for one",
             "items": {
               "type": "object"
             },
@@ -190,7 +223,7 @@
     {
       "name": "describe",
       "title": "Describe a task",
-      "description": "Write the description of a task you may work on (one an agent filed or the person opened to agents). It replaces the old one whole: `read` first and keep what holds; what you learnt goes in `note`.",
+      "description": "Write the description of an open task. It replaces the old one whole: `read` first and keep what holds; what you learnt goes in `note`.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -219,7 +252,7 @@
     {
       "name": "plan",
       "title": "Add steps to a task",
-      "description": "Add steps to a task you may work on, after those already there (`read` shows them).",
+      "description": "Add steps to an open task, after those already there (`read` shows them). One done on its own is a part: `propose` with `part_of`.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -251,7 +284,7 @@
     {
       "name": "tick",
       "title": "Tick the steps you did",
-      "description": "Mark steps you did yourself, as you finish each. One unknown name and nothing is ticked; a name two steps share ticks the next open one. On a task you may work on the step is ticked; on the person's others it is said done, for them to take. Closing is `say_done` and the person's.",
+      "description": "Tick steps you did yourself, by their text, as you finish each. All or nothing: one unknown text ticks none; a text two steps share ticks the next open one. On the person's own tasks it reports the step done, for them to confirm. Refused once the task is said done: `note` instead. The whole task is `say_done`; a wrong tick, `untick`.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -279,14 +312,14 @@
       "annotations": {
         "readOnlyHint": false,
         "destructiveHint": false,
-        "idempotentHint": true,
+        "idempotentHint": false,
         "openWorldHint": false
       }
     },
     {
       "name": "untick",
       "title": "Take back a tick given by mistake",
-      "description": "Take back a tick, or your word on a step, that an agent gave by mistake. A tick the person gave is theirs, and naming it unticks nothing. It opens and closes nothing.",
+      "description": "Take back a tick, or your word on a step, an agent gave by mistake. A tick the person gave is theirs, and naming it unticks nothing. It opens and closes nothing.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -314,14 +347,14 @@
       "annotations": {
         "readOnlyHint": false,
         "destructiveHint": false,
-        "idempotentHint": true,
+        "idempotentHint": false,
         "openWorldHint": false
       }
     },
     {
       "name": "rename",
-      "title": "Rename a task an agent filed",
-      "description": "Give a better title to a task an agent filed. A task the person wrote keeps its title.",
+      "title": "Rename a task",
+      "description": "Retitle a task when the title no longer says what it is. Steps are `reword_step`, and the page `describe` or `edit_doc`.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -350,7 +383,7 @@
     {
       "name": "reword_step",
       "title": "Rewrite an open step",
-      "description": "Rewrite an unticked step of a task you may work on. A ticked step is refused: `untick` it first if your tick was a mistake.",
+      "description": "Rewrite an unticked step of an open task. A ticked step is refused: `untick` it first if your tick was a mistake.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -377,14 +410,14 @@
       "annotations": {
         "readOnlyHint": false,
         "destructiveHint": true,
-        "idempotentHint": true,
+        "idempotentHint": false,
         "openWorldHint": false
       }
     },
     {
       "name": "unplan",
       "title": "Take open steps off a task",
-      "description": "Take unticked steps off a task you may work on. With `to` they are handed on, after that task's own steps, instead of dropped. One ticked step among them and nothing changes.",
+      "description": "Take unticked steps off an open task. With `to` they are handed on, after that task's own steps, instead of dropped. One ticked step among them and nothing changes.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -404,7 +437,7 @@
             "type": "string"
           },
           "to": {
-            "description": "Id of another open task you may work on, not said done, to hand them to",
+            "description": "Id of another open task, not said done, to hand them to",
             "type": "string"
           }
         },
@@ -416,19 +449,19 @@
       "annotations": {
         "readOnlyHint": false,
         "destructiveHint": true,
-        "idempotentHint": true,
+        "idempotentHint": false,
         "openWorldHint": false
       }
     },
     {
       "name": "move",
       "title": "Hang a task under another, or move it to a list",
-      "description": "On a task you may work on: `part_of` hangs it under another such task, or null lets it stand alone; `list` moves a task an agent filed to a better list. One level: a task with parts is no part. A closed task takes nothing; a whole said done or not doing takes no new part.",
+      "description": "`part_of` hangs a task under another, or null lets it stand alone; `list` moves it to a better list. One level: a task with parts is no part. A closed task takes nothing; a whole said done or not doing takes no new part.",
       "inputSchema": {
         "type": "object",
         "properties": {
           "list": {
-            "description": "An existing list, by name (`lists`), for a task an agent filed",
+            "description": "An existing list, by name, as `catch_up` names it",
             "type": "string"
           },
           "part_of": {
@@ -458,7 +491,7 @@
     {
       "name": "reword_note",
       "title": "Rewrite a note in a task's journal",
-      "description": "Rewrite a note in the journal of a task you may work on, named by the id `read` shows beside it. The new body replaces it whole and cannot be empty.",
+      "description": "Rewrite a note in the journal of an open task, named by the id `read` shows beside it. The new body replaces it whole and cannot be empty. To add one, `note`.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -534,7 +567,7 @@
             "type": "string"
           },
           "path": {
-            "description": "A path to a file on this machine",
+            "description": "A file under Downloads, Documents, Pictures, Desktop or the temporary folder",
             "type": "string"
           },
           "task": {
@@ -582,7 +615,7 @@
             "type": "string"
           },
           "keep_compaction": {
-            "description": "The person told you in this conversation to keep the compaction awaiting their word",
+            "description": "Only on the person's word: `rules` «tidying»",
             "type": "boolean"
           },
           "lang": {
@@ -621,7 +654,7 @@
     {
       "name": "append_doc",
       "title": "Add to a document, or to a task's page",
-      "description": "Add at a document's end, or under the heading in `under`, without reading it or a `print`; nothing written changes. For logs, minutes and dated notes; a fact that changed is `edit_doc`. The answer says how much it `grew`. A task's id in `doc`, on a task you may work on, adds under the assistant's notes on its page, dated and signed.",
+      "description": "Add at a document's end, or under the heading in `under`, without reading it or a `print`; nothing written changes, unless `replace` rewrites a task page's assistant notes. For logs, minutes and dated notes; a changed fact is `edit_doc`. The answer says how much it `grew`. A task's id in `doc` adds under the assistant's notes on its page, dated and signed.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -638,7 +671,7 @@
             "type": "boolean"
           },
           "keep_compaction": {
-            "description": "The person told you in this conversation to keep the compaction awaiting their word",
+            "description": "Only on the person's word: `rules` «tidying»",
             "type": "boolean"
           },
           "replace": {
@@ -694,7 +727,7 @@
     {
       "name": "edit_doc",
       "title": "Change a passage of a document",
-      "description": "Replace one passage of a document, named by its text in `old` or by place with `section` or `from` and `to`, which needs no reading of the rest. What it said is kept first for `restore_doc`, or the edit is refused. The answer's `grew` should be close to what you sent.",
+      "description": "Replace one passage of a document, named by its text in `old` or by place with `section` or `from` and `to`, which needs no reading of the rest. What it said is kept first for `restore_doc`, or the edit is refused. The answer's `grew` should be close to what you sent. A task's page too, by its own name: its boxes are the task's steps.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -711,7 +744,7 @@
             "type": "integer"
           },
           "keep_compaction": {
-            "description": "The person told you in this conversation to keep the compaction awaiting their word",
+            "description": "Only on the person's word: `rules` «tidying»",
             "type": "boolean"
           },
           "new": {
@@ -744,14 +777,14 @@
       "annotations": {
         "readOnlyHint": false,
         "destructiveHint": true,
-        "idempotentHint": true,
+        "idempotentHint": false,
         "openWorldHint": false
       }
     },
     {
       "name": "edit_table",
       "title": "Change a table in a document",
-      "description": "Read or change one table of a document by rows and columns, never its Markdown. A row is named by its first cell, a column by its title, as `show` gives them. Values are written as the column's type reads them (1234.5, 2026-10-28, true); one that does not fit is kept and named. Undone like `edit_doc`.",
+      "description": "Read or change one table of a document by rows and columns, never its Markdown; without `do` it only shows the table. A row is named by its first cell, a column by its title, as `show` gives them. Values are written as the column's type reads them (1234.5, 2026-10-28, true); one that does not fit is kept and named.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -790,7 +823,7 @@
             "type": "boolean"
           },
           "keep_compaction": {
-            "description": "The person told you in this conversation to keep the compaction awaiting their word",
+            "description": "Only on the person's word: `rules` «tidying»",
             "type": "boolean"
           },
           "row": {
@@ -936,7 +969,7 @@
       },
       "annotations": {
         "readOnlyHint": false,
-        "destructiveHint": false,
+        "destructiveHint": true,
         "idempotentHint": false,
         "openWorldHint": false
       }
@@ -944,7 +977,7 @@
     {
       "name": "export_doc",
       "title": "Export a document to a folder",
-      "description": "Write a document out as Markdown files in a folder on this machine, its pages numbered in reading order and its files beside them. A copy: nothing here changes.",
+      "description": "Write a document out as Markdown files in a folder on this machine, its pages numbered in reading order and its files beside them. A copy: nothing here changes. For another tool, `read_doc` with `as`.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -1004,8 +1037,8 @@
     },
     {
       "name": "flag_doc",
-      "title": "Mark a document for the person to delete",
-      "description": "How «delete this document» is done: you mark it, and the person deletes it or takes the mark off. Give the `reason`, `instead` where its content lives now, and `body`. Several copies go in one call, so one click settles them. A document already marked is refused, or skipped in a set.",
+      "title": "Mark a document that had its day",
+      "description": "Mark what had its day, or «delete this document»: the person deletes it, puts it away or unmarks it. Give the `reason`, `instead` where its content lives now, and `body`. Copies go in one call: one click deletes or unmarks them all. A document already marked is refused, or skipped in a set.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -1026,7 +1059,7 @@
                 "type": "array"
               }
             ],
-            "description": "The id of the document to mark, not its title, or a list of ids marked alike"
+            "description": "The id of the document to mark, not its title, or `sheet#heading` for an idea; a list is marked alike"
           },
           "instead": {
             "description": "Id of the document or task that holds it now; needed with duplicate_of, moved and superseded",
@@ -1227,7 +1260,7 @@
     {
       "name": "read_doc",
       "title": "Read a document, or a part of one",
-      "description": "A document's text and the `print` it reads at. Past about 12,000 characters it comes back as its outline (`whole` false): then ask for a `section`, lines, or `chars` at a time. Every part brings the print, so `edit_doc` needs no whole read. `pages_loose` names pages no line places.",
+      "description": "A document's text and the `print` it reads at. Past about 12,000 characters it comes back as its outline (`whole` false): then ask for a `section`, lines, or `chars` at a time. Every part brings the print, so `edit_doc` needs no whole read.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -1282,12 +1315,12 @@
     {
       "name": "catch_up",
       "title": "Where things stand, and what has moved",
-      "description": "Where things stand: the lists, folders and tags in use, counts, the latest documents, and a `cursor`; sent back as `since`, it adds what moved since, by anyone. Ask it first and on coming back, instead of `lists`, `tags` and `docs`.",
+      "description": "Where things stand: lists, folders, top tags, counts, pressing tasks, newest documents, a `cursor`; what others moved since your last `catch_up`; `last`, the open task you were on. Ask it first.",
       "inputSchema": {
         "type": "object",
         "properties": {
           "since": {
-            "description": "A `cursor` from a previous `catch_up`",
+            "description": "A `cursor` from a previous `catch_up`, to count from there instead: it only reads, and brings your own changes too",
             "type": "string"
           }
         },
@@ -1296,7 +1329,7 @@
       "annotations": {
         "readOnlyHint": true,
         "destructiveHint": false,
-        "idempotentHint": true,
+        "idempotentHint": false,
         "openWorldHint": false
       }
     },
@@ -1423,7 +1456,7 @@
       },
       "annotations": {
         "readOnlyHint": false,
-        "destructiveHint": false,
+        "destructiveHint": true,
         "idempotentHint": true,
         "openWorldHint": false
       }
@@ -1455,16 +1488,20 @@
     {
       "name": "read",
       "title": "Read a whole task",
-      "description": "Everything a task holds: description, steps, journal (note ids for `reword_note`), parts, files and its `document` page. Read it before noting or mending; `fields` narrows it. A closed task comes with `closed` and a `notice`: it is history, and nothing on it changes.",
+      "description": "Everything a task holds: steps, its `document` page with the description and your notes, the latest journal notes (ids for `reword_note`) and who wrote them, parts and files. Read it before noting or mending; `fields` narrows it. A closed task comes with `closed` and a `notice`: it is history, and nothing on it changes.",
       "inputSchema": {
         "type": "object",
         "properties": {
           "fields": {
-            "description": "Only these, the id always: title, status, closed, notice, date, deadline, standing, reminders, tags, source, list, priority, by_agent, via, said_done, said_not_doing, open_to_agents, part_of, parts, description, steps, journal, kept, document",
+            "description": "Only these keys of the answer; the id always comes",
             "items": {
               "type": "string"
             },
             "type": "array"
+          },
+          "notes": {
+            "description": "How many latest journal notes, each cut at 4000 chars; 0: all, whole",
+            "type": "integer"
           },
           "task": {
             "description": "The task id",
@@ -1485,8 +1522,8 @@
     },
     {
       "name": "find",
-      "title": "Search the list and the archive",
-      "description": "Search tasks, open and archived, and documents: by words in `query`, by the task fields below, or by `source` to see if it was filed. A task found by its page, steps or notes comes with the `line` saying it. With `doc`, the matching lines inside that document.",
+      "title": "Search tasks and documents, archive included",
+      "description": "Search open and archived tasks and documents: words in `query`, the task fields below to sift, `source` to see if something was filed, `doc` for lines inside one document. A task matched in its page, steps or notes brings the `line`. Open a task hit with `read`, a document hit with `read_doc`.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -1523,12 +1560,8 @@
             "type": "integer"
           },
           "list": {
-            "description": "In this list, as `lists` names it",
+            "description": "In this list, as `catch_up` names it",
             "type": "string"
-          },
-          "open_to_agents": {
-            "description": "True: the person's tasks opened to agents; false: kept to themselves",
-            "type": "boolean"
           },
           "part_of": {
             "description": "Only the parts of this task, by id",
@@ -1574,24 +1607,9 @@
       }
     },
     {
-      "name": "lists",
-      "title": "The lists that exist",
-      "description": "The person's lists, to file a task in. You cannot make one; without one a task lands in the inbox.",
-      "inputSchema": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": false
-      }
-    },
-    {
       "name": "rules",
       "title": "The rules for working here, by topic",
-      "description": "The rules for working here, one guide at a time; alone, the basics and an index. Ask «tasks» before filing or working a task, «documents» before writing one, «tidying» before compacting.",
+      "description": "The rules for working here, one guide at a time; alone, the basics and an index. Ask the one the instructions name before a first write of its kind.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -1601,6 +1619,7 @@
               "tasks",
               "documents",
               "tidying",
+              "ideas",
               "all"
             ],
             "type": "string"
@@ -1618,7 +1637,7 @@
     {
       "name": "language",
       "title": "What Tisty adds to Markdown",
-      "description": "What Tisty adds to Markdown, which plain Markdown does not need: pens, underline, icons, callouts, folds, tags, cards, attachments, diagrams. Alone, the index; ask the `topic` you mean to write.",
+      "description": "Reference for the Markdown extensions Tisty reads, to look up before writing one: pens, underline, icons, callouts, folds, tags, cards, attachments, diagrams. Plain Markdown needs none. Without `topic`, the index; then ask only the topic you will write. How the app works is `help`.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -1700,26 +1719,11 @@
         "idempotentHint": true,
         "openWorldHint": false
       }
-    },
-    {
-      "name": "tags",
-      "title": "The tags already in use",
-      "description": "The tags in use, most used first, with counts; case and accents do not matter. Reuse one for the same subject rather than coining a second.",
-      "inputSchema": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": false
-      }
     }
   ],
-  "version": "1.46.0",
+  "version": "1.47.0",
   "category": "productivity",
-  "icon": "https://raw.githubusercontent.com/rgdevment/Tisty/v1.46.0/assets/icons/tisty-512.png",
+  "icon": "https://raw.githubusercontent.com/rgdevment/Tisty/v1.47.0/assets/icons/tisty-512.png",
   "tags": [
     "memory",
     "agent-memory",
