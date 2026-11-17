@@ -27,7 +27,7 @@ for (const entry of market.plugins ?? []) {
   const plugin = read(manifest);
   if (plugin.name !== entry.name) problems.push(`${manifest} is named "${plugin.name}", the marketplace says "${entry.name}"`);
   if (!plugin.description) problems.push(`${manifest} has no description`);
-  for (const key of ["logo", "mcpServers"]) {
+  for (const key of ["logo", "mcpServers", "hooks"]) {
     const path = plugin[key];
     if (typeof path === "string" && !/^https?:/.test(path) && !existsSync(join(root, path))) {
       problems.push(`${manifest} points ${key} at ${path}, which is not there`);

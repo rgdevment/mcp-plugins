@@ -1,0 +1,53 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "name": "tisty-start",
+            "type": "command",
+            "command": "node '${extensionPath}${/}plugins${/}tisty${/}server${/}hook.mjs' gemini-cli start",
+            "timeout": 15000
+          }
+        ]
+      }
+    ],
+    "AfterTool": [
+      {
+        "matcher": "^(write_file|replace)$",
+        "hooks": [
+          {
+            "name": "tisty-tool",
+            "type": "command",
+            "command": "node '${extensionPath}${/}plugins${/}tisty${/}server${/}hook.mjs' gemini-cli tool",
+            "timeout": 5000
+          }
+        ]
+      },
+      {
+        "matcher": "^mcp_tisty_",
+        "hooks": [
+          {
+            "name": "tisty-tool",
+            "type": "command",
+            "command": "node '${extensionPath}${/}plugins${/}tisty${/}server${/}hook.mjs' gemini-cli tool",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "AfterAgent": [
+      {
+        "hooks": [
+          {
+            "name": "tisty-stop",
+            "type": "command",
+            "command": "node '${extensionPath}${/}plugins${/}tisty${/}server${/}hook.mjs' gemini-cli stop",
+            "timeout": 5000
+          }
+        ]
+      }
+    ]
+  }
+}

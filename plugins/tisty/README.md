@@ -51,6 +51,17 @@ Without Tisty, the assistant gets one tool, `install_tisty`, that tells you how
 to get it. If Tisty lives somewhere unusual, set `TISTY_PATH` to the full path
 of its `tisty` command.
 
+## Hooks
+
+From 1.4.0 the plugin also brings Tisty's hooks to Claude Code, and the Gemini
+CLI extension brings them to Gemini CLI. When a session starts, your agent gets
+the tasks it left open and what moved, in about 2,000 characters. When a turn
+edited files and wrote nothing in Tisty, the turn is handed back once: if that
+was work on a task, it ticks what it finished and, if it is done, says so with
+the proof. They need Tisty 1.48 or later; with an older Tisty they stay silent.
+Tisty's Settings › Assistants adds the same hooks to Cursor and GitHub Copilot,
+and its switch **Remind it when a turn starts and ends** turns them off.
+
 ## Any other assistant
 
 The same launcher is on npm as `tisty-mcp`, for assistants that take an MCP

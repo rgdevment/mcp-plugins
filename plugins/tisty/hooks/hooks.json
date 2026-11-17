@@ -1,0 +1,49 @@
+{
+  "description": "Tisty's hooks: a session starts with the tasks it left open, and a turn that edited files without writing in Tisty is handed back once.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/server/hook.mjs\" claude-code start",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/server/hook.mjs\" claude-code tool",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "^(mcp__(tisty|plugin_tisty_tisty)__|MCP:)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/server/hook.mjs\" claude-code tool",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/server/hook.mjs\" claude-code stop",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

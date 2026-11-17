@@ -17,6 +17,7 @@ const ASKED = {
   LOCALAPPDATA: process.env.LOCALAPPDATA,
   WSL_DISTRO_NAME: process.env.WSL_DISTRO_NAME,
 };
+const ASKED_HOST = { COPILOT_PLUGIN_ROOT: process.env.COPILOT_PLUGIN_ROOT };
 
 /** Where a Tisty install leaves its `tisty` command, most likely first; TISTY_PATH alone when it is set. */
 export function places({
@@ -165,4 +166,34 @@ export function standIn(looked, input = process.stdin, output = process.stdout) 
     }
   });
   return lines;
+}
+
+// Copilot runs a Claude plugin's hooks as its own, and Tisty answers in the shape of whoever runs it.
+export function host(asked, env = ASKED_HOST) {
+  return env.COPILOT_PLUGIN_ROOT ? "copilot" : asked;
+}
+
+export async function hooked(candidates, args, heard, start = spawn) {
+  for (const file of candidates) {
+    const said = await hookedOnce(file, args, heard, start);
+    if (said !== undefined) return said;
+  }
+  return "";
+}
+
+function hookedOnce(file, args, heard, start) {
+  return new Promise((done) => {
+    let child;
+    try {
+      child = start(file, args, { stdio: ["pipe", "pipe", "ignore"], windowsHide: true });
+    } catch {
+      return done(undefined);
+    }
+    const out = [];
+    child.stdout.on("data", (chunk) => out.push(chunk));
+    child.on("error", () => done(undefined));
+    child.on("close", (code) => done(code === 0 ? Buffer.concat(out).toString("utf8") : ""));
+    child.stdin.on("error", () => {});
+    child.stdin.end(heard);
+  });
 }
