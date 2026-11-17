@@ -38,8 +38,9 @@ source in Cursor's settings.
 
 <img src="plugins/tisty/assets/logo.png" width="96" height="96" alt="Tisty"/>
 
-**Local memory and context for you and your AI agent.** Your agent forgets
-everything when the session ends; Tisty keeps it. Tasks with steps and a dated
+**Shared working memory for you and your AI agent.** You see the whole; your
+agent, every detail. Your agent forgets everything when the session ends; Tisty
+keeps it. Tasks with steps and a dated
 journal, and documents one per subject, as plain Markdown on your own disk, for
 Windows and macOS. Ideas caught on the fly wait as sticky notes in Brainstorm,
 to become a task or go into a document later. No account, no subscription, no
