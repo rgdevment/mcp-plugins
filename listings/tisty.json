@@ -1,9 +1,9 @@
 {
-  "description": "Local memory and context for you and your AI agent: tasks with steps and a dated journal, Markdown documents and Brainstorm ideas, on your own disk. Your agent picks up where it left off and reads a section at a time, where you can follow and audit it.",
+  "description": "Shared working memory for you and your AI agent: tasks with steps and a dated journal, Markdown documents and Brainstorm ideas, on your own disk. Your agent picks up where it left off and reads a section at a time, where you can follow and audit it.",
   "marketplaceTail": "Needs the free Tisty app for Windows or macOS.",
   "geminiTail": "Requires the free Tisty app for Windows or macOS.",
-  "npm": "Starts the MCP server of the Tisty app installed on this computer: local memory and context for you and your AI agent, with notes, documents, tasks and ideas as Markdown on your own disk.",
-  "registry": "Local memory and context for you and your AI agent: tasks, notes and documents in Markdown on disk.",
+  "npm": "Starts the MCP server of the Tisty app installed on this computer: shared working memory for you and your AI agent, with notes, documents, tasks and ideas as Markdown on your own disk.",
+  "registry": "Shared working memory for you and your AI agent: tasks, notes and documents in Markdown on disk.",
   "keywords": {
     "plugin": [
       "memory",
@@ -71,8 +71,8 @@
     ]
   },
   "lobehub": {
-    "description": "Local memory and context for you and your AI agent, in Tisty on your own disk, for Windows and macOS. Your assistant picks up where it left off, files tasks with steps and dates, keeps a dated journal, writes and edits documents passage by passage, reads them by outline and section, jots and sorts ideas on Brainstorm, and searches past work over local stdio, with no account or server; it never closes or deletes anything.",
-    "es-ES": "Memoria y contexto locales para ti y tu agente de IA, en Tisty y en tu propio disco, para Windows y macOS. Tu asistente retoma donde quedó, anota tareas con pasos y fechas, lleva una bitácora con fechas, escribe y corrige documentos por pasajes, los lee por índice y sección, anota y ordena ideas en la Lluvia de ideas, y busca trabajo pasado por stdio local, sin cuenta ni servidor; nunca cierra ni borra nada.",
+    "description": "Shared working memory for you and your AI agent, in Tisty on your own disk, for Windows and macOS. Your assistant picks up where it left off, files tasks with steps and dates, keeps a dated journal, writes and edits documents passage by passage, reads them by outline and section, jots and sorts ideas on Brainstorm, and searches past work over local stdio, with no account or server; it never closes or deletes anything.",
+    "es-ES": "Memoria de trabajo compartida para ti y tu agente de IA, en Tisty y en tu propio disco, para Windows y macOS. Tu asistente retoma donde quedó, anota tareas con pasos y fechas, lleva una bitácora con fechas, escribe y corrige documentos por pasajes, los lee por índice y sección, anota y ordena ideas en la Lluvia de ideas, y busca trabajo pasado por stdio local, sin cuenta ni servidor; nunca cierra ni borra nada.",
     "tags": [
       "memory",
       "agent-memory",
