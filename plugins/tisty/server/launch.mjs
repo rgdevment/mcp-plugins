@@ -192,7 +192,7 @@ function hookedOnce(file, args, heard, start) {
     const out = [];
     child.stdout.on("data", (chunk) => out.push(chunk));
     child.on("error", () => done(undefined));
-    child.on("close", (code) => done(code === 0 ? Buffer.concat(out).toString("utf8") : ""));
+    child.on("close", (code) => done(code === 0 ? Buffer.concat(out).toString("utf8") : undefined));
     child.stdin.on("error", () => {});
     child.stdin.end(heard);
   });

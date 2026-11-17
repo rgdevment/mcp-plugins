@@ -20,6 +20,12 @@ test("a Tisty that answers with an error says nothing, so an older one never bre
   assert.equal(await hooked([], ECHO, Buffer.from("{}")), "");
 });
 
+test("an older Tisty that answers with an error gives way to the next one installed", async () => {
+  const older = (file, args, options) =>
+    spawn(process.execPath, file === "old" ? ["-e", "process.exit(1)"] : args, options);
+  assert.equal(await hooked(["old", "new"], ECHO, Buffer.from("said"), older), "said");
+});
+
 test("Copilot running the Claude plugin's hooks is answered as Copilot", () => {
   assert.equal(host("claude-code", { COPILOT_PLUGIN_ROOT: "/p" }), "copilot");
   assert.equal(host("claude-code", {}), "claude-code");
