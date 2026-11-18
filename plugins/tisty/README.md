@@ -58,7 +58,8 @@ CLI extension brings them to Gemini CLI. When a session starts, your agent gets
 the tasks it left open and what moved, in about 2,000 characters. When a turn
 edited files and wrote nothing in Tisty, the turn is handed back once: if that
 was work on a task, it ticks what it finished and, if it is done, says so with
-the proof. They need Tisty 1.48 or later; with an older Tisty they stay silent.
+the proof. They need a Tisty whose command line has `tisty hook`; with an older
+one they stay silent.
 Tisty's Settings › Assistants adds the same hooks to Cursor and GitHub Copilot,
 and its switch **Remind it when a turn starts and ends** turns them off.
 
