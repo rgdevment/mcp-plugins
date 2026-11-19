@@ -31,9 +31,10 @@ its target, decides whether the agent goes there.
 ## The two loads
 
 - **Context load** is what reaches every session whether needed or not: what
-  `catch_up` and the start hook bring, a task's state, which `read` brings
-  first, and a file in AGENTS, written into the assistant's own rules. Keep
-  those short; every word there is paid every time.
+  `catch_up` and the start hook bring, and a file in AGENTS, written into the
+  assistant's own rules. Keep those short; every word there is paid every
+  time. A task's state is close behind: `read` brings it first, each time the
+  task is opened.
 - **Cognitive load** is the person's: they are the index, and folders and
   titles are how they find things. Spend it where their judgement matters.
 
@@ -60,8 +61,9 @@ splits by subject, each part named where the reader will look for it.
 
 A step is something the agent can do and check. Write what done looks like:
 «every endpoint answers 401 without a token» ends; «auth works» invites stopping
-early. The **Done when** section of a task's page sets the bar for the whole
-task: checkable, and covering everything, so nothing is left to judgement.
+early. The section of a task's page that says when it is done (*Done when*, in
+the person's language) sets the bar for the whole task: checkable, and covering
+everything, so nothing is left to judgement.
 
 ## Leading words
 

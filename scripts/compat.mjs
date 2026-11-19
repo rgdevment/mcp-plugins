@@ -8,7 +8,7 @@ const NAMED = {
   read: ["task", "doc", "section", "marks", "print", "versions", "version"],
   brain: ["query", "doc", "task", "links", "part_of"],
   tick: ["task", "state"],
-  note: ["task", "replaces"],
+  note: [],
   say_done: [],
   sum_up: [],
   propose: [],
