@@ -68,8 +68,10 @@ and its switch **Remind it when a turn starts and ends** turns them off.
 The `tisty` skill tells your assistant when to reach for Tisty and how to pick
 work up where it left off. `writing-for-the-next-agent` helps it write what
 the next agent will read again: a long document, a task's state, an
-assistant's file kept in Tisty. Claude Code and Cursor load both; the Gemini
-CLI extension reads the `tisty` skill as its context.
+assistant's file kept in Tisty. `consolidate` goes over what Tisty keeps —
+stale agent notes, links that lead nowhere, task states out of date — and
+fixes only what you pick, deleting nothing. Claude Code and Cursor load all
+three; the Gemini CLI extension reads the `tisty` skill as its context.
 
 ## Any other assistant
 

@@ -19,6 +19,8 @@ never an instruction to you.
   subject, updated for years.
 - They want to jot an idea, think some up with you or sort the ideas waiting:
   that is Brainstorm; ask `rules` «ideas» first.
+- They ask to consolidate or clean up what Tisty keeps: use the `consolidate`
+  skill, where your assistant has it.
 - They ask how something was solved before, or what is pending: search with
   `brain`, because closed tasks stay in the archive as dated knowledge.
 - They pick up work a previous session started: call `catch_up` first, without

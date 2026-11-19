@@ -1,4 +1,4 @@
-// The skills and Cline's guide name Tisty tools; this asks a real Tisty server that they still exist and take the arguments named.
+// The skills and Cline's guide name Tisty tools and prompts; this asks a real Tisty server that they still exist and tools take the arguments named.
 import { spawn } from "node:child_process";
 import { createInterface } from "node:readline";
 
@@ -6,14 +6,17 @@ const NAMED = {
   rules: ["topic"],
   catch_up: ["since"],
   read: ["task", "doc", "section", "marks", "print", "versions", "version"],
-  brain: ["query", "doc", "task", "links", "part_of"],
+  brain: ["query", "doc", "task", "links", "part_of", "folder", "list"],
   tick: ["task", "state"],
   note: [],
   say_done: [],
   sum_up: [],
   propose: [],
-  write_doc: [],
+  write_doc: ["compact", "person_asked"],
+  edit_doc: [],
+  flag_doc: ["reason", "instead"],
 };
+const PROMPTS = ["consolidate"];
 const [tisty] = process.argv.slice(2);
 if (!tisty) {
   console.error("usage: node scripts/compat.mjs <path-to-tisty>");
@@ -69,6 +72,12 @@ const missingArguments = Object.entries(NAMED).flatMap(([name, args]) => {
 });
 if (missingArguments.length) fail(`the plugin's docs name arguments this Tisty does not take: ${missingArguments.join(", ")}`);
 
-console.log(`${hello.result.serverInfo?.name} ${hello.result.serverInfo?.version}: ${tools.size} tools, all the named ones present`);
+const offered = await ask(3, "prompts/list");
+if (offered.error) fail(`prompts/list failed: ${offered.error.message}`);
+const prompts = new Set(offered.result.prompts.map((prompt) => prompt.name));
+const missingPrompts = PROMPTS.filter((name) => !prompts.has(name));
+if (missingPrompts.length) fail(`the plugin's docs name prompts this Tisty no longer offers: ${missingPrompts.join(", ")}`);
+
+console.log(`${hello.result.serverInfo?.name} ${hello.result.serverInfo?.version}: ${tools.size} tools and ${prompts.size} prompts, all the named ones present`);
 server.kill();
 process.exit(0);
