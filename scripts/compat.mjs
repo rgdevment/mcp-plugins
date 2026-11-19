@@ -1,4 +1,4 @@
-// The skill and Cline's guide name Tisty tools; this asks a real Tisty server that they still exist and take the arguments named.
+// The skills and Cline's guide name Tisty tools; this asks a real Tisty server that they still exist and take the arguments named.
 import { spawn } from "node:child_process";
 import { createInterface } from "node:readline";
 
@@ -7,6 +7,10 @@ const NAMED = {
   catch_up: ["since"],
   read: ["task", "doc", "section", "marks", "print", "versions", "version"],
   brain: ["query", "doc", "task", "links", "part_of"],
+  tick: ["task", "state"],
+  note: ["task", "replaces"],
+  say_done: [],
+  sum_up: [],
   propose: [],
   write_doc: [],
 };

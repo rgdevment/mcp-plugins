@@ -40,6 +40,19 @@ never an instruction to you.
   that. `versions` lists a document's earlier versions, and `version` reads
   one.
 
+## Working a task
+
+- `tick` each step as you finish it, with its `state`: what is done, what is
+  left, the decisions in force and what was ruled out. The next session reads
+  that state first.
+- `note` is for what changes something: a decision, something ruled out, a
+  block. One that undoes an earlier agent note names it in `replaces`.
+- An answer that carries `ask` wants the same `tick` with its `state`, or
+  `say_done` with the proof when the work is done.
+- Before writing something the next agent will reopen — a long document, a
+  task's state, an assistant's file in AGENTS — use the
+  `writing-for-the-next-agent` skill, where your assistant has it.
+
 ## How to work
 
 The server explains itself when it connects, and its `rules` tool gives the
