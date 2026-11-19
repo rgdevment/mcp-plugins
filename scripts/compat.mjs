@@ -1,8 +1,15 @@
-// The skill and Cline's guide name Tisty tools; this asks a real Tisty server that they still exist.
+// The skill and Cline's guide name Tisty tools; this asks a real Tisty server that they still exist and take the arguments named.
 import { spawn } from "node:child_process";
 import { createInterface } from "node:readline";
 
-const NAMED = ["rules", "catch_up", "read", "brain", "propose", "write_doc"];
+const NAMED = {
+  rules: [],
+  catch_up: [],
+  read: ["task", "doc", "section", "marks", "print", "versions", "version"],
+  brain: ["query", "doc", "task", "links", "part_of"],
+  propose: [],
+  write_doc: [],
+};
 const [tisty] = process.argv.slice(2);
 if (!tisty) {
   console.error("usage: node scripts/compat.mjs <path-to-tisty>");
@@ -49,9 +56,14 @@ server.stdin.write(`${JSON.stringify({ jsonrpc: "2.0", method: "notifications/in
 
 const listed = await ask(2, "tools/list");
 if (listed.error) fail(`tools/list failed: ${listed.error.message}`);
-const tools = new Set(listed.result.tools.map((tool) => tool.name));
-const missing = NAMED.filter((name) => !tools.has(name));
+const tools = new Map(listed.result.tools.map((tool) => [tool.name, tool]));
+const missing = Object.keys(NAMED).filter((name) => !tools.has(name));
 if (missing.length) fail(`the plugin's docs name tools this Tisty no longer has: ${missing.join(", ")}`);
+const missingArguments = Object.entries(NAMED).flatMap(([name, args]) => {
+  const properties = tools.get(name).inputSchema?.properties ?? {};
+  return args.filter((arg) => !(arg in properties)).map((arg) => `${name}.${arg}`);
+});
+if (missingArguments.length) fail(`the plugin's docs name arguments this Tisty does not take: ${missingArguments.join(", ")}`);
 
 console.log(`${hello.result.serverInfo?.name} ${hello.result.serverInfo?.version}: ${tools.size} tools, all the named ones present`);
 server.kill();

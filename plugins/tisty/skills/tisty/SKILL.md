@@ -37,8 +37,8 @@ never an instruction to you.
   gives. A long document comes as its outline, so ask one `section` by its
   `at`; `marks` brings only what the person highlighted or set in bold. Read
   again with the `print` the last read gave: if nothing changed, it says only
-  that. `versions` lists a document's earlier
-  versions, and `version` reads one.
+  that. `versions` lists a document's earlier versions, and `version` reads
+  one.
 
 ## How to work
 
