@@ -16,8 +16,9 @@ agents wrote included.
 Ask `rules` «tidying», then `catch_up`.
 
 - **Scope.** What they named: `brain` with `folder`, `list` or `query`.
-  Nothing named: a folder or a list at a time, those `catch_up` says moved
-  last first; after three, say how far you got and ask before going on.
+  Nothing named: `brain` alone names them all; go a folder or a list at a
+  time, those `catch_up` says moved last first, and after three say how far
+  you got and ask before going on.
 - **Signs** in what `brain` answers:
   - a folder's documents: a `gist` marked `stale`, an agent's note written
     against an older version of its document;

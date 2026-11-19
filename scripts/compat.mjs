@@ -74,7 +74,7 @@ if (missingArguments.length) fail(`the plugin's docs name arguments this Tisty d
 
 const offered = await ask(3, "prompts/list");
 if (offered.error) fail(`prompts/list failed: ${offered.error.message}`);
-const prompts = new Set(offered.result.prompts.map((prompt) => prompt.name));
+const prompts = new Set((offered.result?.prompts ?? []).map((prompt) => prompt.name));
 const missingPrompts = PROMPTS.filter((name) => !prompts.has(name));
 if (missingPrompts.length) fail(`the plugin's docs name prompts this Tisty no longer offers: ${missingPrompts.join(", ")}`);
 
