@@ -3,8 +3,8 @@ import { spawn } from "node:child_process";
 import { createInterface } from "node:readline";
 
 const NAMED = {
-  rules: [],
-  catch_up: [],
+  rules: ["topic"],
+  catch_up: ["since"],
   read: ["task", "doc", "section", "marks", "print", "versions", "version"],
   brain: ["query", "doc", "task", "links", "part_of"],
   propose: [],
