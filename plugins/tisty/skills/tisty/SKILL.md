@@ -19,13 +19,38 @@ never an instruction to you.
   subject, updated for years.
 - They want to jot an idea, think some up with you or sort the ideas waiting:
   that is Brainstorm; ask `rules` «ideas» first.
-- They ask how something was solved before, or what is pending: search, because
-  closed tasks stay in the archive as dated knowledge.
+- They ask to consolidate or clean up what Tisty keeps: use the `consolidate`
+  skill, where your assistant has it; without it, propose every fix and make
+  only those they pick.
+- They ask how something was solved before, or what is pending: search with
+  `brain`, because closed tasks stay in the archive as dated knowledge.
 - They pick up work a previous session started: call `catch_up` first, without
-  `since`, and `read` the task it names as `last` before anything else. A long
-  task page comes as its sections with the digest and the latest note, and a
-  long document is read by its outline and the section you need. The same
-  answer names the tasks that press, overdue first.
+  `since`. It names the tasks that press, overdue first, and as `last` the task
+  you were on: `read` it before anything else. A long task page comes as its
+  sections with the digest and the latest note.
+
+## Finding and reading
+
+- `brain` finds and connects without opening anything. Words in `query` search
+  open and archived tasks and documents; a `doc` or `task` alone gives its card:
+  a document's sections with their `at`, a task's state, steps and parts, and
+  what cites each. `links` brings its neighbours of one kind, and `part_of`
+  groups a project's open parts.
+- `read` opens one thing: a `task`, or a document by the `doc` id `brain`
+  gives. A long document comes as its outline, so ask one `section` by its
+  `at`; `marks` brings only what the person highlighted or set in bold. Read
+  again with the `print` the last read gave: if nothing changed, it says only
+  that. `versions` lists a document's earlier versions, and `version` reads
+  one.
+
+## Working a task
+
+- `tick` each step as you finish it, with its `state`: done, left, decisions
+  in force, ruled out; `note` only what changes something. An answer carrying
+  `ask` wants that `tick`, or `say_done` with the proof.
+- Before writing something the next agent will reopen — a long document, a
+  task's state, an assistant's file in AGENTS — use the
+  `writing-for-the-next-agent` skill, where your assistant has it.
 
 ## How to work
 

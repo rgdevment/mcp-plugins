@@ -46,7 +46,7 @@ There is nothing to configure. Only if Tisty is installed somewhere unusual, add
 ## 3. Check it
 
 Restart the assistant if it was open before Tisty was installed, then list the
-server's tools. Tisty's tools include `rules`, `find`, `propose` and
+server's tools. Tisty's tools include `rules`, `brain`, `read`, `propose` and
 `write_doc`. Call `rules` with no arguments: it answers with the basics of
 working in Tisty. If the only tool is `install_tisty`, the launcher did not find
 Tisty: call it and pass its steps on to the person.
@@ -54,6 +54,14 @@ Tisty: call it and pass its steps on to the person.
 If every call is refused, the person closed Tisty's door to assistants: they
 open it again in Settings › Assistants, or with «Let it in» when Tisty says
 this assistant tried to come in.
+
+To look things up, `brain` finds and connects without opening anything: words
+in `query` search open and archived tasks and documents, a `doc` or `task`
+alone gives its card with what cites it, `links` brings its neighbours and
+`part_of` a project's open parts. `read` opens one: a task, or with `doc` a
+document by the id `brain` gives, one `section` of it or only its `marks`. Sent
+the `print` the last read gave, it says only that nothing changed; `versions`
+lists a document's earlier versions.
 
 ## What it may do
 
