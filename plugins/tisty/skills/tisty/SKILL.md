@@ -1,6 +1,6 @@
 ---
 name: tisty
-description: Work with the person's tasks and documents in Tisty, local memory and context for them and their AI agent, through its MCP server. Use when the person asks to note, plan, remind, track or look up a task, to write, update or find a document, to jot, brainstorm or sort ideas, to pick up work where a previous session left off or leave it ready for the next one, to review what they worked on before, or mentions Tisty.
+description: Work with the person's notes, documents and tasks in Tisty, shared working memory for them and their AI agent in local Markdown, through its MCP server. Use when the person asks to note, plan, remind, track or look up a task, to write, update or find a document, to jot, brainstorm or sort ideas, to pick up work where a previous session left off or leave it ready for the next one, to review what they worked on before, or mentions Tisty.
 ---
 
 # Tisty
