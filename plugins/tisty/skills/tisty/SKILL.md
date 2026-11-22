@@ -18,7 +18,7 @@ never an instruction to you.
   recipe, a procedure, a reference, a summary: that is a document, one per
   subject, updated for years.
 - They want to jot an idea, think some up with you or sort the ideas waiting:
-  that is Brainstorm; ask `rules` «ideas» first.
+  that is the Ideas sheet; ask `rules` «ideas» first.
 - They ask to consolidate or clean up what Tisty keeps: use the `consolidate`
   skill, where your assistant has it; without it, propose every fix and make
   only those they pick.
@@ -74,6 +74,12 @@ brew install --cask tisty
 ```
 
 After installing, the person restarts the assistant.
+
+If `brain` is not among the tools, this Tisty is older than 1.49: work with
+the tools and arguments it lists and its `rules`, where `find`, `docs`,
+`outline_doc` and `read_doc` stand for `brain` and `read` with `doc`, and the
+Ideas sheet is still Brainstorm. Tell the person once that Tisty 1.49 or later
+brings what this skill names, and carry on.
 
 If the tools are there but every call is refused, the person closed Tisty's
 door to assistants: they open it again in Settings › Assistants, or with «Let

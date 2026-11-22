@@ -42,9 +42,9 @@ source in Cursor's settings.
 in local Markdown.** You see the whole; your agent, every detail. Your agent
 forgets everything when the session ends; Tisty keeps it. Tasks with steps and a
 dated journal, and documents one per subject, for Windows and macOS. Ideas
-caught on the fly wait as sticky notes in Brainstorm, to become a task or go
-into a document later. No account, no subscription, no telemetry, no server. It
-works without an agent too, the traditional way: your notes, documents and
+caught on the fly wait as sticky notes on the Ideas sheet, to become a task or
+go into a document later. No account, no subscription, no telemetry, no server.
+It works without an agent too, the traditional way: your notes, documents and
 tasks, by hand and at your own pace. With the plugin, your assistant picks up
 where it left off by asking what moved since last time, reads a long document by
 its outline and one section instead of the whole file, files tasks with steps

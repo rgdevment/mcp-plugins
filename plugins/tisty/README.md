@@ -4,8 +4,8 @@
 
 [Tisty](https://www.tisty.app/) is shared working memory for you and your AI
 agent: notes, documents and tasks in local Markdown, for Windows and macOS.
-Ideas caught on the fly wait as sticky notes in Brainstorm, to become a task or
-go into a document later. Your agent forgets everything when
+Ideas caught on the fly wait as sticky notes on the Ideas sheet, to become a
+task or go into a document later. Your agent forgets everything when
 the session ends; with this plugin it picks up where it left off, asking what
 moved since last time and reading a long document by its outline and one section
 instead of the whole file. It connects your assistant to the Tisty app on your
