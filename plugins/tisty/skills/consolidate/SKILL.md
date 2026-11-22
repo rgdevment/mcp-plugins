@@ -11,6 +11,11 @@ run it the same way when they ask in their own words. It is stricter than
 `rules` «tidying» on its own: nothing changes before the person picks, what
 agents wrote included.
 
+If `brain` is not among Tisty's tools, this Tisty is older than 1.49: tell the
+person once that 1.49 or later brings this pass whole, and meanwhile go by that
+server's `rules` «tidying» and the tools it lists, still proposing before you
+change anything.
+
 ## 1. Look, changing nothing
 
 Ask `rules` «tidying», then `catch_up`.

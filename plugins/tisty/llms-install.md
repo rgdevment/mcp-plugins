@@ -50,7 +50,9 @@ Restart the assistant if it was open before Tisty was installed, then list the
 server's tools. Tisty's tools include `rules`, `brain`, `read`, `propose` and
 `write_doc`. Call `rules` with no arguments: it answers with the basics of
 working in Tisty. If the only tool is `install_tisty`, the launcher did not find
-Tisty: call it and pass its steps on to the person.
+Tisty: call it and pass its steps on to the person. If `brain` is not among the
+tools, Tisty is older than 1.49: it works with the tools it lists, and updating
+Tisty brings `brain`.
 
 If every call is refused, the person closed Tisty's door to assistants: they
 open it again in Settings › Assistants, or with «Let it in» when Tisty says
@@ -69,7 +71,7 @@ lists a document's earlier versions.
 It can file tasks with steps and dates, set reminders, write documents and
 correct them passage by passage, change their tables by rows and columns, draw
 diagrams in Mermaid, file them into folders, attach files, jot and sort ideas on
-Brainstorm and search open and archived work. It never closes or deletes
+the Ideas sheet and search open and archived work. It never closes or deletes
 anything: it says a task is done and the person confirms it in the app.
 
 More in the [documentation](https://www.tisty.app/docs/assistants-and-mcp/).
