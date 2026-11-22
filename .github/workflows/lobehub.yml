@@ -97,12 +97,93 @@ jobs:
             fs.writeFileSync("put.json", JSON.stringify({ message, branch, sha, content }));
           ' "$LISTING" "$title" "$BRANCH" "$sha"
           gh api -X PUT "repos/$REPO/contents/$LISTING" --input put.json --silent
-          gh pr create --repo "$REPO" --base main --head "$BRANCH" --title "$title" --body "The LobeHub manifest regenerated from Tisty $VERSION's server. Once merged, publish it signed in to LobeHub: \`scripts/release.sh $VERSION\`."
+          gh pr create --repo "$REPO" --base main --head "$BRANCH" --title "$title" --body "The LobeHub manifest regenerated from Tisty $VERSION's server. Once merged, the workflow publishes it with the LobeHub session stored for it; when it cannot, an issue asks for \`scripts/release.sh $VERSION\`."
           # A pull request opened with this token starts no workflow of its own, so the required checks are asked for.
           gh workflow run validate.yml --repo "$REPO" --ref "$BRANCH"
 
-  # Publishing needs the person's own LobeHub sign-in, so an issue keeps asking until LobeHub carries what main lists.
+  # LobeHub publishes only for a signed-in person, so the session the owner stored does it; without one, the issue below asks as before.
+  publish:
+    if: github.event_name != 'schedule' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    env:
+      LISTING: listings/lobehub/tisty/lhm.plugin.json
+      PAGE: https://market.lobehub.com/s/plugins/rgdevment-tisty
+      SESSION_FILE: .lobehub-market/user-credentials.json
+    outputs:
+      done: ${{ steps.publish.outcome == 'success' }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+
+      - name: Does LobeHub lag behind main
+        id: look
+        run: |
+          listed=$(node -p "require('./$LISTING').version")
+          published=$(scripts/lobehub-shows.sh "$PAGE")
+          echo "listed=$listed" >> "$GITHUB_OUTPUT"
+          if [ -z "$published" ]; then
+            echo "LobeHub's page gave no version to compare, so nothing is published"
+          elif [ "$published" = "$listed" ]; then
+            echo "LobeHub carries Tisty $listed"
+          else
+            echo "LobeHub shows $published and main lists $listed"
+            echo "due=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Bring the stored LobeHub session
+        id: session
+        env:
+          SESSION: ${{ secrets.LOBEHUB_USER_CREDENTIALS }}
+        run: |
+          if [ -z "$SESSION" ]; then
+            echo "::notice::No LobeHub session is stored, so the publish stays with the person"
+            exit 0
+          fi
+          umask 077
+          mkdir -p "$(dirname "$HOME/$SESSION_FILE")"
+          printf '%s' "$SESSION" > "$HOME/$SESSION_FILE"
+          if ! node -e 'const held = require(process.argv[1]); process.exit(held.accessToken && held.refreshToken ? 0 : 1)' "$HOME/$SESSION_FILE" 2>/dev/null; then
+            echo "::error::The stored LobeHub session is not the file LobeHub's sign-in writes. Store it again from a computer signed in to LobeHub."
+            exit 1
+          fi
+          # GitHub hides the secret only as one whole text, so each token inside it is hidden by name.
+          node -e 'const held = require(process.argv[1]); for (const token of [held.accessToken, held.refreshToken]) console.log(`::add-mask::${token}`)' "$HOME/$SESSION_FILE"
+          echo "stored=true" >> "$GITHUB_OUTPUT"
+
+      - name: Publish the listing main carries
+        id: publish
+        if: steps.look.outputs.due == 'true' && steps.session.outputs.stored == 'true'
+        env:
+          LISTED: ${{ steps.look.outputs.listed }}
+        run: |
+          prints() {
+            node -p 'const held = require(process.argv[1]); const print = (token) => require("node:crypto").createHash("sha256").update(String(token)).digest("hex"); `${print(held.accessToken)} ${print(held.refreshToken)}`' "$HOME/$SESSION_FILE"
+          }
+          read -r access renewal < <(prints)
+          scripts/release.sh "$LISTED"
+          read -r access_now renewal_now < <(prints)
+          if [ "$access" = "$access_now" ]; then
+            echo "LobeHub did not renew the session in this run, so it does not tell whether a renewal replaces it"
+          elif [ "$renewal" = "$renewal_now" ]; then
+            echo "::notice::LobeHub renewed the session and kept its renewal token, so the stored session stays good"
+          else
+            echo "::warning::LobeHub gave the session a new renewal token. Store the session again; your own computer may have to sign in again too."
+          fi
+
+  # Without a stored session, or when it fails, an issue keeps asking until LobeHub carries what main lists.
   remind:
+    needs: publish
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
@@ -117,6 +198,7 @@ jobs:
       LISTING: listings/lobehub/tisty/lhm.plugin.json
       PAGE: https://market.lobehub.com/s/plugins/rgdevment-tisty
       TITLE: LobeHub awaits Tisty
+      PUBLISHED_NOW: ${{ needs.publish.outputs.done }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -125,14 +207,9 @@ jobs:
       - name: Ask for the publish while LobeHub lags behind main
         run: |
           listed=$(node -p "require('./$LISTING').version")
-          code=$(curl -s -o page.md -w '%{http_code}' "$PAGE")
-          case "$code" in
-            200) published=$(sed -nE 's/^[|] Version +[|] *([0-9.]+).*/\1/p' page.md) ;;
-            404) published="none" ;;
-            *) echo "::warning::LobeHub answered $code, so there is nothing to compare"; exit 0 ;;
-          esac
+          published=$(scripts/lobehub-shows.sh "$PAGE")
           if [ -z "$published" ]; then
-            echo "::warning::LobeHub's page names no version"; exit 0
+            echo "::warning::LobeHub's page gave no version to compare"; exit 0
           fi
           open=$(gh issue list --repo "$REPO" --state open --json number,title -q "map(select(.title | startswith(\"$TITLE \"))) | .[0].number // empty")
           if [ "$published" = "$listed" ]; then
@@ -142,15 +219,25 @@ jobs:
             fi
             exit 0
           fi
+          if [ "$PUBLISHED_NOW" = "true" ]; then
+            echo "This run published Tisty $listed and LobeHub's page still shows $published; the next run looks again"
+            exit 0
+          fi
           title="$TITLE $listed"
           body=$(printf '%s\n' \
             "main lists Tisty $listed for LobeHub, and LobeHub shows $published: $PAGE" \
             "" \
-            "Publish it signed in to LobeHub, from Git Bash in a clone of this repository:" \
+            "The workflow publishes it by itself only while a LobeHub session is stored for it and still good. Publish it signed in to LobeHub, from Git Bash in a clone of this repository:" \
             "" \
             '```sh' \
             "npx -y @lobehub/market-cli@0.0.43 login" \
             "scripts/release.sh $listed" \
+            '```' \
+            "" \
+            "To hand the next ones to the workflow, store that sign-in afterwards:" \
+            "" \
+            '```sh' \
+            "gh secret set LOBEHUB_USER_CREDENTIALS -R $REPO < ~/.lobehub-market/user-credentials.json" \
             '```' \
             "" \
             "This issue closes by itself once LobeHub shows $listed.")

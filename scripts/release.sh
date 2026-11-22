@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# After a Tisty release: publish to LobeHub the listing the LobeHub workflow refreshed and you merged.
+# After a Tisty release: publish to LobeHub the listing merged into main. The LobeHub workflow runs it, and so can you.
 #   scripts/release.sh 1.33.0
 set -euo pipefail
 
