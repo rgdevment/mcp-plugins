@@ -1,5 +1,5 @@
 {
-  "description": "Shared working memory for you and your AI agent: notes, documents and tasks in local Markdown, with task steps, a dated journal and Brainstorm ideas. Your agent picks up where it left off and reads a section at a time, where you can follow and audit it. It works without an agent too, the traditional way: your notes, documents and tasks, by hand and at your own pace.",
+  "description": "Shared working memory for you and your AI agent: notes, documents and tasks in local Markdown, with task steps, a dated journal and an Ideas sheet. Your agent picks up where it left off and reads a section at a time, where you can follow and audit it. It works without an agent too, the traditional way: your notes, documents and tasks, by hand and at your own pace.",
   "marketplaceTail": "Needs the free Tisty app for Windows or macOS.",
   "geminiTail": "Requires the free Tisty app for Windows or macOS.",
   "npm": "Starts the MCP server of the Tisty app installed on this computer. Shared working memory for you and your AI agent: notes, documents and tasks in local Markdown, with ideas too. It works without an agent too, the traditional way.",
