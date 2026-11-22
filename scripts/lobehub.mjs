@@ -1,4 +1,4 @@
-// LobeHub only publishes for a signed-in person, so this refreshes the manifest and the person runs `lhm plugin update`.
+// LobeHub only publishes for a signed-in person, so this only refreshes the manifest: scripts/release.sh publishes it.
 import { execFileSync, execSync } from "node:child_process";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
