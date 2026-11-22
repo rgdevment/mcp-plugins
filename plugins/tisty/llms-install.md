@@ -50,9 +50,9 @@ Restart the assistant if it was open before Tisty was installed, then list the
 server's tools. Tisty's tools include `rules`, `brain`, `read`, `propose` and
 `write_doc`. Call `rules` with no arguments: it answers with the basics of
 working in Tisty. If the only tool is `install_tisty`, the launcher did not find
-Tisty: call it and pass its steps on to the person. If `find` and `read_doc`
-stand where `brain` should, Tisty is older than 1.49: it works with the tools it
-lists, and updating Tisty brings `brain`.
+Tisty: call it and pass its steps on to the person. If `brain` is not among the
+tools, Tisty is older than 1.49: it works with the tools it lists, and updating
+Tisty brings `brain`.
 
 If every call is refused, the person closed Tisty's door to assistants: they
 open it again in Settings › Assistants, or with «Let it in» when Tisty says
