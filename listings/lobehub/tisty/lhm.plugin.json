@@ -1,7 +1,7 @@
 {
   "author": "rgdevment",
   "authorUrl": "https://github.com/rgdevment",
-  "description": "Shared working memory for you and your AI agent, in Tisty on your own disk, for Windows and macOS. Your assistant picks up where it left off, files tasks with steps and dates, keeps a dated journal, writes and edits documents passage by passage, reads them by outline and section, jots and sorts ideas on Brainstorm, and searches past work over local stdio, with no account or server; it never closes or deletes anything.",
+  "description": "Shared working memory for you and your AI agent: notes, documents and tasks in local Markdown, in Tisty for Windows and macOS. Your assistant picks up where it left off, files tasks with steps and dates, keeps a dated journal, writes and edits documents passage by passage, reads them by outline and section, jots and sorts ideas on Brainstorm, and searches past work over local stdio, with no account or server; it never closes or deletes anything. It works without an agent too, the traditional way: your notes, documents and tasks, by hand and at your own pace.",
   "homepage": "https://www.tisty.app/",
   "identifier": "rgdevment-tisty",
   "name": "Tisty",
@@ -1748,7 +1748,7 @@
     {
       "locale": "es-ES",
       "name": "Tisty",
-      "description": "Memoria de trabajo compartida para ti y tu agente de IA, en Tisty y en tu propio disco, para Windows y macOS. Tu asistente retoma donde quedó, anota tareas con pasos y fechas, lleva una bitácora con fechas, escribe y corrige documentos por pasajes, los lee por índice y sección, anota y ordena ideas en la Lluvia de ideas, y busca trabajo pasado por stdio local, sin cuenta ni servidor; nunca cierra ni borra nada."
+      "description": "Memoria de trabajo compartida para ti y tu agente de IA: notas, documentos y tareas en Markdown local, en Tisty para Windows y macOS. Tu asistente retoma donde quedó, anota tareas con pasos y fechas, lleva una bitácora con fechas, escribe y corrige documentos por pasajes, los lee por índice y sección, anota y ordena ideas en la Lluvia de ideas, y busca trabajo pasado por stdio local, sin cuenta ni servidor; nunca cierra ni borra nada. También funciona sin agente, a la manera tradicional: tus notas, documentos y tareas, a mano y a tu ritmo."
     }
   ],
   "deploymentOptions": [

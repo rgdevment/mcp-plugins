@@ -9,7 +9,7 @@
     {
       "name": "tisty",
       "source": "./plugins/tisty",
-      "description": "Shared working memory for you and your AI agent: tasks with steps and a dated journal, Markdown documents and Brainstorm ideas, on your own disk. Your agent picks up where it left off and reads a section at a time, where you can follow and audit it. Needs the free Tisty app for Windows or macOS.",
+      "description": "Shared working memory for you and your AI agent: notes, documents and tasks in local Markdown, with task steps, a dated journal and Brainstorm ideas. Your agent picks up where it left off and reads a section at a time, where you can follow and audit it. It works without an agent too, the traditional way: your notes, documents and tasks, by hand and at your own pace. Needs the free Tisty app for Windows or macOS.",
       "category": "productivity",
       "keywords": [
         "memory",

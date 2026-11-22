@@ -1,11 +1,12 @@
 # Installing Tisty's MCP server
 
 These steps are for an assistant setting up Tisty for the person, such as Cline.
-Tisty is a desktop app for Windows and macOS: local memory and context for the
-person and their AI agent, which reaches it through Tisty's own MCP server. The
-`tisty-mcp` launcher on npm finds the installed app and starts that server
-locally over stdio. It needs Node.js, and no API key, account or network beyond
-fetching the launcher once.
+Tisty is a desktop app for Windows and macOS: shared working memory for the
+person and their AI agent, with notes, documents and tasks in local Markdown.
+The agent reaches it through Tisty's own MCP server. The `tisty-mcp` launcher
+on npm finds the installed app and starts that server locally over stdio. It
+needs Node.js, and no API key, account or network beyond fetching the launcher
+once.
 
 ## 1. Make sure Tisty is installed
 
