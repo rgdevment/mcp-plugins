@@ -156,6 +156,8 @@ jobs:
             echo "::error::The stored LobeHub session is not the file LobeHub's sign-in writes. Store it again from a computer signed in to LobeHub."
             exit 1
           fi
+          # GitHub hides the secret only as one whole text, so each token inside it is hidden by name.
+          node -e 'const held = require(process.argv[1]); for (const token of [held.accessToken, held.refreshToken]) console.log(`::add-mask::${token}`)' "$HOME/$SESSION_FILE"
           echo "stored=true" >> "$GITHUB_OUTPUT"
 
       - name: Publish the listing main carries
