@@ -20,7 +20,7 @@
     {
       "name": "leave_off",
       "title": "Leave this where I can pick it up",
-      "description": "Tick what is finished and note what was done, ruled out and comes next, so the next session starts from there.",
+      "description": "Tick what is finished and leave its state — done, left, decisions in force — so the next session starts from there.",
       "arguments": [
         {
           "name": "task",
@@ -64,7 +64,7 @@
     {
       "name": "brainstorm",
       "title": "Brainstorm ideas with me",
-      "description": "Think up short ideas on a subject together, and jot on Brainstorm the ones I keep.",
+      "description": "Think up short ideas on a subject together, and jot the ones I keep on the Ideas sheet.",
       "arguments": [
         {
           "name": "subject",
@@ -74,12 +74,23 @@
     },
     {
       "name": "sort_ideas",
-      "title": "Sort out my Brainstorm",
-      "description": "Group the ideas waiting on Brainstorm and propose which become tasks, which go into documents and which are marked as old.",
+      "title": "Sort out my Ideas",
+      "description": "Group the ideas waiting on the Ideas sheet and propose which become tasks, which go into documents and which are marked as old.",
       "arguments": [
         {
           "name": "subject",
           "description": "A word for the ideas to sort; left out, all of them"
+        }
+      ]
+    },
+    {
+      "name": "consolidate",
+      "title": "Go over what Tisty keeps and propose fixes",
+      "description": "Find stale agent notes, links that lead nowhere and cards out of date, propose the fixes, and make only those I agree to; nothing is deleted.",
+      "arguments": [
+        {
+          "name": "subject",
+          "description": "A folder, a list or a subject to go over; left out, all of it, a folder or list at a time"
         }
       ]
     }
@@ -97,7 +108,7 @@
     {
       "name": "propose",
       "title": "Propose a task",
-      "description": "Propose a task, something to do; what is kept to read again is `write_doc`. Several from one thread go in `tasks`, each judged alone. Work of several tasks with one end goes in `parts`, not packed into steps. An idea named as `source` leaves Brainstorm. Tisty tags it #agent.",
+      "description": "Propose a task, something to do; what is kept to read again is `write_doc`. Several from one thread go in `tasks`, each judged alone. Work of several tasks with one end goes in `parts`, not packed into steps. An idea named as `source` leaves Ideas. Tisty tags it #agent.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -223,7 +234,7 @@
     {
       "name": "describe",
       "title": "Describe a task",
-      "description": "Write the description of an open task. It replaces the old one whole: `read` first and keep what holds; what you learnt goes in `note`.",
+      "description": "Rewrite the description of an open task, replacing the old one whole: `read` the task first and keep what still holds. What you learnt goes in the journal with `note`, the rest of its page with `edit_doc`. Refused once it is said done or not doing; the answer names the task.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -284,10 +295,14 @@
     {
       "name": "tick",
       "title": "Tick the steps you did",
-      "description": "Tick steps you did yourself, as you finish each. All or nothing: one unknown text ticks none; a text two steps share ticks the next open one. On the person's own tasks it reports the step done, for them to confirm. Refused once the task is said done: `note` instead. The whole task is `say_done`; a wrong tick, `untick`.",
+      "description": "Tick steps you did yourself, as you finish each; `state` leaves what stands. All or nothing: one unknown text ticks none. On the person's tasks it gives your word, for them to confirm. Refused once said done: `note` instead. The whole task is `say_done`; a wrong tick, `untick`.",
       "inputSchema": {
         "type": "object",
         "properties": {
+          "state": {
+            "description": "What stands now, over the last: done, left, decisions in force, ruled out; steps may be left out",
+            "type": "string"
+          },
           "step": {
             "description": "One step, by its text",
             "type": "string"
@@ -311,7 +326,7 @@
       },
       "annotations": {
         "readOnlyHint": false,
-        "destructiveHint": false,
+        "destructiveHint": true,
         "idempotentHint": false,
         "openWorldHint": false
       }
@@ -456,7 +471,7 @@
     {
       "name": "move",
       "title": "Hang a task under another, or move it to a list",
-      "description": "`part_of` hangs a task under another, or null lets it stand alone; `list` moves it to a better list. One level: a task with parts is no part. A closed task takes nothing; a whole said done or not doing takes no new part.",
+      "description": "Hang a task under another with `part_of`, or send null to let it stand alone; `list` moves it to another list; both fit in one call. One level only: a task with parts is never a part. A closed task does not move, and a whole said done or not doing takes no new part. The answer says where it stands; a refusal says why. Its day is `reschedule`.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -525,12 +540,16 @@
     {
       "name": "note",
       "title": "Add to a task's journal",
-      "description": "Add to a task's journal, the person's tasks too, when something new turns up about existing work, instead of filing a duplicate. A closed task takes none: propose the work anew. A note inside a document is a callout (`> [!NOTE]`), with `edit_doc`.",
+      "description": "Add to a task's journal, the person's tasks too, instead of filing a duplicate: a decision, something ruled out or a block; what stands is `tick` with `state`. A closed task takes none. A note in a document is a callout (`> [!NOTE]`), with `edit_doc`.",
       "inputSchema": {
         "type": "object",
         "properties": {
           "body": {
             "description": "What to record, in the Tisty language",
+            "type": "string"
+          },
+          "replaces": {
+            "description": "Id of an agent's note this undoes; it stays, marked",
             "type": "string"
           },
           "task": {
@@ -590,7 +609,7 @@
     {
       "name": "write_doc",
       "title": "Write a document",
-      "description": "Write a document, something kept and read again; work to do is `propose`. Markdown is turned into the Tisty language and `turned` says what changed. Alone it writes a new one: `find` first, as a subject with a document is updated there, and a title in use is refused. With `doc` and `print` it rewrites that one whole, page lines the body drops going back at the end; one passage is `edit_doc`. #words in its text tag it.",
+      "description": "Write a document, something kept and read again; work to do is `propose`. Markdown is turned into the Tisty language and `turned` says what changed. Alone it writes a new one: `brain` first, as a subject with a document is updated there, and a title in use is refused. With `doc` and `print` it rewrites that one whole, page lines the body drops going back at the end; one passage is `edit_doc`. #words in its text tag it.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -631,7 +650,7 @@
             "type": "boolean"
           },
           "print": {
-            "description": "The `print` `read_doc` gave with the text you worked from; if the document changed since, nothing is written",
+            "description": "The `print` `read` or `brain` gave with the text you worked from; if the document changed since, nothing is written",
             "type": "string"
           },
           "translation_of": {
@@ -654,7 +673,7 @@
     {
       "name": "append_doc",
       "title": "Add to a document, or to a task's page",
-      "description": "Add at a document's end, or under the heading in `under`, without reading it or a `print`; nothing written changes, unless `replace` rewrites a task page's assistant notes. For logs, minutes and dated notes; a changed fact is `edit_doc`. The answer says how much it `grew`. A task's id in `doc` adds under the assistant's notes on its page, dated and signed.",
+      "description": "Add at a document's end, or under the heading in `under`, without reading it or a `print`; nothing written changes, unless `replace` rewrites a task page's assistant notes. For logs, minutes and dated notes; a changed fact is `edit_doc`. A task's id adds under the assistant's notes on its page, signed.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -675,7 +694,7 @@
             "type": "boolean"
           },
           "replace": {
-            "description": "Only with a task's id: rewrite the assistant's notes on its page whole, as one dated digest; a box in it is no step",
+            "description": "Only with a task's id: rewrite the assistant's notes on its page as one dated digest; a box in it is no step",
             "type": "boolean"
           },
           "under": {
@@ -699,7 +718,7 @@
     {
       "name": "restore_doc",
       "title": "Put a document back the way it was",
-      "description": "Undo the last write to a document: a changed passage or a whole write is put back; appends and the person's saves keep nothing to undo. Refused if written since, unless `even_if_more`. Undoing twice returns it. Use it when a write answers something unexpected, instead of retyping.",
+      "description": "Undo the last write to a document: a changed passage or a whole write is put back; appends and the person's saves keep nothing to undo. Refused if written since, unless `even_if_more`. Undoing twice returns it. Use it when a write answers something unexpected, instead of retyping. With `version` it goes back to a past version instead, and without it undoes that.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -710,6 +729,10 @@
           "even_if_more": {
             "description": "Go back over what was written since too; only once you read it and know, since the person may have written it",
             "type": "boolean"
+          },
+          "version": {
+            "description": "A `version` from `read` with `versions`, to go back to over all written since",
+            "type": "string"
           }
         },
         "required": [
@@ -732,7 +755,7 @@
         "type": "object",
         "properties": {
           "doc": {
-            "description": "The document's id from `docs`, not its title",
+            "description": "The document's id from `brain`, not its title",
             "type": "string"
           },
           "echo": {
@@ -752,15 +775,15 @@
             "type": "string"
           },
           "old": {
-            "description": "The passage as written now, from `read_doc`, matching one place only; take in a line around it if needed. Not with `section` or lines",
+            "description": "The passage as written now, from `read`, matching one place only; take in a line around it if needed. Not with `section` or lines",
             "type": "string"
           },
           "print": {
-            "description": "The `print` from `read_doc` or `outline_doc`, for `section` or lines only. If anyone wrote since, nothing changes: ask `outline_doc` again",
+            "description": "The `print` from `read` or `brain`, for `section` or lines only. If anyone wrote since, nothing changes: ask `brain` again",
             "type": "string"
           },
           "section": {
-            "description": "A heading and all under it, by its `at` in the `outline` of `outline_doc`, from 0. Needs `print`",
+            "description": "A heading and all under it, by its `at` on the card `brain` gives, from 0. Needs `print`",
             "type": "integer"
           },
           "to": {
@@ -815,7 +838,7 @@
             "type": "string"
           },
           "doc": {
-            "description": "The document's id from `docs`, not its title",
+            "description": "The document's id from `brain`, not its title",
             "type": "string"
           },
           "down": {
@@ -885,59 +908,9 @@
       }
     },
     {
-      "name": "docs",
-      "title": "The documents and the folders",
-      "description": "The documents, newest first, with each one's folder, whether it is put away or locked, and what it holds (words, sections, key words): enough to pick one unopened. A task's words come with the task. Ask before writing, so nothing is kept twice.",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "after": {
-            "description": "Skip this many, to page on while `total` is higher",
-            "type": "integer"
-          },
-          "deep": {
-            "description": "With `folder`: the folders below it too",
-            "type": "boolean"
-          },
-          "folder": {
-            "description": "Only the documents in this folder, by name, path or id, without pages; the folders below are named under `below`",
-            "type": "string"
-          },
-          "folders": {
-            "description": "Every folder too, with id, path, icon and size; the text already names them",
-            "type": "boolean"
-          },
-          "limit": {
-            "description": "At most 200, 50 by default",
-            "type": "integer"
-          },
-          "page_of": {
-            "description": "Only the pages of this document, by id, in reading order",
-            "type": "string"
-          },
-          "scope": {
-            "description": "Defaults to either",
-            "enum": [
-              "open",
-              "archive",
-              "either"
-            ],
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": false
-      }
-    },
-    {
       "name": "import_doc",
       "title": "Bring a Markdown file in as a document",
-      "description": "Bring one Markdown file from disk in as a document, turned into the Tisty language, saying what changed. Files it points at come in too; links to what cannot are taken out. The file on disk is untouched; a seeming live credential comes in under a warning. A task's exported page goes back to its task. One file per call.",
+      "description": "Bring one Markdown file from disk in as a document, turned into the Tisty language, saying what changed. Files it points at come in too; links to what cannot are taken out. The file on disk is untouched; a seeming live credential comes in under a warning. A task's exported page goes back to its task.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -977,12 +950,12 @@
     {
       "name": "export_doc",
       "title": "Export a document to a folder",
-      "description": "Write a document out as Markdown files in a folder on this machine, its pages numbered in reading order and its files beside them. A copy: nothing here changes. For another tool, `read_doc` with `as`.",
+      "description": "Write a document out as Markdown files in a folder on this machine, its pages numbered in reading order and its files beside them. A copy: nothing here changes. For another tool, `read` with `as`.",
       "inputSchema": {
         "type": "object",
         "properties": {
           "doc": {
-            "description": "The document's id from `docs`, not its title",
+            "description": "The document's id from `brain`, not its title",
             "type": "string"
           },
           "into": {
@@ -1015,7 +988,7 @@
             "type": "boolean"
           },
           "doc": {
-            "description": "The document's id from `docs`, not its title",
+            "description": "The document's id from `brain`, not its title",
             "type": "string"
           },
           "folder": {
@@ -1192,7 +1165,7 @@
     {
       "name": "tongue_doc",
       "title": "Join or leave a document's languages",
-      "description": "With `of`, join `doc` to that document's languages, moving it to its folder; without, take `doc` out of its languages. Both say their language in a `lang:` property, or `lang` for `doc`. A new translation is `write_doc` with `translation_of`.",
+      "description": "Join a document to another's languages, or take it out of them. With `of`, `doc` joins them and moves to that document's folder; without, `doc` stands on its own again. To join, each says its language in a `lang:` property, or `lang` for `doc`; a language already there or a page is refused, saying why. A new translation is `write_doc` with `translation_of`.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -1258,61 +1231,6 @@
       }
     },
     {
-      "name": "read_doc",
-      "title": "Read a document, or a part of one",
-      "description": "A document's text and the `print` it reads at. Past about 12,000 characters it comes back as its outline (`whole` false): then ask for a `section`, lines, or `chars` at a time. Every part brings the print, so `edit_doc` needs no whole read.",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "as": {
-            "description": "The whole document in GitHub Markdown for another tool; tell the person what `left_out` lists (`rules` «documents»). Not with `section`, lines or `chars`",
-            "enum": [
-              "markdown"
-            ],
-            "type": "string"
-          },
-          "chars": {
-            "description": "About how many characters to bring; the answer gives `next` when there is more",
-            "type": "integer"
-          },
-          "cursor": {
-            "description": "The `next` a previous answer gave, with `chars`",
-            "type": "integer"
-          },
-          "doc": {
-            "description": "The document's id from `docs`, not its title",
-            "type": "string"
-          },
-          "from": {
-            "description": "First line, from 1",
-            "type": "integer"
-          },
-          "print": {
-            "description": "The `print` the previous part came with; only with `cursor`",
-            "type": "string"
-          },
-          "section": {
-            "description": "A heading and all under it, by its `at` in `outline_doc`, from 0",
-            "type": "integer"
-          },
-          "to": {
-            "description": "Last line; left out, to the end",
-            "type": "integer"
-          }
-        },
-        "required": [
-          "doc"
-        ],
-        "additionalProperties": false
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": false
-      }
-    },
-    {
       "name": "catch_up",
       "title": "Where things stand, and what has moved",
       "description": "Where things stand: lists, folders, top tags, counts, pressing tasks, newest documents, a `cursor`; what others moved since your last `catch_up`; `last`, the open task you were on. Ask it first.",
@@ -1336,7 +1254,7 @@
     {
       "name": "reschedule",
       "title": "Move the day of a task an agent filed",
-      "description": "Change the `date` or `deadline` of a task an agent filed, when what you learnt moves it. A day the person set is theirs. Null takes a day off; nothing else changes.",
+      "description": "Change the `date` or `deadline` of a task an agent filed, when what you learnt moves it; null takes one off and the other stays. Refused on the person's task or one said done or not doing: say what you learnt with `note`. A change answers with both days as they stand.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -1432,12 +1350,12 @@
     {
       "name": "sum_up",
       "title": "Say what a document is about",
-      "description": "Leave a `summary` and `notes` on a document for the next agent, kept on this machine only and unseen by the person; a later write marks it stale. Write it after reading a long document, never instead, saying what it says.",
+      "description": "Leave the next agent a `summary` and `notes` on a document, replacing the last; they reach the person's other computers, unseen by the person, and go stale when it is written. Write them after reading it, never instead.",
       "inputSchema": {
         "type": "object",
         "properties": {
           "doc": {
-            "description": "The document's id from `docs`, not its title",
+            "description": "The document's id from `brain`, not its title",
             "type": "string"
           },
           "notes": {
@@ -1462,55 +1380,75 @@
       }
     },
     {
-      "name": "outline_doc",
-      "title": "What is in a document",
-      "description": "A document's headings with their `at`, lines and size, its length and `print`, and its pages with title, length and sections: a few hundred tokens. Ask it first for a long document or a change in part. Also `pointed_at` (who links here), `by` (agent or person) and the signs it wants compacting: `alike`, `repeated`, `dead`, `mislabeled`, `loose`.",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "doc": {
-            "description": "The document's id from `docs`, not its title",
-            "type": "string"
-          }
-        },
-        "required": [
-          "doc"
-        ],
-        "additionalProperties": false
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": false
-      }
-    },
-    {
       "name": "read",
-      "title": "Read a whole task",
-      "description": "Everything a task holds: steps, its `document` page with the description and your notes, the latest journal notes (ids for `reword_note`) and who wrote them, parts and files. Read it before noting or mending; `fields` narrows it. A closed task comes with `closed` and a `notice`: it is history, and nothing on it changes.",
+      "title": "Read a task or a document",
+      "description": "The exact text of one task or document. `task`: its steps, `state`, `document` page, the notes after that state (ids for `reword_note`), parts and files; read it before noting or mending; a closed one has `closed`: it is history. `doc`: its text and the `print` `edit_doc` takes; past about 12,000 characters it comes as its outline, so ask a `section`, lines or `chars`. Where a thing sits and what cites it is `brain`.",
       "inputSchema": {
         "type": "object",
         "properties": {
+          "as": {
+            "description": "The whole document in GitHub Markdown for another tool; tell the person what `left_out` lists. Not with a part",
+            "enum": [
+              "markdown"
+            ],
+            "type": "string"
+          },
+          "chars": {
+            "description": "About how many characters; `next` says where more starts",
+            "type": "integer"
+          },
+          "cursor": {
+            "description": "The `next` a previous answer gave, with `chars`",
+            "type": "integer"
+          },
+          "doc": {
+            "description": "The document's id from `brain`, not its title",
+            "type": "string"
+          },
           "fields": {
-            "description": "Only these keys of the answer; the id always comes",
+            "description": "With `task`: only these keys; the id always comes",
             "items": {
               "type": "string"
             },
             "type": "array"
           },
+          "from": {
+            "description": "First line, from 1",
+            "type": "integer"
+          },
+          "marks": {
+            "description": "With `doc`: only its highlighted and bold passages, each under its section",
+            "type": "boolean"
+          },
           "notes": {
-            "description": "How many latest journal notes, each cut at 4000 chars; 0: all, whole",
+            "description": "With `task`: how many latest notes, cut at 4000 chars; 0: all, whole",
+            "type": "integer"
+          },
+          "print": {
+            "description": "The `print` a read gave: unchanged, only that is said; with `cursor`, the part's",
+            "type": "string"
+          },
+          "section": {
+            "description": "With `doc`: a heading and all under it, by its `at` from `brain`, from 0",
             "type": "integer"
           },
           "task": {
-            "description": "The task id",
+            "description": "A task's id",
             "type": "string"
+          },
+          "to": {
+            "description": "Last line; left out, to the end",
+            "type": "integer"
+          },
+          "version": {
+            "description": "A `version` from that list, read in place of the text",
+            "type": "string"
+          },
+          "versions": {
+            "description": "With `doc`: its past versions instead of its text, when, by whom, its size; a task id lists its page's",
+            "type": "boolean"
           }
         },
-        "required": [
-          "task"
-        ],
         "additionalProperties": false
       },
       "annotations": {
@@ -1521,18 +1459,18 @@
       }
     },
     {
-      "name": "find",
-      "title": "Search tasks and documents, archive included",
-      "description": "Search open and archived tasks and documents: words in `query`, the task fields below to sift, `source` to see if something was filed, `doc` for lines inside one document. A task matched in its page, steps or notes brings the `line`. Open a task hit with `read`, a document hit with `read_doc`.",
+      "name": "brain",
+      "title": "Find anything kept and see how it connects",
+      "description": "Search and walk the person's tasks and documents, archive included, without opening them. `query` ranks them by where the words turn up, then by how recent, each with its newest line saying them; when none has every word, those with the most come, said so. The other fields sift tasks. `doc` or `task` alone gives its card: a document's sections with `at`, lines and the `print` `edit_doc` needs, a task's state, steps and parts, and what cites each; `links` brings its neighbours of one kind; `doc` with `query`, its lines. `part_of` alone groups a project's open parts: blocked, under way, waiting on the person, not started. `folder` or `scope` alone lists documents; nothing at all, the lists, folders and tags with their counts. Answers are capped and `next` says how to go on. The text itself is `read`.",
       "inputSchema": {
         "type": "object",
         "properties": {
           "after": {
-            "description": "Skip this many tasks, to page on while `total` is higher. Documents are not paged: raise `limit`",
+            "description": "Skip this many, to page on while `total` is higher",
             "type": "integer"
           },
           "around": {
-            "description": "With `doc`: lines each side of a hit, 0 to 10, 1 by default",
+            "description": "With `doc` and `query`: lines each side of a hit, 0 to 10, 1 by default",
             "type": "integer"
           },
           "by_agent": {
@@ -1540,11 +1478,11 @@
             "type": "boolean"
           },
           "doc": {
-            "description": "Search inside this document: lines with every word, their numbers and section",
+            "description": "A document's id: its card; with `query`, the lines that say it, their numbers and section",
             "type": "string"
           },
           "folder": {
-            "description": "Only documents in this folder or below, by name, path or id",
+            "description": "A folder by name, path or id: alone, its documents; with `query`, it and those below",
             "type": "string"
           },
           "from": {
@@ -1556,23 +1494,35 @@
             "type": "string"
           },
           "limit": {
-            "description": "At most 100, 10 by default",
+            "description": "10 by default and 100 at most; 50 for a project's parts, and 50 up to 200 for a folder's documents",
             "type": "integer"
           },
           "lines": {
-            "description": "False: titles alone, without their `line`",
+            "description": "False: titles alone, without their line",
             "type": "boolean"
+          },
+          "links": {
+            "description": "With `doc` or `task`: its neighbours of this kind, each with title and state",
+            "enum": [
+              "cite",
+              "mention",
+              "structure",
+              "tag",
+              "uses",
+              "all"
+            ],
+            "type": "string"
           },
           "list": {
             "description": "In this list, as `catch_up` names it",
             "type": "string"
           },
           "part_of": {
-            "description": "Only the parts of this task, by id",
+            "description": "The parts of this task, by id",
             "type": "string"
           },
           "query": {
-            "description": "Words that must all turn up, in any order, accents or not (with `doc`, on one line); quote a phrase. Not needed when sifting",
+            "description": "Words, in any order, accents or not; quote a phrase. Not needed when sifting",
             "type": "string"
           },
           "said_done": {
@@ -1588,12 +1538,20 @@
             ],
             "type": "string"
           },
+          "section": {
+            "description": "With `doc`: the headings under this `at`, for an outline that came cut",
+            "type": "integer"
+          },
           "source": {
             "description": "Whether this exact source was filed already; not with `query`",
             "type": "string"
           },
           "tag": {
             "description": "Carrying this tag, # or not. Any sifting field leaves documents out",
+            "type": "string"
+          },
+          "task": {
+            "description": "A task's id: its card",
             "type": "string"
           },
           "to": {
@@ -1613,7 +1571,7 @@
     {
       "name": "rules",
       "title": "Read the rules for working here, by topic",
-      "description": "Read the rules an agent works by here, one guide per `topic`, 3,000 to 11,000 characters each, 32,000 for `all`; without `topic`, the basics and an index. Read the one the instructions name before a first write of its kind. Markdown syntax is `language`; how the app works, `help`.",
+      "description": "Read the rules an agent works by here, one guide per `topic`, 3,000 to 11,200 characters each, 34,100 for `all`; without `topic`, the basics and an index. Read the one the instructions name before a first write of its kind. Markdown syntax is `language`; how the app works, `help`.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -1725,9 +1683,9 @@
       }
     }
   ],
-  "version": "1.48.0",
+  "version": "1.49.0",
   "category": "productivity",
-  "icon": "https://raw.githubusercontent.com/rgdevment/Tisty/v1.48.0/assets/icons/tisty-512.png",
+  "icon": "https://raw.githubusercontent.com/rgdevment/Tisty/v1.49.0/assets/icons/tisty-512.png",
   "tags": [
     "memory",
     "agent-memory",
