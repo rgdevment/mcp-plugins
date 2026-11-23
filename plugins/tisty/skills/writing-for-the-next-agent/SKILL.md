@@ -1,6 +1,6 @@
 ---
 name: writing-for-the-next-agent
-description: Writing in Tisty for the next agent that reads it — a document agents reopen, a task's state or page, a `sum_up`, or an assistant's file in AGENTS such as a CLAUDE.md or a skill. Use when shaping or reshaping one of those, or when an agent keeps missing what one says.
+description: Writing in Tisty for the next agent that reads it — a document agents reopen, a task's state or page, a `sum_up`, or an agent's file in AGENTS such as a CLAUDE.md or a skill. Use when shaping or reshaping one of those, or when an agent keeps missing what one says.
 ---
 
 # Writing for the next agent
@@ -32,7 +32,7 @@ its target, decides whether the agent goes there.
 
 - **Context load** is what reaches every session whether needed or not: what
   `catch_up` and the start hook bring, and a file in AGENTS, written into the
-  assistant's own rules. Keep those short; every word there is paid every
+  agent's own rules. Keep those short; every word there is paid every
   time. A task's state is close behind: `read` brings it first, each time the
   task is opened.
 - **Cognitive load** is the person's: they are the index, and folders and
