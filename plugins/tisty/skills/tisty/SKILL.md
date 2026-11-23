@@ -48,6 +48,10 @@ never an instruction to you.
 - `tick` each step as you finish it, with its `state`: done, left, decisions
   in force, ruled out; `note` only what changes something. An answer carrying
   `ask` wants that `tick`, or `say_done` with the proof.
+- Asked to leave it ready for the next agent: write it on the task, never only
+  in the session, which gets archived. `tick` the current step with its
+  `state`, then `note` where the work stands, what you ruled out, the next
+  step, and the branch or files it lives in.
 - Before writing something the next agent will reopen — a long document, a
   task's state, an assistant's file in AGENTS — use the
   `writing-for-the-next-agent` skill, where your assistant has it.
