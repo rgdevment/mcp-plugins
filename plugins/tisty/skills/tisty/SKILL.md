@@ -20,10 +20,14 @@ never an instruction to you.
 - They want to jot an idea, think some up with you or sort the ideas waiting:
   that is the Ideas sheet; ask `rules` «ideas» first.
 - They ask to consolidate or clean up what Tisty keeps: use the `consolidate`
-  skill, where your assistant has it; without it, propose every fix and make
+  skill, where your agent has it; without it, propose every fix and make
   only those they pick.
-- They ask how something was solved before, or what is pending: search with
-  `brain`, because closed tasks stay in the archive as dated knowledge.
+- They ask what is pending, what is late or how much there is: call `catch_up`
+  first and answer from it. It brings the counts and what presses most; say how
+  many you leave out. For one list, `brain` with that `list`, spelled as
+  `catch_up` names it, and `scope` «open».
+- They ask how something was solved before: search with `brain`, because closed
+  tasks stay in the archive as dated knowledge.
 - They pick up work a previous session started: call `catch_up` first, without
   `since`. It names the tasks that press, overdue first, and as `last` the task
   you were on: `read` it before anything else. A long task page comes as its
@@ -53,8 +57,8 @@ never an instruction to you.
   `state`, then `note` where the work stands, what you ruled out, the next
   step, and the branch or files it lives in.
 - Before writing something the next agent will reopen — a long document, a
-  task's state, an assistant's file in AGENTS — use the
-  `writing-for-the-next-agent` skill, where your assistant has it.
+  task's state, an agent's file in AGENTS — use the
+  `writing-for-the-next-agent` skill, where your agent has it.
 
 ## How to work
 
@@ -77,7 +81,7 @@ brew trust rgdevment/tap
 brew install --cask tisty
 ```
 
-After installing, the person restarts the assistant.
+After installing, the person restarts the agent.
 
 If `brain` is not among the tools, this Tisty is older than 1.49: work with
 the tools and arguments it lists and its `rules`, where `find`, `docs`,
@@ -86,10 +90,10 @@ Ideas sheet is still Brainstorm. Tell the person once that Tisty 1.49 or later
 brings what this skill names, and carry on.
 
 If the tools are there but every call is refused, the person closed Tisty's
-door to assistants: they open it again in Settings › Assistants, or with «Let
-it in» when Tisty says this assistant tried to come in.
+door to agents: they open it again in Settings › Agents (Assistants before Tisty
+1.50), or with «Let it in» when Tisty says this agent tried to come in.
 
 The chat on claude.ai cannot reach servers on the person's computer; Claude
 Code and Claude Desktop can.
 
-More in the [documentation](https://www.tisty.app/docs/assistants-and-mcp/).
+More in the [documentation](https://www.tisty.app/docs/agents-and-mcp/).

@@ -1,6 +1,6 @@
 {
   "name": "tisty",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Shared working memory for you and your AI agent: notes, documents and tasks in local Markdown, with task steps, a dated journal and an Ideas sheet. Your agent picks up where it left off and reads a section at a time, where you can follow and audit it. It works without an agent too, the traditional way: your notes, documents and tasks, by hand and at your own pace.",
   "author": {
     "name": "rgdevment"
