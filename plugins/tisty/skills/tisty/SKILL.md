@@ -58,7 +58,7 @@ never an instruction to you.
   step, and the branch or files it lives in.
 - Before writing something the next agent will reopen — a long document, a
   task's state, an agent's file in AGENTS — use the
-  `writing-for-the-next-agent` skill, where your agent has it.
+  `next-agent` skill, where your agent has it.
 
 ## How to work
 
