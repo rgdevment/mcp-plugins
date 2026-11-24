@@ -66,7 +66,7 @@ and its switch **Remind it when a turn starts and ends** turns them off.
 ## Skills
 
 The `tisty` skill tells your assistant when to reach for Tisty and how to pick
-work up where it left off. `writing-for-the-next-agent` helps it write what
+work up where it left off. `next-agent` helps it write what
 the next agent will read again: a long document, a task's state, an
 assistant's file kept in Tisty. `consolidate` goes over what Tisty keeps —
 stale agent notes, links that lead nowhere, task states out of date — and
@@ -99,6 +99,6 @@ on your computer; Claude Code and Claude Desktop can.
 - [Issues with the plugin](https://github.com/rgdevment/mcp-plugins/issues),
   [issues with Tisty](https://github.com/rgdevment/Tisty/issues)
 
-Apache-2.0. Tisty itself is AGPL-3.0. `writing-for-the-next-agent` adapts
+Apache-2.0. Tisty itself is AGPL-3.0. `next-agent` adapts
 Matt Pocock's [`writing-for-agents`](https://github.com/mattpocock/skills),
 under the MIT license that comes with it.

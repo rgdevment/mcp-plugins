@@ -1,5 +1,5 @@
 ---
-name: writing-for-the-next-agent
+name: next-agent
 description: Writing in Tisty for the next agent that reads it — a document agents reopen, a task's state or page, a `sum_up`, or an agent's file in AGENTS such as a CLAUDE.md or a skill. Use when shaping or reshaping one of those, or when an agent keeps missing what one says.
 ---
 
