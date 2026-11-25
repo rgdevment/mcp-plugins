@@ -1461,7 +1461,7 @@
     {
       "name": "brain",
       "title": "Find anything kept and see how it connects",
-      "description": "Search and walk the person's tasks and documents, archive included, without opening them. `query` ranks them by where the words turn up, then by how recent, each with its newest line saying them; when none has every word, those with the most come, said so. The other fields sift tasks. `doc` or `task` alone gives its card: a document's sections with `at`, lines and the `print` `edit_doc` needs, a task's state, steps and parts, and what cites each; `links` brings its neighbours of one kind; `doc` with `query`, its lines. `part_of` alone groups a project's open parts: blocked, under way, waiting on the person, not started. `folder` or `scope` alone lists documents; nothing at all, the lists, folders and tags with their counts. Answers are capped and `next` says how to go on. The text itself is `read`.",
+      "description": "Search and walk the person's tasks and documents, archive included, without opening them. `query` ranks them by where the words turn up, an exact title first, then by how recent, each with its newest line saying them; when none has every word, those with the most come, said so. The other fields sift tasks. How a project goes: `part_of` with its id groups its open parts: blocked, under way, waiting on the person, not started. `doc` or `task` alone gives its card: a document's sections with `at`, lines and the `print` `edit_doc` needs, a task's state, steps and parts, and what cites each; `links` brings its neighbours of one kind; `doc` with `query`, its lines. `folder` or `scope` alone lists documents and their size in chars; nothing at all, the lists, folders and tags with their counts. Answers are capped and `next` says how to go on. The text itself is `read`.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -1571,7 +1571,7 @@
     {
       "name": "rules",
       "title": "Read the rules for working here, by topic",
-      "description": "Read the rules an agent works by here, one guide per `topic`, 3,000 to 11,200 characters each, 34,100 for `all`; without `topic`, the basics and an index. Read the one the instructions name before a first write of its kind. Markdown syntax is `language`; how the app works, `help`.",
+      "description": "Read the rules an agent works by here, one guide per `topic`, 3,000 to 11,200 characters each, 34,600 for `all`; without `topic`, the basics and an index. Read the one the instructions name before a first write of its kind. Markdown syntax is `language`; how the app works, `help`.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -1683,9 +1683,9 @@
       }
     }
   ],
-  "version": "1.49.0",
+  "version": "1.50.2",
   "category": "productivity",
-  "icon": "https://raw.githubusercontent.com/rgdevment/Tisty/v1.49.0/assets/icons/tisty-512.png",
+  "icon": "https://raw.githubusercontent.com/rgdevment/Tisty/v1.50.2/assets/icons/tisty-512.png",
   "tags": [
     "memory",
     "agent-memory",
