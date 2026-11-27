@@ -1,5 +1,5 @@
 {
-  "description": "Tisty's hooks: a session starts with the tasks it left open, and a turn that edited files without writing in Tisty is handed back once.",
+  "description": "Tisty's hooks: a session starts with the tasks it left open, a turn that edited files without writing in Tisty is handed back once, and so is one that pushed or merged, or ticked every step without saying the task done.",
   "hooks": {
     "SessionStart": [
       {
@@ -29,6 +29,16 @@
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/server/hook.mjs\" claude-code tool",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "^(Bash|PowerShell)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/server/hook.mjs\" claude-code shell",
             "timeout": 5
           }
         ]

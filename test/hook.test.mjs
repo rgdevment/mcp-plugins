@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { test } from "node:test";
 
@@ -59,19 +61,41 @@ function commands(file) {
 
 test("the Claude Code plugin runs the hook for each moment", () => {
   const all = commands("plugins/tisty/hooks/hooks.json");
-  for (const moment of ["start", "tool", "stop"]) {
+  for (const moment of ["start", "tool", "shell", "stop"]) {
     assert.ok(all.includes(`node "\${CLAUDE_PLUGIN_ROOT}/server/hook.mjs" claude-code ${moment}`), moment);
   }
 });
 
 test("the Gemini CLI extension runs the hook for each moment from its own folder", () => {
   const all = commands("hooks/hooks.json");
-  for (const moment of ["start", "tool", "stop"]) {
+  for (const moment of ["start", "tool", "shell", "stop"]) {
     assert.ok(
       all.includes(`node '\${extensionPath}\${/}plugins\${/}tisty\${/}server\${/}hook.mjs' gemini-cli ${moment}`),
       moment,
     );
   }
+});
+
+function matchers(file, event) {
+  return read(file).hooks[event]
+    .filter((group) => group.hooks.some((one) => one.command.endsWith(" shell")))
+    .map((group) => group.matcher);
+}
+
+test("the shell moment is run after a shell command by Claude Code and by Gemini CLI", () => {
+  assert.deepEqual(matchers("plugins/tisty/hooks/hooks.json", "PostToolUse"), ["^(Bash|PowerShell)$"]);
+  assert.deepEqual(matchers("hooks/hooks.json", "AfterTool"), ["^run_shell_command$"]);
+  const gemini = read("hooks/hooks.json").hooks.AfterTool.flatMap((group) => group.hooks);
+  assert.ok(gemini.some((one) => one.name === "tisty-shell"));
+});
+
+test("the hook hands the shell moment to Tisty and still drops one it does not know", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "tisty-hook-"));
+  const stub = join(dir, "stub.cjs");
+  writeFileSync(stub, 'if (require("path").basename(process.argv[1]) === "hook") { process.stdout.write(["hook", ...process.argv.slice(2)].join(" ")); process.exit(0); }');
+  const env = { TISTY_PATH: process.execPath, NODE_OPTIONS: `--require ${JSON.stringify(stub)}` };
+  assert.equal((await ran(["claude-code", "shell"], env)).said, "hook claude-code shell");
+  assert.equal((await ran(["claude-code", "later"], env)).said, "");
 });
 
 test("Cursor reads a hooks file of its own and is given none", () => {

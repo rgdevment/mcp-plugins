@@ -35,6 +35,17 @@
             "timeout": 5000
           }
         ]
+      },
+      {
+        "matcher": "^run_shell_command$",
+        "hooks": [
+          {
+            "name": "tisty-shell",
+            "type": "command",
+            "command": "node '${extensionPath}${/}plugins${/}tisty${/}server${/}hook.mjs' gemini-cli shell",
+            "timeout": 5000
+          }
+        ]
       }
     ],
     "AfterAgent": [

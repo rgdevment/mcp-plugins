@@ -32,7 +32,10 @@ Ask `rules` «tidying», then `catch_up`.
     names its page otherwise;
   - a task's card, `brain` with `task`, or a project's parts with `part_of`:
     `state_old`, a state written before its steps changed or a later decision
-    came.
+    came;
+  - an agent's task held open by a step only the person can do — a manual
+    test, a real device, publishing, merging, a decision — or one with every
+    step ticked and never said done.
 - A document already `flagged` waits for the person: leave it as it is.
 - `read` the passage before you judge it. What holds today is what Tisty
   confirms — a task open, closed or said done — not what an old text says. A
@@ -54,6 +57,8 @@ question: a yes to several at once does not cover it. Wait for their pick.
   finds it), or takes it out and says in the text what it led to.
 - **Old state,** on an open task nobody said done: one `tick` with its `state`
   written whole over the last.
+- **A person's step on an agent's task:** `unplan` with `to_person` moves it
+  to the person's own task, made as its part, which never holds it open.
 - **A decision a later one replaced:** struck through with the day it fell,
   its text kept.
 - **`repeated`, `mislabeled` or `alike`:** put the document in order as
