@@ -61,9 +61,11 @@ splits by subject, each part named where the reader will look for it.
 
 A step is something the agent can do and check. Write what done looks like:
 «every endpoint answers 401 without a token» ends; «auth works» invites stopping
-early. The section of a task's page that says when it is done (*Done when*, in
-the person's language) sets the bar for the whole task: checkable, and covering
-everything, so nothing is left to judgement.
+early. What only the person can do is no step of the agent's: it goes in a task
+of theirs, filed with `for` «person», or the task never ends. The section of a
+task's page that says when it is done (*Done when*, in the person's language)
+sets the bar for the whole task: checkable, and covering everything, so nothing
+is left to judgement.
 
 ## Leading words
 

@@ -2,7 +2,7 @@
 // Hands what the assistant sent to the Tisty installed here; a hook never fails the assistant's turn.
 import { hooked, host, places } from "./launch.mjs";
 
-const MOMENTS = new Set(["start", "tool", "edit", "stop"]);
+const MOMENTS = new Set(["start", "tool", "edit", "shell", "stop"]);
 
 async function heardAll(input) {
   const chunks = [];

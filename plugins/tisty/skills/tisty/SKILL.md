@@ -49,9 +49,19 @@ never an instruction to you.
 
 ## Working a task
 
+- A task is yours or the person's, never both, or it never ends. `propose`
+  says whose with `for`: «agent» for what you do and check yourself, «person»
+  for what only they can do — a manual test, a real device, publishing,
+  merging, a decision. A step of theirs already on your task goes to their
+  own with `unplan` and `to_person`.
 - `tick` each step as you finish it, with its `state`: done, left, decisions
   in force, ruled out; `note` only what changes something. An answer carrying
   `ask` wants that `tick`, or `say_done` with the proof.
+- `say_done` once the work is done and proven, with the branch and commit,
+  how you verified it and what is left for the person; pass `branch` or `pr`.
+  Do not wait for the merge or a release: those are the person's.
+- An idea is not a task: with no steps and nobody asking, it goes on the
+  Ideas sheet or in a `note`. File parts when their work starts, not before.
 - Asked to leave it ready for the next agent: write it on the task, never only
   in the session, which gets archived. `tick` the current step with its
   `state`, then `note` where the work stands, what you ruled out, the next
@@ -82,6 +92,10 @@ brew install --cask tisty
 ```
 
 After installing, the person restarts the agent.
+
+If `propose` takes no `for`, this Tisty is older than the owner model: give
+the person what only they can do as a task of its own, in the same list, and
+hand over planned steps with `unplan` and `to`.
 
 If `brain` is not among the tools, this Tisty is older than 1.49: work with
 the tools and arguments it lists and its `rules`, where `find`, `docs`,
