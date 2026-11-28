@@ -47,24 +47,26 @@ There is nothing to configure. Only if Tisty is installed somewhere unusual, add
 ## 3. Check it
 
 Restart the assistant if it was open before Tisty was installed, then list the
-server's tools. Tisty's tools include `rules`, `brain`, `read`, `propose` and
-`write_doc`. Call `rules` with no arguments: it answers with the basics of
-working in Tisty. If the only tool is `install_tisty`, the launcher did not find
-Tisty: call it and pass its steps on to the person. If `brain` is not among the
-tools, Tisty is older than 1.49: it works with the tools it lists, and updating
-Tisty brings `brain`.
+server's tools. Tisty's 15 tools include `workspace_guide`, `workspace_search`,
+`workspace_read`, `task_create` and `doc_create`. Call `workspace_guide` with
+`kind: "rules"`: it answers with the basics of working in Tisty. If the only
+tool is `install_tisty`, the launcher did not find Tisty: call it and pass its
+steps on to the person. If `workspace_search` is not among the tools, Tisty is
+older than 1.52: work with the tools it lists, and updating Tisty brings the
+15-tool surface.
 
 If every call is refused, the person closed Tisty's door to assistants: they
-open it again in Settings › Assistants, or with «Let it in» when Tisty says
-this assistant tried to come in.
+open it again in Settings › Agents (Assistants before Tisty 1.50), or with «Let
+it in» when Tisty says this assistant tried to come in.
 
-To look things up, `brain` finds and connects without opening anything: words
-in `query` search open and archived tasks and documents, a `doc` or `task`
-alone gives its card with what cites it, `links` brings its neighbours and
-`part_of` a project's open parts. `read` opens one: a task, or with `doc` a
-document by the id `brain` gives, one `section` of it or only its `marks`. Sent
-the `print` the last read gave, it says only that nothing changed; `versions`
-lists a document's earlier versions.
+To look things up, `workspace_search` finds and lists without opening full
+bodies: words in `query` search open and archived tasks and documents, and
+`part_of` groups a project's open parts. `workspace_read` opens one `task` or
+`doc` (from `workspace_search`): use `view: "card"` for its outline and what
+cites it, `view: "links"` for neighbours, `view: "marks"` for highlights,
+`view: "table"` for tables, `view: "versions"` for earlier versions, or ask one
+`section` at a time. Sent the `print` the last read gave, it says only that
+nothing changed.
 
 ## What it may do
 
